@@ -1,0 +1,14 @@
+{
+  "name": "cathlab",
+  "version": "1.0.0",
+  "description": "\"cath lab invetory project\"",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "cathlab"
+  ],
+  "author": "Dr Umesh R BBilagi",
+  "license": "ISC"
+}
