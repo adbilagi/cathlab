@@ -10,5 +10,8 @@
     "cathlab"
   ],
   "author": "Dr Umesh R BBilagi",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "jwt-http": "^2.0.6"
+  }
 }
