@@ -24,9 +24,5 @@ var loginMiddleWareMethod = function(req, res, next){
 app.setLoginRoute(loginMiddleWareMethod,"topsecret", 1); //second arg is secrete key and third arg is expire of token in minites
 app.setlogout();//this sets get method logout route setting jwt token = "" and route is `/logout`
 
-app.getMethod("/sec", true, app.validate_login,function(req, res){
-    app.httpMsgs.sendJSON(req, res, {
-        name : "y"
-    })
-})
+
 
