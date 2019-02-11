@@ -5,7 +5,7 @@ const queryString = require("querystring");
 
 
 
-app.renderHTML("/login", path.join(__dirname, "../html/login.html"));
+
 
 var loginMiddleWareMethod = function(req, res, next){
     var data = queryString.parse(req.body);
