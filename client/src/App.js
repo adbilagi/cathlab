@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import CurNavbar from "./nav/navbar";
+import CurNavbar from "./components/nav/navbar";
+import CurLogin from "./components/users/login"
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import './App.css';
@@ -9,6 +10,7 @@ class App extends Component {
     return (
       <div className="App">
         <CurNavbar />
+        <CurLogin />
       </div>
     );
   }
