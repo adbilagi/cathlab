@@ -3,7 +3,7 @@ export const AppContext = React.createContext();
 
 export default class AppProvider extends React.Component {
     state={
-        loggedState : "Log Out"
+        loggedState : "Logout"
     }
   render() {
     return (
