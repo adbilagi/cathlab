@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import { Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
+import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
+import axios from "axios";
 
 export default class CurLogin extends Component {
   state={
@@ -22,6 +23,14 @@ export default class CurLogin extends Component {
   userLogin =(e)=>{
     e.preventDefault();
     // write code to server /login (post) route
+  axios.post('/login', {user : this.state.user, password : this.state.password})  
+  .then(function (response) {
+    console.log(response);
+  })
+  .catch(function (error) {
+    console.log(error);
+  });
+
   }
 
   userCancel =(e)=>{
@@ -34,7 +43,7 @@ export default class CurLogin extends Component {
 
     return (
       <div>
-          <form>
+          <Form>
           <FormGroup>
             <Label for="user">User Name</Label>
             <Input type="text" name="user" id="user" placeholder="User Name" onChange={this.setUser}/>
@@ -45,7 +54,7 @@ export default class CurLogin extends Component {
           </FormGroup>
           <Button color="info" onClick={this.userLogin}>Login</Button>{' '}
           <Button color="info" onClick={this.userCancel}>Cancel</Button>{' '}
-          </form>
+          </Form>
 
         
       </div>
