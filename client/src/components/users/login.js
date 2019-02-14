@@ -23,7 +23,8 @@ export default class CurLogin extends Component {
   userLogin =(e)=>{
     e.preventDefault();
     // write code to server /login (post) route
-  axios.post('/login', {user : this.state.user, password : this.state.password})  
+    axios.defaults.withCredentials=true;
+  axios.post('/login',{user : this.state.user, password : this.state.password})  
   .then(function (response) {
     console.log(response);
   })
