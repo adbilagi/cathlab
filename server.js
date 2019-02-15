@@ -1,4 +1,12 @@
- const app = require("jwt-http");
+const express = require("express")
+const bodyParser = require("body-parser");
+const cors = require("cors");
+
+
  require("./users/login");
 
- app.setPort(9000);
+ const app = express();
+ app.use(bodyParser.urlencoded({ extended: true }));
+ app.use(cors());
+ app.listen(9000);
+

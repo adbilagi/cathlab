@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
-import axios from "axios";
 
 export default class CurLogin extends Component {
   state={
@@ -23,14 +22,21 @@ export default class CurLogin extends Component {
   userLogin =(e)=>{
     e.preventDefault();
     // write code to server /login (post) route
-    axios.defaults.withCredentials=true;
-  axios.post('/login',{user : this.state.user, password : this.state.password})  
-  .then(function (response) {
-    console.log(response);
-  })
-  .catch(function (error) {
-    console.log(error);
-  });
+    fetch("/login", {
+      method : "POST",
+      body : JSON.stringify({user : this.state.user, password : this.state.password}),
+      headers : {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },credentials : "include",
+
+    }).then((res)=>{
+      return res;
+    }).then((data)=>{
+      console.log(data);
+    }).catch((er)=>{
+      console.log(er);
+    })
 
   }
 
@@ -44,7 +50,7 @@ export default class CurLogin extends Component {
 
     return (
       <div>
-          <Form>
+          <Form action="/login" method="post">
           <FormGroup>
             <Label for="user">User Name</Label>
             <Input type="text" name="user" id="user" placeholder="User Name" onChange={this.setUser}/>
@@ -53,7 +59,7 @@ export default class CurLogin extends Component {
             <Label for="password">Password</Label>
             <Input type="password" name="password" id="password" placeholder="Password" onChange={this.setPassword}/>
           </FormGroup>
-          <Button color="info" onClick={this.userLogin}>Login</Button>{' '}
+          <Button>Login</Button>{' '}
           <Button color="info" onClick={this.userCancel}>Cancel</Button>{' '}
           </Form>
 

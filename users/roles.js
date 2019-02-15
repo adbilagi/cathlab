@@ -1,9 +1,9 @@
-const app = require("jwt-http");
+const role = require("user-groups-roles");
 
 
 // create roles
-app.roles.createNewRole("admin");
-app.roles.createNewRole("doctor");
-app.roles.createNewRole("accounts");
+role.roles.createNewRole("admin");
+role.roles.createNewRole("doctor");
+role.roles.createNewRole("accounts");
 
 

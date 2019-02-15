@@ -16,11 +16,15 @@
   "author": "Dr Umesh R BBilagi",
   "license": "ISC",
   "dependencies": {
+    "body-parser": "^1.18.3",
     "bootstrap": "^4.2.1",
     "concurrently": "^4.1.0",
-    "jwt-http": "^2.0.6",
+    "cors": "^2.8.5",
+    "express": "^4.16.4",
+    "jwt-login": "0.0.3",
     "mongoose": "^5.4.11",
     "mysql": "^2.16.0",
-    "nodemon": "^1.18.10"
+    "nodemon": "^1.18.10",
+    "user-groups-roles": "^2.0.4"
   }
 }

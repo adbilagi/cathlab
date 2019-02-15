@@ -15,28 +15,20 @@
     </form>
     
 </body>
-
-    <script>
-        document.getElementById("my").onclick=function(){
-            let data = {user : "umesh", password : "password"};
-            alert("Umesh");
-        fetch("/test", {
-            method : "POST",
-            credentials : "same-origin",
-            headers: {
-            "Content-Type": "application/json",
-            // "Content-Type": "application/x-www-form-urlencoded",
-             },
-             body: JSON.stringify(data)
-
-        } ).then((res)=>{
-            return res.json();
-        }).then((data)=>{
-            console.log(data);
-        }).catch((err)=>{
-            console.log(err);
-        })
-
-        }
-            </script>
+<script
+src="https://code.jquery.com/jquery-3.3.1.js"
+integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+crossorigin="anonymous"></script>
+<script>
+    $(document).ready(function(){
+        $("#my").click(function(){
+            alert("hjhjh");
+            $.ajax({
+                method:"POST",
+                data:{user : "umesh", password : "umesh"},
+                url:"/login"
+            })
+        });
+    })
+</script>
 </html>

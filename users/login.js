@@ -1,32 +1,20 @@
-const app = require("jwt-http");
-const path =require("path");
-const queryString = require("querystring");
+const express = require("express");
+const jwtLogin = require("jwt-login");
 
-app.renderHTML("/log", path.join(__dirname, "log.html"));
-app.postMethod("/test",true, (req, res)=>{
-    console.log(req.body);
-})
+const app = express();
 
 
-var loginMiddleWareMethod = function(req, res, next){
-    var data = queryString.parse(req.body);
-    var user = data.user;
-    var password = data.password;
-    var login=0 // processs the code from database and using user and password set to true if succusful
-    if(user == password){
-        login =1;
-    }
-    if(login){
-        next(req, res, next);
+app.post("/login",  function(req, res){
+    var user = req.body.user
+    var password = req.body.password
+    if (user == password){
+        jwtLogin.sign(req, res, user,"topsecret", 1,false);  
     }else{
-        app.httpMsgs.send500(req, res, "invalid user and password", false);
-        return false
+        httpMsgs.send500(req, res, "invalid user");
     }
+    
+});
 
-}
-
-app.setLoginRoute(loginMiddleWareMethod,"topsecret", 1); //second arg is secrete key and third arg is expire of token in minites
-app.setlogout();//this sets get method logout route setting jwt token = "" and route is `/logout`
-
-
-
+app.get("/logout", function(req, res){
+    jwtLogin.signout(req, res, false);
+});
