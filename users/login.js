@@ -5,13 +5,7 @@ const app = express();
 
 
 app.post("/login",  function(req, res){
-    var user = req.body.user
-    var password = req.body.password
-    if (user == password){
-        jwtLogin.sign(req, res, user,"topsecret", 1,false);  
-    }else{
-        httpMsgs.send500(req, res, "invalid user");
-    }
+console.log("hjhjhj");
     
 });
 
