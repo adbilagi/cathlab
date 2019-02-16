@@ -17,7 +17,8 @@ app.post("/login", (req, res)=>{
        jwt.sign(req, res, user, "TPO", 1);
     }
     
-    res.send("L:L:L:L:Luiuiu").end();
+    // res.send("L:L:L:L:Luiuiu").end();
+    // res.status(200).json()
 })
  app.listen(9000);
 //  require("./users/login");
