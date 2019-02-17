@@ -33,12 +33,8 @@ export default class CurLogin extends Component {
     }).catch((er)=>{
       console.log(er.responseText);
     })
- 
-    
+     
   }
-
-
-
   render() {
     return (
       <div>

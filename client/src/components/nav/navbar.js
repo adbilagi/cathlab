@@ -1,4 +1,6 @@
 import React from 'react';
+import {AppContext} from "../commons/context"
+
 import {
   Collapse,
   Navbar,
@@ -28,6 +30,7 @@ export default class CurNavbar extends React.Component {
   }
   render() {
     return (
+      
       <div>
         <Navbar color="info" light expand="md">
           <NavbarBrand href="/">Cath Lab</NavbarBrand>
@@ -38,7 +41,20 @@ export default class CurNavbar extends React.Component {
                 <NavLink href="/">Home</NavLink>
               </NavItem>
               <NavItem>
-                <NavLink href="/login">login</NavLink>
+              <AppContext.Consumer>
+                  {
+                    (c)=>{
+                      if(c.loggedState === "Logout"){
+                        return <NavLink href="/login">Login</NavLink>
+                      }else{
+                        return <NavLink href="/logout">Logout</NavLink>
+                      }
+                      
+                    }
+                  }
+              </AppContext.Consumer>
+             
+                  
               </NavItem>
               <UncontrolledDropdown nav inNavbar>
                 <DropdownToggle nav caret>
@@ -61,6 +77,8 @@ export default class CurNavbar extends React.Component {
           </Collapse>
         </Navbar>
       </div>
+    
+      
     );
   }
 }
