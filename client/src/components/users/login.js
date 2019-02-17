@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Button, Form, FormGroup, Label, Input, Container, Row, Col} from 'reactstrap';
+import { Button, Form, FormGroup, Label, Input, Container, Row, Col, NavLink, NavItem} from 'reactstrap';
 
 export default class CurLogin extends Component {
   state={
@@ -37,13 +37,9 @@ export default class CurLogin extends Component {
 
   }
 
-  userCancel =(e)=>{
-    e.preventDefault();
-    // write code to close login form
-  }
+
 
   render() {
-
     return (
       <div>
         <Container>
@@ -60,7 +56,6 @@ export default class CurLogin extends Component {
                     <Input type="password" name="password" id="password" placeholder="Password" onChange={this.setPassword}/>
                   </FormGroup>
                   <Button color="info" onClick={this.userLogin}>Login</Button>{' '}
-                  <Button color="info" onClick={this.userCancel}>Cancel</Button>{' '}
                 </Form>
             </Col>
           </Row>
