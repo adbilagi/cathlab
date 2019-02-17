@@ -34,7 +34,7 @@ app.post("/login", (req, res)=>{
 })
 // logout route
 app.get("/logout", function(req, res){
-    jwtLogin.signout(req, res, false);
+    jwt.signout(req, res, false);
 });
  app.listen(9000);
 //  require("./users/login");

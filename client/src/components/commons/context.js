@@ -27,7 +27,6 @@ export class AppProvider extends React.Component {
             url : "/login",
             data : body,
           }).done((data)=>{
-            
             this.setState({
               loggedState : "Login"
             });
@@ -35,7 +34,6 @@ export class AppProvider extends React.Component {
             this.setState({
               loggedState : "Logout"
             });
-           
           })
            
         }

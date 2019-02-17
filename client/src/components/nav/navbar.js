@@ -50,7 +50,7 @@ export default class CurNavbar extends React.Component {
                         return <NavLink href="/logout">Logout</NavLink>
                       }
                       
-                    }
+                    } 
                   }
               </AppContext.Consumer>
              
