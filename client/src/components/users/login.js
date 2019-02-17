@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import { Button, Form, FormGroup, Label, Input, Container, Row, Col, NavLink, NavItem} from 'reactstrap';
+import { Button, Form, FormGroup, Label, Input, Container, Row, Col} from 'reactstrap';
+import $ from "jquery"
 
 export default class CurLogin extends Component {
   state={
@@ -22,19 +23,18 @@ export default class CurLogin extends Component {
   userLogin =(e)=>{
     e.preventDefault();
     // write code to server /login (post) route
-    fetch("/login",{
-      method: "POST",
-      credentials : "include",
-      body : JSON.stringify({user : this.state.user, password : this.state.password})
-    }).then((res)=>{
-      return res;
-    }).then((data)=>{
+    let body ={"user" : this.state.user, "password" : this.state.password};
+    $.ajax({
+      method : "POST",
+      url : "/login",
+      data : body,
+    }).done((data)=>{
       console.log(data);
     }).catch((er)=>{
-      console.log(er);
+      console.log(er.responseText);
     })
+ 
     
-
   }
 
 
