@@ -24,20 +24,21 @@ export class AppProvider extends React.Component {
           let body ={"user" : this.state.user, "password" : this.state.password};
           $.ajax({
             method : "POST",
-            url : "/login",
+            url : "/api/users/login",
             data : body,
-          }).done((data)=>{
-            this.setState({
-              loggedState : "Login"
-            });
-          }).catch((er)=>{
-            this.setState({
-              loggedState : "Logout"
-            });
-          })
-           
-        }
-    }
+            success :(data)=>{
+              this.setState({
+                loggedState : "Login"
+              })
+            },
+            error : (err)=>{
+              this.setState({
+                loggedState : "Logout"
+              });
+            }
+          });//end of ajax
+        }////end ofuserLogin
+    }// end of state
   render() {
     return (
         <AppContext.Provider value={{...this.state}}>

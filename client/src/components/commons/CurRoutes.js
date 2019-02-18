@@ -3,6 +3,7 @@ import {BrowserRouter, Route} from "react-router-dom";
 import Home from "./Home"
 import CurLogin from "../users/login"
 import Logout from "../users/logout"
+import Signin from "../users/signin"
 
 
 export default class CurRoutes extends Component {
@@ -14,6 +15,7 @@ export default class CurRoutes extends Component {
             <Route exact path="/" component={Home}/>
             <Route exact path="/login" component={CurLogin}/>
             <Route exact path="/logout" component={Logout}/>
+            <Route exact path="/signin" component={Signin}/>
           </div>
 
         </BrowserRouter>

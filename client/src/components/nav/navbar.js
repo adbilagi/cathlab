@@ -9,10 +9,11 @@ import {
   Nav,
   NavItem,
   NavLink,
-  UncontrolledDropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem } from 'reactstrap'
+  // UncontrolledDropdown,
+  // DropdownToggle,
+  // DropdownMenu,
+  // DropdownItem 
+} from 'reactstrap'
 
 export default class CurNavbar extends React.Component {
   constructor(props) {
@@ -37,9 +38,17 @@ export default class CurNavbar extends React.Component {
           <NavbarToggler onClick={this.toggle} />
           <Collapse isOpen={this.state.isOpen} navbar>
             <Nav className="ml-auto" navbar>
+            {/* Home link */}
               <NavItem>
                 <NavLink href="/">Home</NavLink>
               </NavItem>
+
+              {/* Singn in link */}
+              <NavItem>
+                <NavLink href="/signin">Signin</NavLink>
+              </NavItem>
+
+            {/* Login and Logout link */}
               <NavItem>
               <AppContext.Consumer>
                   {
@@ -53,10 +62,9 @@ export default class CurNavbar extends React.Component {
                     } 
                   }
               </AppContext.Consumer>
-             
-                  
               </NavItem>
-              <UncontrolledDropdown nav inNavbar>
+              {/* Drop down */}
+              {/* <UncontrolledDropdown nav inNavbar>
                 <DropdownToggle nav caret>
                   Options
                 </DropdownToggle>
@@ -72,7 +80,7 @@ export default class CurNavbar extends React.Component {
                     Reset
                   </DropdownItem>
                 </DropdownMenu>
-              </UncontrolledDropdown>
+              </UncontrolledDropdown> */}
             </Nav>
           </Collapse>
         </Navbar>
