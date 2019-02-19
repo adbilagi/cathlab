@@ -4,9 +4,9 @@
 const express = require("express")
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
 const app = express();
 
-const SECRET="GGHHFfgfahak123"//set to env variable
 const PORT = process.env.PORT || 3001;//set to env varibale
 
 
@@ -17,6 +17,7 @@ app.use(cors({
     origin : "http:/localhost:3000",
     credentials : true
 }));
+app.use(cookieParser());
 
 // users  routes 
 const users = require("./routes/api/users");

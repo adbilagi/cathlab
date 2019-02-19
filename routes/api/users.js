@@ -2,10 +2,10 @@
  * this file containes routs of users */
 
 const express = require("express");
-const jwt = require("jsonwebtoken");
 const router = express.Router();
 module.exports =router;
 
+const jwt = require("../../middleware/usermiddleware");
 const users = require("../../model/test")//this for testing
  
 // @route POST
@@ -14,21 +14,21 @@ router.post("/login", (req, res)=>{
     let user = req.body.user;
     let password = req.body.password;
     let login=false;
+    let role=";"
    
     try {
             //for testing purpose` 
         users.users.forEach((curUser)=>{
             if(curUser.user === user && curUser.password === password){
                 login=true;
+                role=curUser.role;
             }
         })
         
         if(login){
-            console.log(user);
-        //    jwt.sign(req, res, user, "tuuyyu",120, false);
             
-           let token = jwt.sign({"user": user, "role" : "admin"}, "Umesh");
-           res.cookie("JWToken", token, { httpOnly : true});
+           let token = jwt.createJWTToken(user, role)
+           res.cookie("JWToken", token, {maxAge: 9000000, httpOnly : true});
            res.status(200).send("created jwt cookie");
          }else{
              throw "Invalid Login"
@@ -50,9 +50,11 @@ router.get("/logout", function(req, res){
 
 // @route POST
 // descrition This is for signing in new user needs validatation by user role  permission
- router.post("/signin", function(req, res){
+// jwt.validateLogin this middle ware return jwtPayload {user : user, role : role}
+ router.post("/signin",jwt.validateLogin, function(req, res){
     try {
         // write code for user role status and permission
+
         let signData = {
             user : req.body.user,
             password : req.body.password,
