@@ -1,13 +1,15 @@
 /**
  * this file containes routs of users */
+
 const express = require("express");
-const jwt = require("jwt-login");
+const jwt = require("jsonwebtoken");
 const router = express.Router();
 module.exports =router;
 
 const users = require("../../model/test")//this for testing
  
-// Login Route
+// @route POST
+// descrpiton This return jwt token with cookie on success login
 router.post("/login", (req, res)=>{
     let user = req.body.user;
     let password = req.body.password;
@@ -22,7 +24,13 @@ router.post("/login", (req, res)=>{
         })
         
         if(login){
-           jwt.sign(req, res, user, "tuuyyu",120, false);
+            console.log(user);
+        //    jwt.sign(req, res, user, "tuuyyu",120, false);
+            
+           let token = jwt.sign({"user": user, "role" : "admin"}, "Umesh");
+           console.log(token);
+           res.cookie("JWToken", token, { httpOnly : true});
+           res.status(200).send("created jwt cookie");
          }else{
              throw "Invalid Login"
          }
@@ -34,12 +42,15 @@ router.post("/login", (req, res)=>{
 
 
 })
-// logout route
+
+// @route GET
+// description This loges out the clien by setting JEToken to nil
 router.get("/logout", function(req, res){
     jwt.signout(req, res, false);
 });
 
-
+// @route POST
+// descrition This is for signing in new user needs validatation by user role  permission
  router.post("/signin", function(req, res){
     try {
         // write code for user role status and permission

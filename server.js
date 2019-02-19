@@ -4,7 +4,6 @@
 const express = require("express")
 const bodyParser = require("body-parser");
 const cors = require("cors");
-const jwt = require("jwt-login");
 const app = express();
 
 const SECRET="GGHHFfgfahak123"//set to env variable
@@ -19,14 +18,15 @@ app.use(cors({
     credentials : true
 }));
 
+// users  routes 
+const users = require("./routes/api/users");
+app.use("/api/users", users);
+
 
 app.listen(PORT, function(){
     console.log(`Liseting at port ${PORT}....`);
 });
 
 
-// users  routes 
-const users = require("./routes/api/users");
-app.use("/api/users", users);
-//  require("./users/login");
+
 
