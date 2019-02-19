@@ -6,11 +6,11 @@ const ExampleCard = (props) => {
   return (
     <div>
       <Card>
-        <CardImg top width="100%" src="imgSRC" alt="Card image cap" />
+        <CardImg top width="100%" src={props.imgSrc} alt="Card image cap" />
         <CardBody>
-          <CardTitle>title</CardTitle>
-          <CardSubtitle>subtitle</CardSubtitle>
-          <CardText>text</CardText>
+          <CardTitle>{props.title}</CardTitle>
+          <CardSubtitle>{props.subTitle}</CardSubtitle>
+          <CardText>{props.text}</CardText>
           <Button>Button</Button>
         </CardBody>
       </Card>
