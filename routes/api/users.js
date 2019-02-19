@@ -28,7 +28,6 @@ router.post("/login", (req, res)=>{
         //    jwt.sign(req, res, user, "tuuyyu",120, false);
             
            let token = jwt.sign({"user": user, "role" : "admin"}, "Umesh");
-           console.log(token);
            res.cookie("JWToken", token, { httpOnly : true});
            res.status(200).send("created jwt cookie");
          }else{
