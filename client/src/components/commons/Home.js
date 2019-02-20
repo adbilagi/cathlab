@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import {Container, Row, Col} from "reactstrap";
 import Examplecard from "../commons/card";
-import Path from "path";
 
 
 export default class Home extends Component {
@@ -105,6 +104,8 @@ export default class Home extends Component {
 
     
   }
+
+
   render() {
     return (
     <div>
@@ -116,6 +117,7 @@ export default class Home extends Component {
               <Examplecard 
                 title = {card.title}
                 text = {card.text}
+                path = {card.path}
 
               />
               </Col>
