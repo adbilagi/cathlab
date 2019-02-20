@@ -7,6 +7,7 @@ module.exports =router;
 
 const jwt = require("../../middleware/usermiddleware");
 const users = require("../../model/test")//this for testing
+const userConn = require("../../model/userConn")// user schema
  
 // @route POST
 // descrpiton This return jwt token with cookie on success login
@@ -51,23 +52,25 @@ router.get("/logout", function(req, res){
 // @route POST
 // descrition This is for signing in new user needs validatation by user role  permission
 // jwt.validateLogin this middle ware return jwtPayload {user : user, role : role}
- router.post("/signin",jwt.validateLogin, function(req, res){
+ router.post("/signin", function(req, res){
     try {
+        // write code for roles and prviligaes
         // write code for user role status and permission
-
         let signData = {
             user : req.body.user,
+            email : req.body.user,
             password : req.body.password,
-            confirmPassword : req.body.confirmPassword,
             phone: req.body.phone
         }
-        // write code for 
-        res.status(200).send("OK");
-
-        
+        userConn.insertUser(signData,(err, data)=>{
+            if(err){
+                throw err;
+            }else{
+                res.status(200).send(data);
+            }
+        });
     } catch (error) {
         req.status(500).send(error)
     }
-
 
  })

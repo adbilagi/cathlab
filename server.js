@@ -6,6 +6,12 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const app = express();
+const mongoose = require("mongoose");
+
+
+const config = require("./config/config");
+mongoose.connect("mongodb://localhost/cathlab",  {useNewUrlParser: true});
+
 
 const PORT = process.env.PORT || 3001;//set to env varibale
 
