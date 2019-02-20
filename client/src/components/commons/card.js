@@ -6,7 +6,7 @@ const ExampleCard = (props) => {
         <Card body style={{marginBottom: "0.5em"}}>
           <CardTitle>{props.title}</CardTitle>
           <CardText>{props.text}</CardText>
-          <Button>Go somewhere</Button>
+          <Button>Click Here</Button>
         </Card>
   );
 };
