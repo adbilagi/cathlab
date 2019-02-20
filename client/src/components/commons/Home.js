@@ -1,40 +1,105 @@
 import React, { Component } from 'react';
 import {Container, Row, Col} from "reactstrap";
-import ExampleCard from "../commons/card";
+import Examplecard from "../commons/card";
+import Path from "path";
 
 
 export default class Home extends Component {
   state={
+    
     Cards : [
       {
-        imgSrc : "https://placeholdit.imgix.net/~text?txtsize=33&txt=318%C3%97180&w=318&h=180",
         title : "Login",
-        subTitle : "Login",
         text : "Login Page",
-
+        group : "user",
+        path : "/user/login"
       },
       {
-        imgSrc : "https://placeholdit.imgix.net/~text?txtsize=33&txt=318%C3%97180&w=318&h=180",
+
         title : "Signin",
-        subTitle : "New User",
         text : "Creating new user",
+        group : "user",
+        path  : "/user/signin"
 
       },
-      ,
+      
       {
-        imgSrc : "https://placeholdit.imgix.net/~text?txtsize=33&txt=318%C3%97180&w=318&h=180",
+
         title : "Change Password",
-        subTitle : "Password change",
-        text : "Password change by user",
+        text : "Password change",
+        group : "user",
+        path : "/user/changepassword"
 
       },
       {
-        imgSrc : "https://placeholdit.imgix.net/~text?txtsize=33&txt=318%C3%97180&w=318&h=180",
+
         title : "Change Role",
-        subTitle : "Set Roles",
         text : "Asign Role to users",
+        group : "user",
+        path : "/user/changepassword"
+
+      },
+      
+      {
+
+        title : "Purchase",
+        text : "Purchase items",
+        group : "Voucher",
+        path : "/voucher/invoices/purchase"
+
+      },
+
+      {
+
+        title : "Sale",
+        text : "Sale items",
+        group : "Voucher",
+        path : "/voucher/invoices/sale"
+
+      },
+      {
+
+        title : "Payment",
+        text : "Pay out",
+        group : "Voucher",
+        path : "/voucher/transaction/payment"
+
+      },
+      {
+
+        title : "Recipt",
+        text : "Recive in",
+        group : "Voucher",
+        path : "/voucher/transaction/recive"
+
+      },
+      {
+
+        title : "Contra",
+        text : "Bank trasaction",
+        group : "Voucher",
+        path : "/voucher/transaction/contra"
+
+      },          
+      {
+
+        title : "Credit Note",
+        text : "Sale reversal",
+        group : "Voucher",
+        path : "/voucher/invoices/creditnote"
+
+      },
+
+      
+      {
+
+        title : "Debit Note",
+        text : "Sale Reversal",
+        group : "Voucher",
+        path : "/voucher/invoices/debitnote"
 
       }
+
 
     ]
 
@@ -47,11 +112,9 @@ export default class Home extends Component {
         <Row>
           {
             this.state.Cards.map((card)=>{
-              return(<Col xs="4">
-              <ExampleCard 
-                imgSrc = {card.imgSrc}
+              return(<Col xs="12" sm="6" lg="3">
+              <Examplecard 
                 title = {card.title}
-                subTitle = {card.subTitle}
                 text = {card.text}
 
               />

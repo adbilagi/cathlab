@@ -1,20 +1,13 @@
 import React from 'react';
-import { Card, CardImg, CardText, CardBody,
-  CardTitle, CardSubtitle, Button } from 'reactstrap';
+import { Card, Button, CardTitle, CardText, Row, Col } from 'reactstrap';
 
 const ExampleCard = (props) => {
   return (
-    <div>
-      <Card>
-        <CardImg top width="100%" src={props.imgSrc} alt="Card image cap" />
-        <CardBody>
+        <Card body style={{marginBottom: "0.5em"}}>
           <CardTitle>{props.title}</CardTitle>
-          <CardSubtitle>{props.subTitle}</CardSubtitle>
           <CardText>{props.text}</CardText>
-          <Button>Button</Button>
-        </CardBody>
-      </Card>
-    </div>
+          <Button>Go somewhere</Button>
+        </Card>
   );
 };
 

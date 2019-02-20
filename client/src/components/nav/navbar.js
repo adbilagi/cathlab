@@ -33,7 +33,7 @@ export default class CurNavbar extends React.Component {
     return (
       
       <div>
-        <Navbar color="info" light expand="md">
+        <Navbar color="info" light expand="md" style={{marginBottom: "0.5em"}}>
           <NavbarBrand href="/">Cath Lab</NavbarBrand>
           <NavbarToggler onClick={this.toggle} />
           <Collapse isOpen={this.state.isOpen} navbar>
