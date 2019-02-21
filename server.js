@@ -10,8 +10,17 @@ const mongoose = require("mongoose");
 
 
 const config = require("./config/config");
-// mongoose.connect("mongodb://localhost/cathlab",  {useNewUrlParser: true});
-mongoose.connect(config.mongoCon.remote,  {useNewUrlParser: true});
+// const connString = config.mongoCon.local//for local datase
+const connString = config.mongoCon.remote// for remote connecton
+
+
+mongoose.connect(connString,  {useCreateIndex: true, useNewUrlParser: true},(err)=>{
+    if(err){
+        console.log(err);
+    }else{
+        console.log("mongodb  connected")
+    }
+});
 
 
 const PORT = process.env.PORT || 3001;//set to env varibale

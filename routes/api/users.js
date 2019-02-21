@@ -6,35 +6,32 @@ const router = express.Router();
 module.exports =router;
 
 const jwt = require("../../middleware/usermiddleware");
-const users = require("../../model/test")//this for testing
 const userConn = require("../../model/userConn")// user schema
  
 // @route POST
 // descrpiton This return jwt token with cookie on success login
 router.post("/login", (req, res)=>{
-    let user = req.body.user;
-    let password = req.body.password;
-    let login=false;
-    let role=";"
-   
+ 
     try {
-            //for testing purpose` 
-        users.users.forEach((curUser)=>{
-            if(curUser.user === user && curUser.password === password){
-                login=true;
-                role=curUser.role;
+        let user = req.body.user;
+        let password = req.body.password;
+        userConn.find({user : user, password : password}, (err, data)=>{
+            if(err){
+                res.status(500).send(err);
+                return;
+            }else{
+                if(data[0]){
+                    let token = jwt.createJWTToken(data[0].user, data[0].password);
+                    res.cookie("JWToken", token, {maxAge: 9000000, httpOnly : true});
+                    res.status(200).send("created jwt cookie");
+                }else{
+                    res.status(200).end("invalid login");
+                }
+
             }
-        })
-        
-        if(login){
-            
-           let token = jwt.createJWTToken(user, role)
-           res.cookie("JWToken", token, {maxAge: 9000000, httpOnly : true});
-           res.status(200).send("created jwt cookie");
-         }else{
-             throw "Invalid Login"
-         }
-        
+        });
+
+               
     } catch (error) {
         res.status(500).send(error);
     }
@@ -64,7 +61,8 @@ router.get("/logout", function(req, res){
         }
         userConn.insertUser(signData,(err, data)=>{
             if(err){
-                throw err;
+                res.status(500).send(err);
+                return;
             }else{
                 res.status(200).send(data);
             }

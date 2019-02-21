@@ -66,28 +66,28 @@ let userSchema = new mongoose.Schema({
     }
 })
 
-let User = mongoose.model("User", userSchema);
+ module.exports = mongoose.model("User", userSchema);
 
-module.exports.getUsers= (callback, limit)=>{
-    User.find(callback).limit(limit);
-}
+// module.exports.getUsers= (callback, limit)=>{
+//     User.find(callback).limit(limit);
+// }
 
-module.exports.getUserByName = (user, callback)=>{
-    User.find(user, callback);
-}
-module.exports.insertUser=(data, callback)=>{
-    try {
-        User.create(data, callback);
-    } catch (error) {
-        return error;
-    }
+// module.exports.getUserByName = (user, callback)=>{
+//     User.find(user, callback);
+// }
+// module.exports.insertUser=(data, callback)=>{
+//     try {
+//         User.create(data, callback);
+//     } catch (error) {
+//         return error;
+//     }
     
-}
+// }
 
-module.exports.updateUser=(user, data, callback)=>{
-    User.findOneAndUpdate(user,data, callback);
-}
+// module.exports.updateUser=(user, data, callback)=>{
+//     User.findOneAndUpdate(user,data, callback);
+// }
 
-module.exports.deleteUser = (user, callback)=>{
-    User.findOneAndRemove(user, callback);
-}
+// module.exports.deleteUser = (user, callback)=>{
+//     User.findOneAndRemove(user, callback);
+// }
