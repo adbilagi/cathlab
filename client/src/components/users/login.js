@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Button, Form, FormGroup, Label, Input, Container, Row, Col} from 'reactstrap';
+import { Button, Form, FormGroup, Label, Input, Container, Row, Col, Alert} from 'reactstrap';
 
 import {AppContext} from "../commons/context"
 
@@ -26,8 +26,12 @@ export default class CurLogin extends Component {
                         </FormGroup>
                         <Button color="info" >Login</Button>{' '}
                       </Form>
+                        <br />
+                        {c.errLogged ? <Alert color="danger">Invalid Login</Alert>: ""}
+                      
                   </Col>
                 </Row>
+
               </Container>        
             </div>);
           }

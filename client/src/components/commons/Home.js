@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Container, Row, Col} from "reactstrap";
+import {Container, Row, Col } from "reactstrap";
 import Examplecard from "../commons/card";
 
 
@@ -15,10 +15,10 @@ export default class Home extends Component {
       },
       {
 
-        title : "Signin",
+        title : "Sign Up",
         text : "Creating new user",
         group : "user",
-        path  : "/user/signin"
+        path  : "/user/signup"
 
       },
       
@@ -110,20 +110,38 @@ export default class Home extends Component {
     return (
     <div>
       <Container>
+      <h3>Vouchers</h3>
         <Row>
           {
-            this.state.Cards.map((card)=>{
-              return(<Col xs="12" sm="6" lg="3">
-              <Examplecard 
-                title = {card.title}
-                text = {card.text}
-                path = {card.path}
-
-              />
-              </Col>
-              );
+            this.state.Cards.map((card, index)=>{
+              if(card.group === "Voucher"){
+                return(<Col xs="12" sm="6" lg="3" key={index}>
+                <Examplecard 
+                  title = {card.title}
+                  text = {card.text}
+                  path = {card.path} 
+                />
+                </Col>
+                );
+              }
+            })} 
+        </Row>
+        <hr/>
+        <h3>Users</h3>
+        <Row>
+          {
+            this.state.Cards.map((card, index)=>{
+              if(card.group === "user"){
+                return(<Col xs="12" sm="6" lg="3" key={index}>
+                <Examplecard 
+                  title = {card.title}
+                  text = {card.text}
+                  path = {card.path} 
+                />
+                </Col>
+                );
+              }
             })
-
           } 
         </Row>
       </Container>     

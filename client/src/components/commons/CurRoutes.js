@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import {BrowserRouter, Route} from "react-router-dom";
 import Home from "./Home"
-import CurLogin from "../users/login"
-import Logout from "../users/logout"
-import Signin from "../users/signin"
+import CurLogin from "../users/Login"
+import Logout from "../users/Logout"
+import SignUp from "../users/SignUp"
 
 
 export default class CurRoutes extends Component {
@@ -15,7 +15,7 @@ export default class CurRoutes extends Component {
             <Route exact path="/" component={Home}/>
             <Route exact path="/user/login" component={CurLogin}/>
             <Route exact path="/logout" component={Logout}/>
-            <Route exact path="/user/signin" component={Signin}/>
+            <Route exact path="/user/signup" component={SignUp}/>
           </div>
 
         </BrowserRouter>

@@ -45,7 +45,7 @@ export default class CurNavbar extends React.Component {
 
               {/* Singn in link */}
               <NavItem>
-                <NavLink href="/user/signin">Signin</NavLink>
+                <NavLink href="/user/signup">Sign Up</NavLink>
               </NavItem>
 
             {/* Login and Logout link */}

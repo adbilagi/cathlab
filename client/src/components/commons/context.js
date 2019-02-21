@@ -8,6 +8,7 @@ export class AppProvider extends React.Component {
         loggedState : "Logout",
         user : "",
         password :"",
+        errLogged : false,// this state stores the value to alert in case of ajax error follwing logging
         setUser : (e)=>{
           this.setState({
             user : e.target.value
@@ -28,12 +29,15 @@ export class AppProvider extends React.Component {
             data : body,
             success :(data)=>{
               this.setState({
-                loggedState : "Login"
-              })
+                loggedState : "Login",
+                errLogged : false
+              });
+
             },
             error : (err)=>{
               this.setState({
-                loggedState : "Logout"
+                loggedState : "Logout",
+                errLogged : true
               });
             }
           });//end of ajax

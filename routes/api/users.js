@@ -25,7 +25,8 @@ router.post("/login", (req, res)=>{
                     res.cookie("JWToken", token, {maxAge: 9000000, httpOnly : true});
                     res.status(200).send("created jwt cookie");
                 }else{
-                    res.status(200).end("invalid login");
+                    res.status(500).end("invalid login");
+
                 }
 
             }
@@ -49,26 +50,18 @@ router.get("/logout", function(req, res){
 // @route POST
 // descrition This is for signing in new user needs validatation by user role  permission
 // jwt.validateLogin this middle ware return jwtPayload {user : user, role : role}
- router.post("/signin", function(req, res){
-    try {
-        // write code for roles and prviligaes
-        // write code for user role status and permission
-        let signData = {
-            user : req.body.user,
-            email : req.body.user,
-            password : req.body.password,
-            phone: req.body.phone
-        }
-        userConn.insertUser(signData,(err, data)=>{
-            if(err){
-                res.status(500).send(err);
-                return;
-            }else{
-                res.status(200).send(data);
-            }
-        });
-    } catch (error) {
-        req.status(500).send(error)
+ router.post("/signup", jwt.validateLogin,function(req, res){
+    let signData = {
+        user : req.body.user,
+        email : req.body.user,
+        password : req.body.password,
+        phone: req.body.phone
     }
+    userConn.create(signData).then((data)=>{
+        res.status(200).send("created new user");
+    }).catch((err)=>{
+        res.status(500).send(err);
+        
+    });
 
  })

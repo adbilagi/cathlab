@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
-import { Button, Form, FormGroup, Label, Input, Container, Row, Col} from 'reactstrap';
+import { Button, Form, FormGroup, Label, Input, Container, Row, Col, Alert} from 'reactstrap';
 import $ from "jquery";
 
-export default class Signin extends Component {
+export default class SignUp extends Component {
 state={
     user :"",
     email : "",
@@ -10,36 +10,56 @@ state={
     confirmPassword : "",
     phone : "",
     address : "",
+    ajaxSuccess : false,
+    ajaxError : false,
+    errPassword : false
     // dateOfCreation : Date()
 }
 
 setUser = (e)=>{
   this.setState({
-    user : e.target.value
+    user : e.target.value,
+    ajaxError:false,
+    ajaxSuccess : false
+    
   });
 }
 
 setEmail = (e)=>{
   this.setState({
-    email : e.target.value
+    email : e.target.value,
+    ajaxError:false,
+    ajaxSuccess : false
+    
   })
 }
 
 setPassword = (e)=>{
   this.setState({
-    password : e.target.value
+    password : e.target.value,
+    errPassword : false,
+    ajaxError:false,
+    ajaxSuccess : false
+    
   });
 }
 
 setConfirmPassword = (e)=>{
   this.setState({
-    confirmPassword : e.target.value
+    confirmPassword : e.target.value,
+    errPassword : false,
+    ajaxError:false,
+    ajaxSuccess : false
+    
   });
 }
 
 setPhone = (e)=>{
   this.setState({
-    phone : e.target.value
+    phone : e.target.value,
+    ajaxError:false,
+    ajaxSuccess : false
+    
   });
 }
 
@@ -57,18 +77,26 @@ submitForm =(e)=>{
   
 // check for valid password and confirm password
     if(body.password !== body.confirmPassword){
-      throw "Password and Confirm Password are unequal"
+      this.setState({
+        errPassword : true
+      });
+      return;
+     
     }
     // ajax
     $.ajax({
       method : "POST",
-      url : "/api/users/signin",
+      url : "/api/users/signup",
       data : body,
       success : (data)=>{
-        console.log(data)
+        this.setState({
+          ajaxSuccess: false
+        })
       },//end of success function
       error : (er)=>{
-        console.log(er)
+        this.setState({
+          ajaxError : true
+        })
       }//end of error function
     })//end of ajax
   
@@ -102,12 +130,16 @@ submitForm =(e)=>{
                           <Label for="confirmPassword">ConfirmPassword</Label>
                           <Input type="password" name="confirmPassword" id="confirmPassword" placeholder="Confirm Password" onChange={this.setConfirmPassword}/>
                         </FormGroup>
+                        {this.state.errPassword ? <Alert color="danger">Identical Password and Confirm Password needed</Alert>:""}
                         <FormGroup>
                           <Label for="phone">Phone</Label>
                           <Input type="text" name="phone" id="phone" placeholder="phone" onChange={this.setPhone}/>
                         </FormGroup>
-                        <Button color="info">Signin</Button>
+                        <Button color="info">Sign Up</Button>
                     </Form>
+                    <br />
+                        {this.state.ajaxSuccess? <Alert color="success">Created new user successfully</Alert>: ""}
+                        {this.state.ajaxError ? <Alert color="danger">Invalid Signup</Alert>: ""}
                 </Col>
               </Row>
           </Container>
