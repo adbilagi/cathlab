@@ -6,7 +6,9 @@ import Logout from "../users/Logout"
 import SignUp from "../users/SignUp"
 
 
+
 export default class CurRoutes extends Component {
+
   render() {
     return (
       <div>

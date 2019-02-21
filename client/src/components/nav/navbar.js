@@ -56,7 +56,8 @@ export default class CurNavbar extends React.Component {
                       if(c.loggedState === "Logout"){
                         return <NavLink href="/user/login">Login</NavLink>
                       }else{
-                        return <NavLink href="/logout">Logout</NavLink>
+                        return <NavLink href="/logout">{c.loggedUser} {" "}Logout</NavLink>
+
                       }
                       
                     } 

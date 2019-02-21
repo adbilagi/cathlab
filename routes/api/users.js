@@ -21,9 +21,10 @@ router.post("/login", (req, res)=>{
                 return;
             }else{
                 if(data[0]){
-                    let token = jwt.createJWTToken(data[0].user, data[0].password);
+                    let datajson = {"user" : data[0].user,"role" : data[0].role};
+                    let token = jwt.createJWTToken(datajson);
                     res.cookie("JWToken", token, {maxAge: 9000000, httpOnly : true});
-                    res.status(200).send("created jwt cookie");
+                    res.status(200).json(datajson);
                 }else{
                     res.status(500).end("invalid login");
 
@@ -58,10 +59,16 @@ router.get("/logout", function(req, res){
         phone: req.body.phone
     }
     userConn.create(signData).then((data)=>{
-        res.status(200).send("created new user");
+        res.status(200).send(data);
     }).catch((err)=>{
         res.status(500).send(err);
         
     });
 
+ });
+// @route GET
+// description This is checked on component did mount checks valid jwt to know logged state
+ router.get("/validjwt", jwt.validateLogin, (req, res)=>{
+    res.status(200).json(req.jwtPayload);
+    
  })
