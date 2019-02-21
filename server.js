@@ -10,7 +10,8 @@ const mongoose = require("mongoose");
 
 
 const config = require("./config/config");
-mongoose.connect("mongodb://localhost/cathlab",  {useNewUrlParser: true});
+// mongoose.connect("mongodb://localhost/cathlab",  {useNewUrlParser: true});
+mongoose.connect(config.mongoCon.remote,  {useNewUrlParser: true});
 
 
 const PORT = process.env.PORT || 3001;//set to env varibale
