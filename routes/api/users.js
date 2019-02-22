@@ -57,7 +57,7 @@ router.get("/logout", function(req, res){
  router.post("/signup", jwt.validateLogin,function(req, res){
      
     let curRole = req.jwtPayload.user.role;
-    let permission = roles.getRoleRoutePrivilegeValue(curRole, "/api/user/signup", "POST");
+    let permission = roles.getRoleRoutePrivilegeValue(curRole, `${fileUrl}${req.url}`, req.method);
     
 
     if(permission){
@@ -88,7 +88,7 @@ router.get("/logout", function(req, res){
 // description This is changing password
 
  router.put("/changepassword", jwt.validateLogin, (req, res)=>{
-    
+
     let oldPassword = req.body.oldPassword;
     let newPassword = req.body.newPassword;
 
@@ -96,14 +96,16 @@ router.get("/logout", function(req, res){
     let curRole = req.jwtPayload.user.role;
 
     let permission = roles.getRoleRoutePrivilegeValue(curRole, `${fileUrl}${req.url}`, req.method);
-
+    
     if(permission){
-
+       
         userConn.findOneAndUpdate({user : curUser, password : oldPassword}, {password : newPassword},(err, doc, data)=>{
-            if(err){
+            if(doc == null){
+                res.status(500).send("Did not change password");
+            }else if(err){
                 res.status(500).send("Did not change password");
             }else{
-                res.status(200).send("Succefully changed password");
+                res.status(200).send("Successfully changed password");
             }
         });
     }else{

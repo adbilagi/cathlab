@@ -67,6 +67,10 @@ setPhone = (e)=>{
 
 submitForm =(e)=>{
   e.preventDefault();
+  this.setState({
+    ajaxError:false,
+    ajaxSuccess : false
+  })
 
   try {
     let body = {

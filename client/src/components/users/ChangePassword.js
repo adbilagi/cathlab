@@ -45,6 +45,15 @@ export default class ChangePassword extends Component {
     }
     submitForm=(e)=>{
         e.preventDefault();
+        this.setState({
+            errUnequalPassword : false,
+            ajaxSuccess : false,
+            ajaxError : false,
+            ajaxSuccessMessage : "",
+            ajaxErrorMessage : ""
+
+        });
+       
         if(this.state.newPassword !== this.state.confirmPassword){
             this.setState({
                 errUnequalPassword : true
@@ -53,18 +62,20 @@ export default class ChangePassword extends Component {
         }
 
         $.ajax({
-            url : "api/users/changepassword",
+            url : "/api/users/changepassword",
             method : "PUT",
             data : {oldPassword : this.state.oldPassword, newPassword : this.state.newPassword},
             success : (data)=>{
                 this.setState({
+                    ajaxSuccess : true,
                     ajaxSuccessMessage : data
                 });
             },
             error : (err)=>{
                 this.setState({
+                    ajaxError : true,
                     ajaxErrorMessage : err.responseText
-                });
+                })
             }
         })
     }
@@ -93,8 +104,8 @@ export default class ChangePassword extends Component {
                         <Button color="info">Change Password</Button>
                     </Form>
                     <br/>
-                    {this.ajaxSuccess ? <Alert color="success">{this.state.ajaxSuccessMessage}</Alert> : ""}
-                    {this.ajaxError ? <Alert color="danger">{this.state.ajaxErrorMessage}</Alert> : ""}
+                    {this.state.ajaxSuccess ? <Alert color="success">{this.state.ajaxSuccessMessage}</Alert> : ""}
+                    {this.state.ajaxError ? <Alert color="danger">{this.state.ajaxErrorMessage}</Alert> : ""}
                   </Col>
               </Row>
           </Container>

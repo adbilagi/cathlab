@@ -10,8 +10,8 @@ const mongoose = require("mongoose");
 
 
 const config = require("./config/config");
-const connString = config.mongoCon.local//for local database
-// const connString = config.mongoCon.remote// for remote connecton
+// const connString = config.mongoCon.local//for local database
+const connString = config.mongoCon.remote// for remote connecton
 
 
 
