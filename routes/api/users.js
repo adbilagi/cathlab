@@ -61,7 +61,6 @@ router.get("/logout", function(req, res){
     
 
     if(permission){
-        
         let signData = {
             user : req.body.user,
             email : req.body.user,
@@ -69,10 +68,13 @@ router.get("/logout", function(req, res){
             phone: req.body.phone
         }
        
-        userConn.create(signData).then((data)=>{
-            res.status(200).send(data);
-        }).catch((err)=>{
-            res.status(500).send(err);
+        userConn.create(signData, (err, data)=>{
+            if(err){
+                res.status(500).send("Could not create new user");
+            }else{
+                res.status(200).send("Successfully created new user");
+            }
+
         });
     
     }else{

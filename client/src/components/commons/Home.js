@@ -35,7 +35,7 @@ export default class Home extends Component {
         title : "Change Role",
         text : "Asign Role to users",
         group : "user",
-        path : "/user/changepassword"
+        path : "/user/changerole"
 
       },
       

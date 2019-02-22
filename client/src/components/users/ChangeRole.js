@@ -15,11 +15,6 @@ export default class ChangeRole extends Component {
                           <Label for="user">User Name</Label>
                           <Input type="text" name="user" id="user" placeholder="User Name" onChange={this.setUser}/>
                         </FormGroup>
-                        <FormGroup>
-                            <Label for="role">
-                                <Autosuggest/>
-                            </Label>
-                        </FormGroup>
                     </Form>
                   </Col>
               </Row>

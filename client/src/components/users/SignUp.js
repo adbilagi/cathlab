@@ -39,6 +39,8 @@ setPassword = (e)=>{
     password : e.target.value,
     errPassword : false,
     ajaxError:false,
+    ajaxErrorMessage : "",
+    ajaxSuccessMessage : "",
     ajaxSuccess : false
     
   });
@@ -90,12 +92,14 @@ submitForm =(e)=>{
       data : body,
       success : (data)=>{
         this.setState({
-          ajaxSuccess: false
+          ajaxSuccess: true,
+          ajaxSuccessMessage : data
         })
       },//end of success function
       error : (er)=>{
         this.setState({
-          ajaxError : true
+          ajaxError : true,
+          ajaxErrorMessage : er.responseText
         })
       }//end of error function
     })//end of ajax
@@ -113,6 +117,7 @@ submitForm =(e)=>{
           <Container>
               <Row>
                 <Col sm="12" md={{ size: 6, offset: 3 }}>
+                    <h3>Sign Up </h3>
                     <Form onSubmit={this.submitForm}>
                         <FormGroup>
                           <Label for="user">User Name</Label>
@@ -137,9 +142,9 @@ submitForm =(e)=>{
                         </FormGroup>
                         <Button color="info">Sign Up</Button>
                     </Form>
-                    <br />
-                        {this.state.ajaxSuccess? <Alert color="success">Created new user successfully</Alert>: ""}
-                        {this.state.ajaxError ? <Alert color="danger">Invalid Signup</Alert>: ""}
+                    <br/>
+                        {this.state.ajaxSuccess ? <Alert color="success">{this.state.ajaxSuccessMessage}</Alert>: ""}
+                        {this.state.ajaxError ? <Alert color="danger">{this.state.ajaxErrorMessage}</Alert>: ""}
                 </Col>
               </Row>
           </Container>

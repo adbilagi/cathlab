@@ -11,7 +11,7 @@ role.createNewRole("visitor");
 privilege = ["/api/user/signup", "POST"];
 role.createNewPrivileges(["/api/user/signup", "POST"], "To add new user", false);
 role.addPrivilegeToRole("admin", ["/api/user/signup", "POST"],true);
-role.addPrivilegeToRole("visitor", ["/api/user/signup", "POST"],true);
+role.addPrivilegeToRole("visitor", ["/api/user/signup", "POST"],false);
 
 privilege = ["/api/user/changepassword", "PUT"];
 role.createNewPrivileges(privilege, "change password by user", true);
