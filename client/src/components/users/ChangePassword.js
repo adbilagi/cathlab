@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Alert, Button, Form, FormGroup, Label, Input, Container, Row, Col} from 'reactstrap';
 import $ from "jquery";
+import Alerts from  "../commons/Alerts"
 
 export default class ChangePassword extends Component {
     state ={
@@ -96,16 +97,24 @@ export default class ChangePassword extends Component {
                           <Input type="password" name="newPassword" id="newPassword" placeholder="New Password" onChange={this.setNewPassword}/>
                         </FormGroup>
                         <FormGroup>
-                          <Label for="confirmPassword">New Password</Label>
-                          <Input type="password" name="confirmPassword" id="confirmPassword" placeholder="New Password" onChange={this.setConfirmPassword}/>
+                          <Label for="confirmPassword">Confirm Password</Label>
+                          <Input type="password" name="confirmPassword" id="confirmPassword" placeholder="Confirm Password" onChange={this.setConfirmPassword}/>
                         </FormGroup>
                         <br/>
-                        {this.state.errUnequalPassword ? <Alert color="danger">"New password and confirm password are unidentical"</Alert> : ""}
+                        <Alerts 
+                            alertError = {this.state.errUnequalPassword}
+                            alertErrorMessage = "New password and confirm password are unidentical"
+                        />
                         <Button color="info">Change Password</Button>
                     </Form>
                     <br/>
-                    {this.state.ajaxSuccess ? <Alert color="success">{this.state.ajaxSuccessMessage}</Alert> : ""}
-                    {this.state.ajaxError ? <Alert color="danger">{this.state.ajaxErrorMessage}</Alert> : ""}
+
+                    <Alerts 
+                        alertSuccess = {this.state.ajaxSuccess}
+                        alertError = {this.state.ajaxError}
+                        alertSuccessMessage = {this.state.ajaxSuccessMessage}
+                        alertErrorMessage = {this.state.ajaxErrorMessage}
+                    />
                   </Col>
               </Row>
           </Container>
