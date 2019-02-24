@@ -5,14 +5,8 @@ const express = require("express");
 const router = express.Router();
 const roles = require("../../roles").role;
 const fileUrl = "/api/users"
+const roleMiddleware = require("../../roles").roleMiddleware(fileUrl);
 
-roleMiddleware = (req, res, next)=>{
-    // fileUrl is for shake app.routes in
-    let CurUrl = `${fileUrl}${req.route.path}`;
-    let curRole = req.jwtPayload.user.role;
-    req.permission = roles.getRoleRoutePrivilegeValue(curRole, CurUrl, req.method);
-    next();
-}
 
 module.exports =router;
 

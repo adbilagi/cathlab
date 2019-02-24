@@ -1,12 +1,15 @@
 const role = require("user-groups-roles");
+module.exports.roleMiddleware =(fileUrl)=>{
+    return  (req, res, next)=>{
+        // fileUrl is for shake app.routes in
+        let CurUrl = `${fileUrl}${req.route.path}`;
+        let curRole = req.jwtPayload.user.role;
+        req.permission = role.getRoleRoutePrivilegeValue(curRole, CurUrl, req.method);
+        next();
+    }
 
-roleMiddleware = (req, res, next)=>{
-    // fileUrl is for shake app.routes in
-    let CurUrl = `${fileUrl}${req.route.path}`;
-    let curRole = req.jwtPayload.user.role;
-    req.permission = roles.getRoleRoutePrivilegeValue(curRole, CurUrl, req.method);
-    next();
 }
+
 
 let privilege =[];
 // create roles
