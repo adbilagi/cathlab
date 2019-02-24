@@ -16,11 +16,11 @@ export default class CurRoutes extends Component {
         <BrowserRouter>
           <div>
             <Route exact path="/" component={Home}/>
-            <Route exact path="/user/login" component={CurLogin}/>
+            <Route exact path="/login" component={CurLogin}/>
             <Route exact path="/logout" component={Logout}/>
-            <Route exact path="/user/signup" component={SignUp}/>
-            <Route exact path="/user/changerole" component={ChangeRole}/>
-            <Route exact path="/user/changepassword" component={ChanngePassword}/>
+            <Route exact path="/signup" component={SignUp}/>
+            <Route exact path="/changerole" component={ChangeRole}/>
+            <Route exact path="/changepassword" component={ChanngePassword}/>
           </div>
 
         </BrowserRouter>

@@ -24,6 +24,9 @@ export class AppProvider extends React.Component {
         userLogin  : (e)=>{
           e.preventDefault();
           // write code to server /login (post) route
+          this.setState({
+            errLogged : false
+          })
           let body ={"user" : this.state.user, "password" : this.state.password};
           $.ajax({
             method : "POST",

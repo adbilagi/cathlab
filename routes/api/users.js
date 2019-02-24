@@ -141,3 +141,12 @@ router.put("/changerole", jwt.validateLogin, (req, res)=>{
     res.status(200).json(req.jwtPayload);
     
  })
+
+//  @route GET
+// description : this is to get all roles for user roles grooups
+router.get("/allroles", (req, res)=>{
+
+    const curRoles =roles.getAllRoles();
+    
+    res.status(200).send({roles : curRoles});
+})

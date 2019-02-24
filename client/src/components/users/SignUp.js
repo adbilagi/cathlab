@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
-import { Button, Form, FormGroup, Label, Input, Container, Row, Col, Alert} from 'reactstrap';
+import { Button, Form, FormGroup, Label, Input, Container, Row, Col} from 'reactstrap';
 import $ from "jquery";
+import Alerts from "../commons/Alerts"
 
 export default class SignUp extends Component {
 state={
@@ -12,7 +13,7 @@ state={
     address : "",
     ajaxSuccess : false,
     ajaxError : false,
-    errPassword : false
+    errUnequalPassword : false
     // dateOfCreation : Date()
 }
 
@@ -37,7 +38,7 @@ setEmail = (e)=>{
 setPassword = (e)=>{
   this.setState({
     password : e.target.value,
-    errPassword : false,
+    errUnequalPassword : false,
     ajaxError:false,
     ajaxErrorMessage : "",
     ajaxSuccessMessage : "",
@@ -49,7 +50,7 @@ setPassword = (e)=>{
 setConfirmPassword = (e)=>{
   this.setState({
     confirmPassword : e.target.value,
-    errPassword : false,
+    errUnequalPassword : false,
     ajaxError:false,
     ajaxSuccess : false
     
@@ -84,7 +85,7 @@ submitForm =(e)=>{
 // check for valid password and confirm password
     if(body.password !== body.confirmPassword){
       this.setState({
-        errPassword : true
+        errUnequalPassword : true
       });
       return;
      
@@ -139,7 +140,11 @@ submitForm =(e)=>{
                           <Label for="confirmPassword">ConfirmPassword</Label>
                           <Input type="password" name="confirmPassword" id="confirmPassword" placeholder="Confirm Password" onChange={this.setConfirmPassword}/>
                         </FormGroup>
-                        {this.state.errPassword ? <Alert color="danger">Identical Password and Confirm Password needed</Alert>:""}
+
+                        <Alerts 
+                            alertError = {this.state.errUnequalPassword}
+                            alertErrorMessage = "New password and confirm password are unidentical"
+                        />
                         <FormGroup>
                           <Label for="phone">Phone</Label>
                           <Input type="text" name="phone" id="phone" placeholder="phone" onChange={this.setPhone}/>
@@ -147,8 +152,12 @@ submitForm =(e)=>{
                         <Button color="info">Sign Up</Button>
                     </Form>
                     <br/>
-                        {this.state.ajaxSuccess ? <Alert color="success">{this.state.ajaxSuccessMessage}</Alert>: ""}
-                        {this.state.ajaxError ? <Alert color="danger">{this.state.ajaxErrorMessage}</Alert>: ""}
+                    <Alerts 
+                        alertSuccess = {this.state.ajaxSuccess}
+                        alertError = {this.state.ajaxError}
+                        alertSuccessMessage = {this.state.ajaxSuccessMessage}
+                        alertErrorMessage = {this.state.ajaxErrorMessage}
+                    />
                 </Col>
               </Row>
           </Container>

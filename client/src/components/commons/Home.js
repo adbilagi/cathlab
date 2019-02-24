@@ -11,14 +11,14 @@ export default class Home extends Component {
         title : "Login",
         text : "Login Page",
         group : "user",
-        path : "/user/login"
+        path : "/login"
       },
       {
 
         title : "Sign Up",
         text : "Creating new user",
         group : "user",
-        path  : "/user/signup"
+        path  : "/signup"
 
       },
       
@@ -27,7 +27,7 @@ export default class Home extends Component {
         title : "Change Password",
         text : "Password change",
         group : "user",
-        path : "/user/changepassword"
+        path : "/changepassword"
 
       },
       {
@@ -35,7 +35,7 @@ export default class Home extends Component {
         title : "Change Role",
         text : "Asign Role to users",
         group : "user",
-        path : "/user/changerole"
+        path : "/changerole"
 
       },
       
@@ -44,7 +44,7 @@ export default class Home extends Component {
         title : "Purchase",
         text : "Purchase items",
         group : "Voucher",
-        path : "/voucher/invoices/purchase"
+        path : "/purchase"
 
       },
 
@@ -53,7 +53,7 @@ export default class Home extends Component {
         title : "Sale",
         text : "Sale items",
         group : "Voucher",
-        path : "/voucher/invoices/sale"
+        path : "/sale"
 
       },
       {
@@ -61,7 +61,7 @@ export default class Home extends Component {
         title : "Payment",
         text : "Pay out",
         group : "Voucher",
-        path : "/voucher/transaction/payment"
+        path : "/payment"
 
       },
       {
@@ -69,7 +69,7 @@ export default class Home extends Component {
         title : "Recipt",
         text : "Recive in",
         group : "Voucher",
-        path : "/voucher/transaction/recive"
+        path : "/recive"
 
       },
       {
@@ -77,7 +77,7 @@ export default class Home extends Component {
         title : "Contra",
         text : "Bank trasaction",
         group : "Voucher",
-        path : "/voucher/transaction/contra"
+        path : "/contra"
 
       },          
       {
@@ -85,7 +85,7 @@ export default class Home extends Component {
         title : "Credit Note",
         text : "Sale reversal",
         group : "Voucher",
-        path : "/voucher/invoices/creditnote"
+        path : "/creditnote"
 
       },
 
@@ -95,7 +95,7 @@ export default class Home extends Component {
         title : "Debit Note",
         text : "Sale Reversal",
         group : "Voucher",
-        path : "/voucher/invoices/debitnote"
+        path : "/debitnote"
 
       }
 
