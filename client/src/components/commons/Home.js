@@ -93,7 +93,7 @@ export default class Home extends Component {
       {
 
         title : "Debit Note",
-        text : "Sale Reversal",
+        text : "Purchase Reversal",
         group : "Voucher",
         path : "/debitnote"
 
@@ -116,12 +116,12 @@ export default class Home extends Component {
             this.state.Cards.map((card, index)=>{
               if(card.group === "Voucher"){
                 return(<Col xs="12" sm="6" lg="3" key={index}>
-                <Examplecard 
-                  title = {card.title}
-                  text = {card.text}
-                  path = {card.path} 
-                />
-                </Col>
+                        <Examplecard 
+                          title = {card.title}
+                          text = {card.text}
+                          path = {card.path} 
+                        />
+                      </Col>
                 );
               }
             })} 

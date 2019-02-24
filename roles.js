@@ -1,8 +1,8 @@
 const role = require("user-groups-roles");
 
-let roleMiddleware = (req, res, next)=>{
+roleMiddleware = (req, res, next)=>{
     // fileUrl is for shake app.routes in
-    let CurUrl = `${fileUrl}${req.url}`;
+    let CurUrl = `${fileUrl}${req.route.path}`;
     let curRole = req.jwtPayload.user.role;
     req.permission = roles.getRoleRoutePrivilegeValue(curRole, CurUrl, req.method);
     next();
@@ -29,4 +29,17 @@ privilege = ["/api/users/changerole", "PUT"];
 role.createNewPrivileges(privilege, "change role", false);
 role.addPrivilegeToRole("admin", privilege,true);
 
-module.exports = role;
+// this route gets all users and roles 
+privilege =  ["/api/users/getallusersandroles", "POST"];
+role.createNewPrivileges(privilege, "change role", false);
+role.addPrivilegeToRole("admin", privilege,true);
+role.addPrivilegeToRole("visitor", privilege,true);
+
+
+// this route gets all users and roles 
+privilege =  ["/api/users/userrole", "POST"];
+role.createNewPrivileges(privilege, "change role", false);
+role.addPrivilegeToRole("admin", privilege,true);
+role.addPrivilegeToRole("visitor", privilege,true);
+
+module.exports.role = role;

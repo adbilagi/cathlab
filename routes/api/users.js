@@ -3,8 +3,16 @@
 
 const express = require("express");
 const router = express.Router();
-const roles = require("../../roles");
+const roles = require("../../roles").role;
 const fileUrl = "/api/users"
+
+roleMiddleware = (req, res, next)=>{
+    // fileUrl is for shake app.routes in
+    let CurUrl = `${fileUrl}${req.route.path}`;
+    let curRole = req.jwtPayload.user.role;
+    req.permission = roles.getRoleRoutePrivilegeValue(curRole, CurUrl, req.method);
+    next();
+}
 
 module.exports =router;
 
@@ -45,22 +53,12 @@ router.post("/login", (req, res)=>{
 
 })
 
-// @route GET
-// description This loges out the clien by setting JEToken to nil
-router.get("/logout", function(req, res){
-    jwt.signout(req, res, false);
-});
 
 // @route POST
 // descrition This is for signing in new user needs validatation by user role  permission
 // jwt.validateLogin this middle ware return jwtPayload {user : user, role : role}
- router.post("/signup", jwt.validateLogin,function(req, res){
-     
-    let curRole = req.jwtPayload.user.role;
-    let permission = roles.getRoleRoutePrivilegeValue(curRole, `${fileUrl}${req.url}`, req.method);
-    
-
-    if(permission){
+ router.post("/signup", jwt.validateLogin, roleMiddleware, function(req, res){
+    if(req.permission){
         let signData = {
             user : req.body.user,
             email : req.body.user,
@@ -87,17 +85,13 @@ router.get("/logout", function(req, res){
 //  @route PUT
 // description This is changing password
 
- router.put("/changepassword", jwt.validateLogin, (req, res)=>{
+ router.put("/changepassword", jwt.validateLogin,roleMiddleware, (req, res)=>{
 
     let oldPassword = req.body.oldPassword;
     let newPassword = req.body.newPassword;
 
     let curUser = req.jwtPayload.user.user;
-    let curRole = req.jwtPayload.user.role;
-
-    let permission = roles.getRoleRoutePrivilegeValue(curRole, `${fileUrl}${req.url}`, req.method);
-    
-    if(permission){
+    if(req.permission){
        
         userConn.findOneAndUpdate({user : curUser, password : oldPassword}, {password : newPassword},(err, doc, data)=>{
             if(doc == null){
@@ -116,20 +110,21 @@ router.get("/logout", function(req, res){
 
 //  @route PUT
 // descrption This is change role of user
-router.put("/changerole", jwt.validateLogin, (req, res)=>{
-    let curRole = req.jwtPayload.user.role;// this is role of logged in user
-    let permission = roles.getRoleRoutePrivilegeValue(curRole, `${fileUrl}${req.url}`, req.method);//permssion  for logged in ser
-    if(permission){
+router.put("/changerole", jwt.validateLogin, roleMiddleware,(req, res)=>{
+        if(req.permission){
         // here code for role change of user whoose role has to be changed , not the logged user
         userConn.findOneAndUpdate({user : req.body.user}, {role : req.body.role}, (err, doc, data)=>{
             if(err){
                 res.status(200).send("Successfully changed Role");
+                return;
             }else{
                 res.status(500).send("Did not change role");
+                return;
             }
         });
     }else{
         res.status(500).send("You do not have this access");
+        return;
     }
 
 })
@@ -137,16 +132,64 @@ router.put("/changerole", jwt.validateLogin, (req, res)=>{
 
 // @route GET
 // description This is checked on component did mount checks valid jwt to know logged state
- router.get("/validjwt", jwt.validateLogin, (req, res)=>{
-    res.status(200).json(req.jwtPayload);
+ router.get("/validjwt", jwt.validateLogin, roleMiddleware, (req, res)=>{
+     if(req.permission){
+        res.status(200).json(req.jwtPayload);
+        return;
+     }else{
+         res.status(500).send("You do not have this access");
+     }
+
     
  })
 
 //  @route GET
 // description : this is to get all roles for user roles grooups
-router.get("/allroles", (req, res)=>{
-
+router.get("/allroles", jwt.validateLogin, roleMiddleware, (req, res)=>{
+    // write code is not complete
+   
     const curRoles =roles.getAllRoles();
-    
     res.status(200).send({roles : curRoles});
+    return;
+})
+
+
+
+// @route GET
+// Description This route gets all users in database
+router.get("/getallusersandroles", (req, res)=>{
+
+  
+    userConn.find((err, data)=>{
+        res.status(200).send(data);
+    })
+
+})
+
+
+
+// @route POST
+// Description This route gets the role of any given user if not fount returns error
+router.post("/userrole", jwt.validateLogin, roleMiddleware, (req, res)=>{
+    if(req.permission){
+        const curUser = req.body.user;
+    userConn.find({user : curUser},(err, data)=>{
+        if(err){
+            res.status(500).send("Invalid method");
+            return;
+        }else{
+            if(data.length > 0){
+                res.status(200).send({role : data[0].role});
+                return;
+            }else{
+                res.status(500).send("Unidentified User");
+                return;
+            }
+        }
+    })
+
+    }else{
+        res.status(500).send("invalid access for this role");
+    }
+    
 })
