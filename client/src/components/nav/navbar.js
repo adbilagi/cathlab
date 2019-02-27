@@ -1,5 +1,4 @@
 import React from 'react';
-import {AppContext} from "../commons/context"
 
 import {
   Collapse,
@@ -8,11 +7,7 @@ import {
   NavbarBrand,
   Nav,
   NavItem,
-  NavLink,
-  // UncontrolledDropdown,
-  // DropdownToggle,
-  // DropdownMenu,
-  // DropdownItem 
+  NavLink, 
 } from 'reactstrap'
 
 export default class CurNavbar extends React.Component {
@@ -50,38 +45,8 @@ export default class CurNavbar extends React.Component {
 
             {/* Login and Logout link */}
               <NavItem>
-              <AppContext.Consumer>
-                  {
-                    (c)=>{
-                      if(c.loggedState === "Logout"){
-                        return <NavLink href="/login">Login</NavLink>
-                      }else{
-                        return <NavLink href="/logout">{c.loggedUser} {" "}Logout</NavLink>
-
-                      }
-                      
-                    } 
-                  }
-              </AppContext.Consumer>
+              <NavLink href="/login">Login</NavLink>
               </NavItem>
-              {/* Drop down */}
-              {/* <UncontrolledDropdown nav inNavbar>
-                <DropdownToggle nav caret>
-                  Options
-                </DropdownToggle>
-                <DropdownMenu right>
-                  <DropdownItem>
-                    Option 1
-                  </DropdownItem>
-                  <DropdownItem>
-                    Option 2
-                  </DropdownItem>
-                  <DropdownItem divider />
-                  <DropdownItem>
-                    Reset
-                  </DropdownItem>
-                </DropdownMenu>
-              </UncontrolledDropdown> */}
             </Nav>
           </Collapse>
         </Navbar>
