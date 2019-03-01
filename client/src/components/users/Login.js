@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Button, Form, FormGroup, Label, Input, Container, Row, Col, Alert} from 'reactstrap';
-import Alerts from "../commons/Alerts"
+import {Redirect} from "react-router-dom"
 import $ from "jquery";
 import {connect} from "react-redux";
 
@@ -38,7 +38,7 @@ class CurLogin extends Component {
                       </Form>
                         <br />
                         {this.props.alertErrorLogged ?  <Alert color="danger">{this.props.responceText}</Alert> : ""}
-                      
+                        {this.props.logged ? <Redirect  to="/"/>: ""}
                   </Col>
                 </Row>
 
@@ -66,6 +66,7 @@ const mapDispatchToProps=(dispatch)=>{
         url : "api/users/login",
         data : {user, password},
         success : (data)=>{
+
           return dispatch({
             type : "LOGIN",
             payload : {logged : true, user : data.user, role:data.role, responceText : "Succefully Logged in", alertErrorLogged : false}
