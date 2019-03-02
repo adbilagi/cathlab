@@ -134,14 +134,10 @@ router.put("/changerole", jwt.validateLogin, roleMiddleware,(req, res)=>{
 
 // @route GET
 // description This is checked on component did mount checks valid jwt to know logged state
- router.get("/validjwt", jwt.validateLogin, roleMiddleware, (req, res)=>{
-     if(req.permission){
-        res.status(200).json(req.jwtPayload);
-        return;
-     }else{
-         res.status(500).send("You do not have this access");
-     }
-
+ router.get("/validjwt",jwt.validateLogin, (req, res)=>{
+    let token = req.jwtPayload;
+    console.log(token);
+    res.status(200).send(token);
     
  })
 

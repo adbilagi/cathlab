@@ -42,12 +42,12 @@ class CurNavbar extends React.Component {
 
               {/* Singn in link */}
               <NavItem>
-                <NavLink href="/signup">Sign Up</NavLink>
+                <NavLink href="" onClick={this.props.logout}>Logout</NavLink>
               </NavItem>
 
             {/* Login and Logout link */}
               <NavItem>
-                {this.props.logged ? <NavLink href="" onClick={this.props.logout}>Logout</NavLink> : <NavLink href="/login">Login</NavLink> }
+               <NavLink href="/login">Login</NavLink>
               </NavItem>
             </Nav>
           </Collapse>
