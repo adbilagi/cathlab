@@ -49,6 +49,13 @@ router.post("/login", (req, res)=>{
 })
 
 
+// @route "GET"
+//desription  This route logs out 
+router.get("/logout", (req, res)=>{
+    res.cookie("JWToken", "", {maxAge: 0, httpOnly : true});
+    res.status(200).send({login : "Login status is false"});
+})
+
 // @route POST
 // descrition This is for signing in new user needs validatation by user role  permission
 // jwt.validateLogin this middle ware return jwtPayload {user : user, role : role}
