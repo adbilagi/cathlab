@@ -9,34 +9,12 @@ class CurLogin extends Component {
     password : ""
   }
 
-  setUser = (e)=>{
+  onChange = (e)=>{
     this.setState({
-      user  : e.target.value
+      [e.target.name]  : e.target.value
     })
 
   }
-
-  setPassword =(e)=>{
-    this.setState({
-      password : e.target.value
-    })
-  }
-
-  // userLogin = (e)=>{
-  //   e.preventDefauld();
-  //   $.ajax({
-  //     method : "POST",
-  //     url : "api/users/login",
-  //     data : {user : this.state.user, password: this.state.password},
-  //     success : (data)=>{
-  //       mapDispachToProps()
-  //     }
-  //   })
-
-  // }
-
-
-
 
   render() {
     return (
@@ -45,16 +23,16 @@ class CurLogin extends Component {
                 <Row>
                   <Col sm="12" md={{ size: 6, offset: 3 }}>
                       <h3>Login</h3>
-                      <Form onSubmit={this.props.userLogin}>
+                      <Form >
                         <FormGroup>
                           <Label for="user">User Name</Label>
-                          <Input type="text" name="user" id="user" placeholder="User Name" onChange={this.props.setUser}/>
+                          <Input type="text" name="user" id="user" placeholder="User Name" onChange={this.onChange}/>
                         </FormGroup>
                         <FormGroup>
                           <Label for="password">Password</Label>
-                          <Input type="password" name="password" id="password" placeholder="Password" onChange={this.props.userLoginsetPassword}/>
+                          <Input type="password" name="password" id="password" placeholder="Password" onChange={this.onChange}/>
                         </FormGroup>
-                        <Button color="info" >Login</Button>{' '}
+                        <Button color="info" onClick={()=> this.props.userLogin(this.state.user, this.state.password)}>Login</Button>{' '}
                       </Form>
                         <br />
                       
@@ -75,10 +53,29 @@ const mapStateToProps= (state)=>{
 }
 
 const mapDispachToProps=(dispach)=>{
-  return{
-    userLogin : ()=>dispach({type:"LOGIN"}),
 
-  }
+ return{
+   userLogin : (user, password)=>{
+     $.ajax({
+       method : "POST",
+       url : "api/users/login",
+       data : {user, password},
+       success : (data)=>{
+         return dispach({
+           type : "LOGIN",
+           payload : true
+         })
+       },//end of success
+       error : (arr)=>{
+         return dispach({
+           type : "LOGIN",
+           payload : false
+         })
+       }//end of error
+     })//end of ajax
+   },//end of userLogin
+
+ }
 }
 
 

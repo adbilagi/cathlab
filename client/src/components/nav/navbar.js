@@ -1,4 +1,5 @@
 import React from 'react';
+import {connect} from "react-redux";
 
 import {
   Collapse,
@@ -9,8 +10,9 @@ import {
   NavItem,
   NavLink, 
 } from 'reactstrap'
+import { type } from 'os';
 
-export default class CurNavbar extends React.Component {
+ class CurNavbar extends React.Component {
   constructor(props) {
     super(props);
 
@@ -45,7 +47,10 @@ export default class CurNavbar extends React.Component {
 
             {/* Login and Logout link */}
               <NavItem>
-              <NavLink href="/login">Login</NavLink>
+                {
+                  this.props.logged ? <NavLink href={this.props.userLogout}>Logout</NavLink> : <NavLink href="/login">Login</NavLink>
+                }
+              
               </NavItem>
             </Nav>
           </Collapse>
@@ -56,3 +61,23 @@ export default class CurNavbar extends React.Component {
     );
   }
 }
+
+
+const mapStateToProps= (state)=>{
+  return{
+    logged : state.logged
+  }
+}
+
+const mapDispachToProps =(dispach)=>{
+return {
+  userLogout : ()=>{
+    return dispach({
+      type : "LOGIN",
+      payload : false
+    })
+  }
+}
+}
+
+export default  connect(mapStateToProps,mapDispachToProps)(CurNavbar);

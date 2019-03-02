@@ -1,13 +1,17 @@
+
+
 const intialState = {
-    logged : false,
+    logged : true,
     user : "",
     password : ""
 }
 
 const reducer = (state=intialState, action)=>{
+    
     const newState = {...state};
     if(action.type === "LOGIN"){
-        newState.logged = true;
+        alert(action.payload);
+        newState.logged = action.payload;
     }
 
     if(action.type === "LOGOUT"){
