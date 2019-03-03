@@ -27,22 +27,24 @@ role.addPrivilegeToRole("visitor", privilege,false);
 privilege = ["/api/users/changepassword", "PUT"];
 role.createNewPrivileges(privilege, "change password by user", true);
 
+/**
+ * ======================================
+ * Roles
+ * ====================================== 
+ *  */
+
+ // this route gets all  roles and each users and his role 
+privilege =  ["/api/users/getallusersandroles", "GET"];
+role.createNewPrivileges(privilege, "change role", false);
+role.addPrivilegeToRole("admin", privilege,true);
+role.addPrivilegeToRole("visitor", privilege,true);
 
 privilege = ["/api/users/changerole", "PUT"];
 role.createNewPrivileges(privilege, "change role", false);
 role.addPrivilegeToRole("admin", privilege,true);
-
-// this route gets all users and roles 
-privilege =  ["/api/users/getallusersandroles", "POST"];
-role.createNewPrivileges(privilege, "change role", false);
-role.addPrivilegeToRole("admin", privilege,true);
 role.addPrivilegeToRole("visitor", privilege,true);
 
 
-// this route gets all users and roles 
-privilege =  ["/api/users/userrole", "POST"];
-role.createNewPrivileges(privilege, "change role", false);
-role.addPrivilegeToRole("admin", privilege,true);
-role.addPrivilegeToRole("visitor", privilege,true);
+
 
 module.exports.role = role;

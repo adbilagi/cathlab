@@ -1,5 +1,4 @@
 import React from 'react';
-import $ from "jquery";
 
 import {
   Collapse,
@@ -31,27 +30,7 @@ class CurNavbar extends React.Component {
     });
   }
 
-  logout(){
-    $.ajax({
-      method : "GET",
-      url : "api/users/logout",
-      success : (data)=>{
-        sessionStorage.removeItem("logged");
-        sessionStorage.removeItem("user");
-        sessionStorage.removeItem("role");
-        this.setState({
-          logged : false,
-          user : "",
-          role : ""
-        })
 
-      // write code for force update after success ajax to change navbar menu
-      }, 
-      error : (err)=>{
-        // write code for err
-      }
-    })
-  }
 
   componentWillMount=()=>{
     let logged, user, role;
@@ -81,7 +60,7 @@ class CurNavbar extends React.Component {
               </NavItem>
             {/* Login and Logout link */}
               <NavItem>
-                {this.state.logged ? <NavLink href="" onClick={this.logout}>Logout</NavLink> : <NavLink href="/login">Login</NavLink> }
+                {this.state.logged ? <NavLink href="/logout">Logout</NavLink> : <NavLink href="/login">Login</NavLink> }
               </NavItem>
             </Nav>
           </Collapse>

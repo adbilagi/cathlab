@@ -14,6 +14,12 @@ export default class Home extends Component {
         path : "/login"
       },
       {
+        title : "Logout",
+        text : "Logout User",
+        group : "user",
+        path : "/logout"
+      },
+      {
 
         title : "Sign Up",
         text : "Creating new user",

@@ -52,8 +52,6 @@ router.post("/login", (req, res)=>{
 // @route "GET"
 //desription  This route logs out 
 router.get("/logout", (req, res)=>{
-    console.log("klkl");
-
     res.clearCookie("JWToken");
     res.status(200).send({login : "Login status is false"});
 })
@@ -86,10 +84,10 @@ router.get("/logout", (req, res)=>{
 
  });
 
-//  @route PUT
+ //  @route PUT
 // description This is changing password
 
- router.put("/changepassword", jwt.validateLogin,roleMiddleware, (req, res)=>{
+router.put("/changepassword", jwt.validateLogin,roleMiddleware, (req, res)=>{
 
     let oldPassword = req.body.oldPassword;
     let newPassword = req.body.newPassword;
@@ -112,84 +110,114 @@ router.get("/logout", (req, res)=>{
 
  });
 
+
+/** 
+ * =============================================
+ * This section for roles
+ * ================================================
+*/
+
+
+
 //  @route PUT
 // descrption This is change role of user
 router.put("/changerole", jwt.validateLogin, roleMiddleware,(req, res)=>{
+    try {
         if(req.permission){
-        // here code for role change of user whoose role has to be changed , not the logged user
-        userConn.findOneAndUpdate({user : req.body.user}, {role : req.body.role}, (err, doc, data)=>{
-            if(err){
-                res.status(200).send("Successfully changed Role");
-                return;
-            }else{
-                res.status(500).send("Did not change role");
+            //check valid roles
+            let allRoles = roles.getAllRoles();
+            let foundRole = false;
+            allRoles.forEach((role)=>{
+                if(role === req.body.role){
+                    foundRole = true;
+                }
+            })
+
+            if(!foundRole){
+                res.status(500).send("Invalid role option given");
                 return;
             }
-        });
-    }else{
-        res.status(500).send("You do not have this access");
-        return;
+            // here code for role change of user whoose role has to be changed , not the logged user
+            userConn.findOneAndUpdate({user : req.body.user}, {role : req.body.role}, (err, doc, data)=>{
+                // check valid user name
+                if(doc == null){
+                    res.status(500).send("Invalid User name given")
+                    return
+                }
+                // on database err
+                if(err){
+                    res.status(500).send("Could not change role");
+                    return;
+                }else{
+                    // if succeful then 
+                    res.status(200).send("Succussfully changed role");
+                    return;
+                }
+            });
+        }else{
+            // req.permission false
+            res.status(500).send("You do not have this access");
+            return;
+        }
+        
+    } catch (error) {
+        
+        res.status(500).send("Could not change role")
+        
     }
 
 })
 
 
+
+
+//  @route GET
+// description :  this route gets all  roles and each users and his role 
+router.get("/getallusersandroles", jwt.validateLogin, roleMiddleware, (req, res)=>{
+    // write code is not complete
+    try {
+        if(req.permission){
+            const curRoles =roles.getAllRoles();
+            userConn.find((err, data)=>{
+                if(err){
+                    res.status(500).send("Could not get user and roles")
+                    return;
+                }else{
+                    let allRoles = roles.getAllRoles();
+                    let users = data.map((user, index)=>{
+                        return(
+                            {user:data[index].user, role:data[index].role}
+                        )
+                    })
+                    let datajson = {"roles" : allRoles, "users" : users };
+                    console.log(datajson);
+                    res.status(200).send(datajson);
+                    return;
+                }
+            })
+            return;
+        }else{
+            res.status(500).send("you do not have access to get all roles");
+        }
+ 
+    } catch (error) {
+        res.status(500).send("Could not get all Roles");
+        
+    }
+   
+
+})
+
+
+
+
+
+
 // @route GET
 // description This is checked on component did mount checks valid jwt to know logged state
- router.get("/validjwt",jwt.validateLogin, (req, res)=>{
+router.get("/validjwt",jwt.validateLogin, (req, res)=>{
     let token = req.jwtPayload;
     console.log(token);
     res.status(200).send(token);
     
  })
-
-//  @route GET
-// description : this is to get all roles for user roles grooups
-router.get("/allroles", jwt.validateLogin, roleMiddleware, (req, res)=>{
-    // write code is not complete
-   
-    const curRoles =roles.getAllRoles();
-    res.status(200).send({roles : curRoles});
-    return;
-})
-
-
-
-// @route GET
-// Description This route gets all users in database
-router.get("/getallusersandroles", (req, res)=>{
-
-  
-    userConn.find((err, data)=>{
-        res.status(200).send(data);
-    })
-
-})
-
-
-
-// @route POST
-// Description This route gets the role of any given user if not fount returns error
-router.post("/userrole", jwt.validateLogin, roleMiddleware, (req, res)=>{
-    if(req.permission){
-        const curUser = req.body.user;
-    userConn.find({user : curUser},(err, data)=>{
-        if(err){
-            res.status(500).send("Invalid method");
-            return;
-        }else{
-            if(data.length > 0){
-                res.status(200).send({role : data[0].role});
-                return;
-            }else{
-                res.status(500).send("Unidentified User");
-                return;
-            }
-        }
-    })
-
-    }else{
-        res.status(500).send("invalid access for this role");
-    }
-    
-})
