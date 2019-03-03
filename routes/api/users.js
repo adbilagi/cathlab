@@ -52,7 +52,9 @@ router.post("/login", (req, res)=>{
 // @route "GET"
 //desription  This route logs out 
 router.get("/logout", (req, res)=>{
-    res.cookie("JWToken", "", {maxAge: 0, httpOnly : true});
+    console.log("klkl");
+
+    res.clearCookie("JWToken");
     res.status(200).send({login : "Login status is false"});
 })
 

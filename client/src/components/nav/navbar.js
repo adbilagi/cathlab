@@ -36,7 +36,16 @@ class CurNavbar extends React.Component {
       method : "GET",
       url : "api/users/logout",
       success : (data)=>{
-        // write code success
+        sessionStorage.removeItem("logged");
+        sessionStorage.removeItem("user");
+        sessionStorage.removeItem("role");
+        this.setState({
+          logged : false,
+          user : "",
+          role : ""
+        })
+
+      // write code for force update after success ajax to change navbar menu
       }, 
       error : (err)=>{
         // write code for err
