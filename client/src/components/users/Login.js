@@ -2,12 +2,14 @@ import React, { Component } from 'react'
 import { Button, Form, FormGroup, Label, Input, Container, Row, Col, Alert} from 'reactstrap';
 import {Redirect} from "react-router-dom"
 import $ from "jquery";
-import {connect} from "react-redux";
 
 class CurLogin extends Component {
   state = {
     user : "",
-    password : ""
+    password : "",
+    logged : false,
+    alertErrorLogged : false,
+    responceText : ""
   }
 
   onChange = (e)=>{
@@ -17,6 +19,36 @@ class CurLogin extends Component {
 
   }
 
+  userLogin =(e)=>{
+    e.preventDefault();
+    $.ajax({
+      method : "POST",
+      url : "api/users/login",
+      data : {user :this.state.user, password : this.state.password},
+      success : (data)=>{
+        sessionStorage.setItem("logged", true);
+        sessionStorage.setItem("user", data.user);
+        sessionStorage.setItem("role", data.role)
+        this.setState({
+          logged : true,
+          alertErrorLogged : false,
+          responceText : ""
+        });
+
+      },
+      error : (err)=>{
+        sessionStorage.setItem("logged", false);
+        sessionStorage.setItem("user", "");
+        sessionStorage.setItem("role", "")
+        this.setState({
+          logged : false,
+          alertErrorLogged : true,
+          responceText : err.responseText
+        });
+      }
+    })
+  }
+
   render() {
     return (
             <div>
@@ -24,7 +56,7 @@ class CurLogin extends Component {
                 <Row>
                   <Col sm="12" md={{ size: 6, offset: 3 }}>
                       <h3>Login</h3>
-                      <Form>
+                      <Form onSubmit={this.userLogin}>
                         <FormGroup>
                           <Label for="user">User Name</Label>
                           <Input type="text" name="user" id="user" placeholder="User Name" onChange={this.onChange}/>
@@ -33,11 +65,11 @@ class CurLogin extends Component {
                           <Label for="password">Password</Label>
                           <Input type="password" name="password" id="password" placeholder="Password" onChange={this.onChange}/>
                         </FormGroup>
-                        <Button color="info" onClick={()=>this.props.userLogin(this.state.user, this.state.password)} >Login</Button>{' '}
+                        <Button color="info" >Login</Button>{' '}
                       </Form>
                         <br />
-                        {this.props.alertErrorLogged ?  <Alert color="danger">{this.props.responceText}</Alert> : ""}
-                        {this.props.logged ? <Redirect  to="/"/>: ""}
+                        {this.state.alertErrorLogged ?  <Alert color="danger">{this.state.responceText}</Alert> : ""}
+                        {this.state.logged ? <Redirect  to="/"/>: ""}
                   </Col>
                 </Row>
 
@@ -48,39 +80,4 @@ class CurLogin extends Component {
 }
 
 
-const mapStateToProps= (state)=>{
-  return{
-    logged : state.logged,
-    alertErrorLogged : state.alertErrorLogged,
-    responceText : state.responceText
-  }
-}
-
-const mapDispatchToProps=(dispatch)=>{
-
-  return{
-    userLogin : (user, password)=>{
-      $.ajax({
-        method : "POST",
-        url : "api/users/login",
-        data : {user, password},
-        success : (data)=>{
-
-          return dispatch({
-            type : "LOGIN",
-            payload : {logged : true, user : data.user, role:data.role, responceText : "Succefully Logged in", alertErrorLogged : false}
-          })
-        },
-        error : (err)=>{
-          return dispatch({
-            type : "LOGIN",
-            payload : {logged : false, responceText : err.responseText, user : "", role : "", alertErrorLogged : true }
-          })
-        }// end of error
-      })//end of ajax
-    }//end of userLogin
-  }//end of return
-}
-
-
-export default  connect(mapStateToProps,mapDispatchToProps)(CurLogin);
+export default  CurLogin;

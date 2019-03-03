@@ -114,33 +114,29 @@ export default class Home extends Component {
         <Row>
           {
             this.state.Cards.map((card, index)=>{
-              if(card.group === "Voucher"){
-                return(<Col xs="12" sm="6" lg="3" key={index}>
-                        <Examplecard 
-                          title = {card.title}
-                          text = {card.text}
-                          path = {card.path} 
-                        />
-                      </Col>
-                );
-              }
-            })} 
+              return (card.group === "Voucher" ? <Col xs="12" sm="6" lg="3" key={index}>
+              <Examplecard 
+                title = {card.title}
+                text = {card.text}
+                path = {card.path} 
+              />
+            </Col> : "" );
+            })
+          } 
         </Row>
         <hr/>
         <h3>Users</h3>
         <Row>
           {
             this.state.Cards.map((card, index)=>{
-              if(card.group === "user"){
-                return(<Col xs="12" sm="6" lg="3" key={index}>
-                <Examplecard 
-                  title = {card.title}
-                  text = {card.text}
-                  path = {card.path} 
-                />
-                </Col>
-                );
-              }
+
+              return(card.group ==="user" ? <Col xs="12" sm="6" lg="3" key={index}>
+              <Examplecard 
+                title = {card.title}
+                text = {card.text}
+                path = {card.path} 
+              />
+              </Col>: "");
             })
           } 
         </Row>

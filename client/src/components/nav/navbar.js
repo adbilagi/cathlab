@@ -1,5 +1,4 @@
 import React from 'react';
-import {connect} from "react-redux"
 
 import {
   Collapse,
@@ -10,7 +9,6 @@ import {
   NavItem,
   NavLink, 
 } from 'reactstrap'
-import { type } from 'os';
 
 class CurNavbar extends React.Component {
   constructor(props) {
@@ -18,14 +16,33 @@ class CurNavbar extends React.Component {
 
     this.toggle = this.toggle.bind(this);
     this.state = {
-      isOpen: false
+      isOpen: false,
+      logged : false,
+      user :"",
+      role : ""
     };
+
+
   }
   toggle() {
     this.setState({
       isOpen: !this.state.isOpen
     });
   }
+
+  componentWillMount=()=>{
+    let logged, user, role;
+    logged = sessionStorage.getItem("logged");
+    user = sessionStorage.getItem("user");
+    role = sessionStorage.getItem("role");
+
+    this.setState({
+      logged : logged,
+      user : user,
+      role : role
+    })
+  }
+
   render() {
     return (
       
@@ -39,15 +56,9 @@ class CurNavbar extends React.Component {
               <NavItem>
                 <NavLink href="/">Home</NavLink>
               </NavItem>
-
-              {/* Singn in link */}
-              <NavItem>
-                <NavLink href="" onClick={this.props.logout}>Logout</NavLink>
-              </NavItem>
-
             {/* Login and Logout link */}
               <NavItem>
-               <NavLink href="/login">Login</NavLink>
+                {this.state.logged ? <NavLink href="" onClick={this.logout}>Logout</NavLink> : <NavLink href="/login">Login</NavLink> }
               </NavItem>
             </Nav>
           </Collapse>
@@ -59,22 +70,6 @@ class CurNavbar extends React.Component {
   }
 }
 
-const mapStatetToProps = (state)=>{
-  return {
-    logged : state.logged
-  }
-}
 
-const mapDispatchToProps = (dispatch)=>{
-  return{
-    logout : ()=>{
-      return dispatch({
-        type : "LOGIN",
-        payload : {user : "", role : "", logged: false, responceText : "Successfully Logged Out", alertErrorLogged : false}
-      })
-    }
-  }
 
-}
-
-export default connect(mapStatetToProps, mapDispatchToProps)(CurNavbar);
+export default CurNavbar;
