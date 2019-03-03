@@ -1,4 +1,5 @@
 import React from 'react';
+import $ from "jquery";
 
 import {
   Collapse,
@@ -28,6 +29,19 @@ class CurNavbar extends React.Component {
     this.setState({
       isOpen: !this.state.isOpen
     });
+  }
+
+  logout(){
+    $.ajax({
+      method : "GET",
+      url : "api/users/logout",
+      success : (data)=>{
+        // write code success
+      }, 
+      error : (err)=>{
+        // write code for err
+      }
+    })
   }
 
   componentWillMount=()=>{
