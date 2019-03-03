@@ -60,7 +60,7 @@ class CurNavbar extends React.Component {
               </NavItem>
             {/* Login and Logout link */}
               <NavItem>
-                {this.state.logged ? <NavLink href="/logout">Logout</NavLink> : <NavLink href="/login">Login</NavLink> }
+                {this.state.logged ? <NavLink href="/logout">{this.state.user} Logout</NavLink> : <NavLink href="/login">Login</NavLink> }
               </NavItem>
             </Nav>
           </Collapse>
