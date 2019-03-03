@@ -22,14 +22,15 @@ router.post("/login", (req, res)=>{
         let user = req.body.user;
         let password = req.body.password;
         userConn.find({user : user, password : password}, (err, data)=>{
+            
             if(err){
                 res.status(500).send(err);
                 return;
             }else{
                 if(data[0]){
                     let datajson = {"user" : data[0].user,"role" : data[0].role};
-                    let token = jwt.createJWTToken(datajson);
-                    res.cookie("JWToken", token, {maxAge: 9000000, httpOnly : true});
+                    jwt.createJWTToken(data[0].user, data[0].role, req, res);
+                    
                     res.status(200).json(datajson);
                 }else{
                     res.status(500).end("invalid login");
