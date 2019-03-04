@@ -135,7 +135,7 @@ submitForm=(e)=>{
                           <Input type="text" name="user" id="user" placeholder="User Name" list="curUserDataList" onChange={this.setUser} onBlur= {this.getUserRole}/>
                         </FormGroup>
                         <datalist id="curUserDataList" name="curUserDataList">
-                          {   this.state.allRoles.map((user, index)=>{
+                          {   this.state.allUsers.map((user, index)=>{
                                     return <option key={index} value={user.user}></option>
                               })
                           }

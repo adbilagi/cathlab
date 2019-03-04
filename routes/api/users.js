@@ -177,6 +177,7 @@ router.put("/changerole", jwt.validateLogin, roleMiddleware,(req, res)=>{
 router.get("/getallusersandroles", jwt.validateLogin, roleMiddleware, (req, res)=>{
     // write code is not complete
     try {
+        
         if(req.permission){
             const curRoles =roles.getAllRoles();
             userConn.find((err, data)=>{
@@ -191,7 +192,6 @@ router.get("/getallusersandroles", jwt.validateLogin, roleMiddleware, (req, res)
                         )
                     })
                     let datajson = {"roles" : allRoles, "users" : users };
-                    console.log(datajson);
                     res.status(200).send(datajson);
                     return;
                 }

@@ -3,7 +3,7 @@ module.exports.roleMiddleware =(fileUrl)=>{
     return  (req, res, next)=>{
         // fileUrl is for shake app.routes in
         let CurUrl = `${fileUrl}${req.route.path}`;
-        let curRole = req.jwtPayload.user.role;
+        let curRole = req.jwtPayload.role;
         req.permission = role.getRoleRoutePrivilegeValue(curRole, CurUrl, req.method);
         next();
     }
@@ -37,11 +37,12 @@ role.createNewPrivileges(privilege, "change password by user", true);
 privilege =  ["/api/users/getallusersandroles", "GET"];
 role.createNewPrivileges(privilege, "change role", false);
 role.addPrivilegeToRole("admin", privilege,true);
+role.addPrivilegeToRole("visitor",privilege, true);
 
 
 privilege = ["/api/users/changerole", "PUT"];
 role.createNewPrivileges(privilege, "change role", false);
-role.addPrivilegeToRole("admin", privilege,true);
+role.addPrivilegeToRole("visitor", privilege,true);
 
 
 
