@@ -90,24 +90,32 @@ router.get("/logout", (req, res)=>{
 
 router.put("/changepassword", jwt.validateLogin,roleMiddleware, (req, res)=>{
 
+try {
     let oldPassword = req.body.oldPassword;
     let newPassword = req.body.newPassword;
 
-    let curUser = req.jwtPayload.user.user;
+    let curUser = req.jwtPayload.user;
+    console.log(req.jwtPayload);
     if(req.permission){
-       
-        userConn.findOneAndUpdate({user : curUser, password : oldPassword}, {password : newPassword},(err, doc, data)=>{
-            if(doc == null){
+            userConn.updateOne({user : curUser, password : oldPassword}, {$set : {password : newPassword}}, (err, raw)=>{
+            if(raw.n < 1){
                 res.status(500).send("Did not change password");
+                return;
             }else if(err){
                 res.status(500).send("Did not change password");
+                return;
             }else{
-                res.status(200).send("Successfully changed password");
+                res.status(200).json({message : "Successfully changed password"});
+                return;
             }
         });
     }else{
         res.status(500).send("You do not have this access");
     }
+    
+} catch (error) {
+    res.status(500).send("Did not change password");
+}
 
  });
 
@@ -139,9 +147,10 @@ router.put("/changerole", jwt.validateLogin, roleMiddleware,(req, res)=>{
                 return;
             }
             // here code for role change of user whoose role has to be changed , not the logged user
-            userConn.findOneAndUpdate({user : req.body.user}, {role : req.body.role}, (err, doc, data)=>{
+
+                userConn.updateOne({user : req.body.user}, {$set :{role : req.body.role}}, (err, raw)=>{
                 // check valid user name
-                if(doc == null){
+                if(raw.n < 1){
                     res.status(500).send("Invalid User name given")
                     return
                 }
@@ -168,8 +177,6 @@ router.put("/changerole", jwt.validateLogin, roleMiddleware,(req, res)=>{
     }
 
 })
-
-
 
 
 //  @route GET
@@ -210,7 +217,39 @@ router.get("/getallusersandroles", jwt.validateLogin, roleMiddleware, (req, res)
 })
 
 
+// @route PUT
+// Description : this route resets the user activity to active inactive state
+router.put("/changeuseractivity", jwt.validateLogin, roleMiddleware, (req, res)=>{
+   
+    try {
+       
+        if(req.permission){
+            // userConn.findOneAndUpdate({user : req.body.user}, {activeUser : req.body.activeUser}, (err, doc, res)=>{
+            userConn.updateOne({user : req.body.user},{$set : {activeUser : req.body.activeUser}},(err, raw)=>{
+                
+                if(raw.n < 1){//number selected is less than 1 or zero then 500
+                    res.status(500).send("Invalid User");
+                    return;
+                }else if(err){
+                    res.status(500).send("could not complete action due to error");
+                    return;
+                }else{
+                    // res.status(200).send({"message" : "suucessfully reset the acivity of user"});
+                    res.status(200).json({message : "suucessfully reset the acivity of user"});
+                    return;
+                }
+            })
 
+        }else{
+            res.status(500).send("You do not have permsssion to modify activity of user");
+            return;
+        }
+        
+    } catch (error) {
+        res.status(500).send("could not complete action due to err")
+        
+    }
+})
 
 
 

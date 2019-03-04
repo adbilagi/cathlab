@@ -42,7 +42,15 @@ role.addPrivilegeToRole("visitor",privilege, true);
 
 privilege = ["/api/users/changerole", "PUT"];
 role.createNewPrivileges(privilege, "change role", false);
-role.addPrivilegeToRole("visitor", privilege,true);
+role.addPrivilegeToRole("admin", privilege,true);
+role.addPrivilegeToRole("visitor",privilege, true);
+
+
+privilege = ["/api/users/changeuseractivity", "PUT"];
+role.createNewPrivileges(privilege, "change user activity", false);
+role.addPrivilegeToRole("admin", privilege,true);
+role.addPrivilegeToRole("visitor",privilege, true);
+
 
 
 

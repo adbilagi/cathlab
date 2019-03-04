@@ -69,11 +69,16 @@ export default class ChangePassword extends Component {
             success : (data)=>{
                 this.setState({
                     ajaxSuccess : true,
-                    ajaxSuccessMessage : data
+                    ajaxSuccessMessage : data.message,
+                    ajaxError : false,
+                    ajaxErrorMessage : ""
+
                 });
             },
             error : (err)=>{
                 this.setState({
+                    ajaxSuccess : false,
+                    ajaxSuccessMessage : "",
                     ajaxError : true,
                     ajaxErrorMessage : err.responseText
                 })

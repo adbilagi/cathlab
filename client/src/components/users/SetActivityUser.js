@@ -7,28 +7,74 @@ export default class SetActivityUser extends Component {
     state={
         user:"",
         allUsers : [],
+        // user text box
         alertSuccessUserActive : false,
         alertSuccessUserActiveMessage : "",
         alertErrorUserActive : false,
-        alertErrorUserActiveMessage: ""
+        alertErrorUserActiveMessage: "",
+        // actvity ajax 
+        ajaxSuccessUserActive : false,
+        ajaxSuccessUserActiveMessage : "",
+        ajaxErrorUserActive : false,
+        ajaxErrorUserActiveMessage: "",
 
     }
 
-    activateUser=(e)=>{
+    activateUser=(activity)=>{
+        this.getUserActivityStatus(this.state.user);
+        if(this.state.alertSuccessUserActive){
+            
+            $.ajax({
+                method : "PUT",
+                url : "api/users/changeuseractivity",
+                data : {user : this.state.user, activeUser : activity},
+                success : (data)=>{
+                    // write code for success
+                    this.setState({
+                        ajaxSuccessUserActive : true,
+                        ajaxSuccessUserActiveMessage : data.message,
+                        ajaxErrorUserActive : false,
+                        ajaxErrorUserActiveMessage: "",
+                    })
+                },
+                error : (err)=>{
+                    // write code error
+                    this.setState({
+                        ajaxSuccessUserActive : false,
+                        ajaxSuccessUserActiveMessage : "",
+                        ajaxErrorUserActive : true,
+                        ajaxErrorUserActiveMessage: err.responseText,
+                    })
+                }
+            })
+        }
+        
 
     }
-    inactivateUser=(e)=>{
 
+    onBlur=(e)=>{
+        
+        this.getUserActivityStatus(e.target.value);
     }
+
 
     onChange=(e)=>{
         this.setState({
-            [e.target.name]: e.target.value
+            [e.target.name]: e.target.value,
+            alertSuccessUserActive : false,
+            alertSuccessUserActiveMessage : "",
+            alertErrorUserActive : false,
+            alertErrorUserActiveMessage: "",
+            // actvity ajax 
+            ajaxSuccessUserActive : false,
+            ajaxSuccessUserActiveMessage : "",
+            ajaxErrorUserActive : false,
+            ajaxErrorUserActiveMessage: "",
         })
     }
 
-    getUserActivityStatus = (e)=>{
-        let curUser = e.target.value;
+    getUserActivityStatus = (user)=>{
+        let curUser = user;
         let curUserUserActivity=false;
         let foundUser = false;
         this.state.allUsers.forEach((user)=>{
@@ -88,7 +134,7 @@ export default class SetActivityUser extends Component {
                     <Form >
                         <FormGroup>
                             <Label for="user"/>
-                            <Input type="Text" name="user" id='name' list="allUsers" onChange={this.onChange} onBlur={this.getUserActivityStatus}/>
+                            <Input type="Text" name="user" id='name' list="allUsers" autocomplete="off" onChange={this.onChange} onBlur={this.onBlur}/>
                         </FormGroup>
 
                         <datalist name="allUsers" id="allUsers">
@@ -107,14 +153,21 @@ export default class SetActivityUser extends Component {
                         <FormGroup>
                             <Row>                           
                                 <Col>
-                                    <Button color="success" onClick={this.activateUser}>Activate user</Button>
+                                    <Button color="success" onClick={()=>this.activateUser(true)}>Activate user</Button>
                                 </Col>
                                 <Col>
-                                    <Button color="danger" onClik={this.inactivateUser}>InActivate user</Button>
+                                    <Button color="danger" onClick={()=>this.activateUser(false)}>InActivate user</Button>
                                 </Col>                 
                             </Row>
+                            
                         </FormGroup>
                     </Form>
+                    <Alerts 
+                        alertSuccess = {this.state.ajaxSuccessUserActive}
+                        alertError = {this.state.ajaxErrorUserActive}
+                        alertSuccessMessage = {this.state.ajaxSuccessUserActiveMessage}
+                        alertErrorMessage = {this.state.ajaxErrorUserActiveMessage}
+                    />
                   </Col>
               </Row>
           </Container>

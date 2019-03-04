@@ -132,7 +132,7 @@ submitForm=(e)=>{
                     <Form onSubmit={this.submitForm}>
                         <FormGroup>
                           <Label for="user">User Name</Label>
-                          <Input type="text" name="user" id="user" placeholder="User Name" list="curUserDataList" onChange={this.setUser} onBlur= {this.getUserRole}/>
+                          <Input type="text" name="user" id="user" placeholder="User Name" list="curUserDataList" autocomplete="off" onChange={this.setUser} onBlur= {this.getUserRole}/>
                         </FormGroup>
                         <datalist id="curUserDataList" name="curUserDataList">
                           {   this.state.allUsers.map((user, index)=>{
@@ -148,7 +148,7 @@ submitForm=(e)=>{
                         />
                         <FormGroup>
                           <Label for="Role">Role</Label>
-                          <Input type="text" name="role" id="role" list="curRoleDataList" placeholder="New Role" onChange={this.setRole}/>
+                          <Input type="text" name="role" id="role" list="curRoleDataList" autocomplete="off" placeholder="New Role" onChange={this.setRole}/>
                         </FormGroup>
                         <datalist id="curRoleDataList" name="curRoleDataList">
                             {
