@@ -188,7 +188,7 @@ router.get("/getallusersandroles", jwt.validateLogin, roleMiddleware, (req, res)
                     let allRoles = roles.getAllRoles();
                     let users = data.map((user, index)=>{
                         return(
-                            {user:data[index].user, role:data[index].role}
+                            {user:data[index].user, role:data[index].role, activeUser : user.activeUser}
                         )
                     })
                     let datajson = {"roles" : allRoles, "users" : users };

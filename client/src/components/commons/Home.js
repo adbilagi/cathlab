@@ -38,6 +38,17 @@ export default class Home extends Component {
       },
       {
 
+        title : "Set Active User",
+        text : "Set user acive/inactive",
+        group : "user",
+        path : "/setactivityuser"
+
+      },
+
+
+      // 
+      {
+
         title : "Change Role",
         text : "Asign Role to users",
         group : "user",

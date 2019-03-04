@@ -6,6 +6,7 @@ import Logout from "../users/Logout"
 import SignUp from "../users/SignUp"
 import ChangeRole from "../users/ChangeRole"
 import ChanngePassword from "../users/ChangePassword"
+import SetActivityUser from "../users/SetActivityUser"
 
 
 export default class CurRoutes extends Component {
@@ -21,6 +22,7 @@ export default class CurRoutes extends Component {
             <Route exact path="/signup" component={SignUp}/>
             <Route exact path="/changerole" component={ChangeRole}/>
             <Route exact path="/changepassword" component={ChanngePassword}/>
+            <Route exact path="/setactivityuser" component={SetActivityUser}/>
           </div>
 
         </BrowserRouter>
