@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import CurNavbar from "./components/nav/navbar";
 import CurRoutes from "./components/commons/CurRoutes"
-import SideBar from "./components/commons/SideBar"
+import SideBar from "./components/sidebar/SideBar"
 import {Container, Row, Col} from "reactstrap"
 
 

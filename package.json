@@ -26,6 +26,7 @@
     "jsonwebtoken": "^8.4.0",
     "mongoose": "^5.4.11",
     "nodemon": "^1.18.10",
-    "user-groups-roles": "^2.0.4"
+    "user-groups-roles": "^2.0.4",
+    "validator": "^10.11.0"
   }
 }

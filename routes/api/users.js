@@ -21,7 +21,7 @@ router.post("/login", (req, res)=>{
     try {
         let user = req.body.user;
         let password = req.body.password;
-        userConn.find({user : user, password : password}, (err, data)=>{
+        userConn.find({user : user, password : password, activeUser : true}, (err, data)=>{
             
             if(err){
                 res.status(500).send(err);
