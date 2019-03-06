@@ -2,7 +2,7 @@
  * This file validates the userSchema
  */ 
 const validator = require("validator");
-const roles = require("../roles/roles").role;
+const roles = require("../roles/userRouteRoles");
 
 
 module.exports = (curJson)=>{

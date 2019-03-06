@@ -3,7 +3,7 @@
 
 const express = require("express");
 const router = express.Router();
-const roles = require("../../roles/roles").role;
+const roles = require("../../roles//userRouteRoles");
 const fileUrl = "/api/users"
 const roleMiddleware = require("../../roles/roles").roleMiddleware(fileUrl);
 const validate = require("../../validate/userValidate")
