@@ -3,9 +3,6 @@
  * */ 
 const mongoose = require("mongoose");
 
-
-
-
 let userSchema = new mongoose.Schema({
     user : {
         type : String,
