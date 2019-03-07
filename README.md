@@ -19,8 +19,8 @@ Client i.e react runs inside client folder in dev mode.
 7. /config :- This file is config file for declarattaion objects like dabase connection string
 8. /client :- This is clinet conatining react app.
 
-## Client (reactjs) folder structure
 
+[## Client (reactjs) folder structure](/client/FOLDER.md)
 
 ## Scripts
 ```.json
