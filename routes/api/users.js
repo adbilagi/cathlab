@@ -3,10 +3,10 @@
 
 const express = require("express");
 const router = express.Router();
-const roles = require("../../roles/roles").role;
+const roles = require("../../roles//userRouteRoles");
 const fileUrl = "/api/users"
 const roleMiddleware = require("../../roles/roles").roleMiddleware(fileUrl);
-const validate = require("../../validation/userValidation");
+const validate = require("../../validate/userValidate")
 
 
 module.exports =router;
@@ -64,9 +64,8 @@ router.get("/logout", (req, res)=>{
 // jwt.validateLogin this middle ware return jwtPayload {user : user, role : role}
  router.post("/signup", jwt.validateLogin, roleMiddleware, function(req, res){
      try {
-        validate(req.body);
         if(req.permission){
-            
+            validate(req.body);
             let signData = {
                 user : req.body.user,
                 email : req.body.user,
@@ -87,12 +86,12 @@ router.get("/logout", (req, res)=>{
             res.status(500).send("You do not have this access");
         }
          
+         
      } catch (error) {
-         res.status(500).send(error)
+         res.status(500).send(error);
          
      }
-    
-     
+
 
  });
 
@@ -102,24 +101,22 @@ router.get("/logout", (req, res)=>{
 router.put("/changepassword", jwt.validateLogin,roleMiddleware, (req, res)=>{
 
 try {
-    validate(req.body);
-    let oldPassword = req.body.oldPassword;
-    let newPassword = req.body.newPassword;
-
-    let curUser = req.jwtPayload.user;
-    console.log(req.jwtPayload);
     if(req.permission){
-            userConn.updateOne({user : curUser, password : oldPassword}, {$set : {password : newPassword}}, (err, raw)=>{
-            if(raw.n < 1){
-                res.status(500).send("Did not change password");
-                return;
-            }else if(err){
-                res.status(500).send("Did not change password");
-                return;
-            }else{
-                res.status(200).json({message : "Successfully changed password"});
-                return;
-            }
+        validate(req.body);
+        let oldPassword = req.body.oldPassword;
+        let newPassword = req.body.newPassword;
+        let curUser = req.jwtPayload.user;
+        userConn.updateOne({user : curUser, password : oldPassword}, {$set : {password : newPassword}}, (err, raw)=>{
+        if(raw.n < 1){
+            res.status(500).send("Did not change password");
+            return;
+        }else if(err){
+            res.status(500).send("Did not change password");
+            return;
+        }else{
+            res.status(200).json({message : "Successfully changed password"});
+            return;
+        }
         });
     }else{
         res.status(500).send("You do not have this access");
@@ -143,26 +140,28 @@ try {
 //  @route PUT
 // descrption This is change role of user
 router.put("/changerole", jwt.validateLogin, roleMiddleware,(req, res)=>{
+    
     try {
         if(req.permission){
             validate(req.body);
+            
             // here code for role change of user whoose role has to be changed , not the logged user
-
-                userConn.updateOne({user : req.body.user}, {$set :{role : req.body.role}}, (err, raw)=>{
-                // check valid user name
-                if(raw.n < 1){
-                    res.status(500).send("Invalid User name given")
-                    return
-                }
-                // on database err
-                if(err){
-                    res.status(500).send("Could not change role");
-                    return;
-                }else{
-                    // if succeful then 
-                    res.status(200).send("Succussfully changed role");
-                    return;
-                }
+            userConn.updateOne({user : req.body.user}, {$set :{role : req.body.role}}, (err, raw)=>{
+            // check valid user name
+           
+            if(raw.n < 1){
+                res.status(500).send("Invalid User name given")
+                return
+            }
+            // on database err
+            if(err){
+                res.status(500).send("Could not change role");
+                return;
+            }else{
+                // if succeful then 
+                res.status(200).send("Succussfully changed role");
+                return;
+            }
             });
         }else{
             // req.permission false
@@ -225,7 +224,6 @@ router.put("/changeuseractivity", jwt.validateLogin, roleMiddleware, (req, res)=
        
         if(req.permission){
             validate(req.body);
-            // userConn.findOneAndUpdate({user : req.body.user}, {activeUser : req.body.activeUser}, (err, doc, res)=>{
             userConn.updateOne({user : req.body.user},{$set : {activeUser : req.body.activeUser}},(err, raw)=>{
                 
                 if(raw.n < 1){//number selected is less than 1 or zero then 500
@@ -239,7 +237,7 @@ router.put("/changeuseractivity", jwt.validateLogin, roleMiddleware, (req, res)=
                     res.status(200).json({message : "suucessfully reset the acivity of user"});
                     return;
                 }
-            })
+            });
 
         }else{
             res.status(500).send("You do not have permsssion to modify activity of user");
@@ -253,12 +251,3 @@ router.put("/changeuseractivity", jwt.validateLogin, roleMiddleware, (req, res)=
 })
 
 
-
-// @route GET
-// description This is checked on component did mount checks valid jwt to know logged state
-router.get("/validjwt",jwt.validateLogin, (req, res)=>{
-    let token = req.jwtPayload;
-    console.log(token);
-    res.status(200).send(token);
-    
- })
