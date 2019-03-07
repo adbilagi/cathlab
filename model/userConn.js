@@ -2,6 +2,7 @@
  * This file containes scheme of users to mongo db
  * */ 
 const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 
 let userSchema = new mongoose.Schema({
     user : {
@@ -66,4 +67,36 @@ let userSchema = new mongoose.Schema({
     }
 })
 
- module.exports = mongoose.model("User", userSchema);
+let groupSchema = new mongoose.Schema({
+    name : {
+        type : String,
+        required : true,
+        unique : true
+    }
+})
+
+let ledgerSchema = new mongoose.Schema({
+    name : {
+        type : String,
+        required : true,
+        unique : true,
+    },
+    groupName : {
+        type : [{ type: Schema.Types.ObjectId, ref: 'Group' }]
+
+    },
+    openingBalence : {
+        type : Number,
+        required : true,
+        default : 0
+    }
+
+})
+
+ const Group = mongoose.model("Group", groupSchema);
+ const Ledger = mongoose.model("Ledger", ledgerSchema)
+ const User = mongoose.model("User", userSchema);
+
+ module.exports.User = User;
+ module.exports.Ledger = Ledger;
+ module.exports.Group = Group;

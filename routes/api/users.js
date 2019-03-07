@@ -7,12 +7,12 @@ const roles = require("../../roles//userRouteRoles");
 const fileUrl = "/api/users"
 const roleMiddleware = require("../../roles/roles").roleMiddleware(fileUrl);
 const validate = require("../../validate/userValidate")
-
+const jwt = require("../../middleware/usermiddleware");
+const userConn = require("../../model/userConn").User// user schema
 
 module.exports =router;
 
-const jwt = require("../../middleware/usermiddleware");
-const userConn = require("../../model/userConn")// user schema
+
  
 // @route POST
 // descrpiton This return jwt token with cookie on success login

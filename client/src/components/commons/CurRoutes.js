@@ -7,8 +7,14 @@ import SignUp from "../users/SignUp"
 import ChangeRole from "../users/ChangeRole"
 import ChanngePassword from "../users/ChangePassword"
 import SetActivityUser from "../users/SetActivityUser"
+
+// accountinfo imports
+import CreateGroup from "../groups/CreateGroup"
+import AlterGroup from "../groups/AlterGroup"
+
 import UsersLinks from '../sidebar/UsersLinks';
 import VoucherLinks from "../sidebar/VoucherLinks"
+import AccountInfo from "../sidebar/AccountInfo";
 
 
 export default class CurRoutes extends Component {
@@ -21,6 +27,7 @@ export default class CurRoutes extends Component {
             {/* side bar links */}
             <Route exact path ="/links/vouchers" component={VoucherLinks}/>
             <Route exact path="/links/users" component ={UsersLinks}/>
+            <Route exact path="/links/accountinfo" component ={AccountInfo}/>
 
             
               {/* Users peronal */}
@@ -34,6 +41,10 @@ export default class CurRoutes extends Component {
             <Route exact path="/signup" component={SignUp}/>
             <Route exact path="/changerole" component={ChangeRole}/>
             <Route exact path="/setactivityuser" component={SetActivityUser}/>
+
+            {/* Account info */}
+            <Route exact path="/accountinfo/group/create" component={CreateGroup}/>
+            <Route exact path="/accountinfo/group/alter" component={AlterGroup}/>
           </div>
 
         </BrowserRouter>
