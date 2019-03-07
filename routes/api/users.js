@@ -3,9 +3,10 @@
 
 const express = require("express");
 const router = express.Router();
-const roles = require("../../roles").role;
+const roles = require("../../roles/roles").role;
 const fileUrl = "/api/users"
-const roleMiddleware = require("../../roles").roleMiddleware(fileUrl);
+const roleMiddleware = require("../../roles/roles").roleMiddleware(fileUrl);
+const validate = require("../../validation/userValidation");
 
 
 module.exports =router;
@@ -19,6 +20,7 @@ router.post("/login", (req, res)=>{
     
  
     try {
+        
         let user = req.body.user;
         let password = req.body.password;
         userConn.find({user : user, password : password, activeUser : true}, (err, data)=>{
@@ -61,26 +63,35 @@ router.get("/logout", (req, res)=>{
 // descrition This is for signing in new user needs validatation by user role  permission
 // jwt.validateLogin this middle ware return jwtPayload {user : user, role : role}
  router.post("/signup", jwt.validateLogin, roleMiddleware, function(req, res){
-    if(req.permission){
-        let signData = {
-            user : req.body.user,
-            email : req.body.user,
-            password : req.body.password,
-            phone: req.body.phone
-        }
-       
-        userConn.create(signData, (err, data)=>{
-            if(err){
-                res.status(500).send("Could not create new user");
-            }else{
-                res.status(200).send("Successfully created new user");
+     try {
+        validate(req.body);
+        if(req.permission){
+            
+            let signData = {
+                user : req.body.user,
+                email : req.body.user,
+                password : req.body.password,
+                phone: req.body.phone
             }
-
-        });
+           
+            userConn.create(signData, (err, data)=>{
+                if(err){
+                    res.status(500).send("Could not create new user");
+                }else{
+                    res.status(200).send("Successfully created new user");
+                }
     
-    }else{
-        res.status(500).send("You do not have this access");
-    }
+            });
+        
+        }else{
+            res.status(500).send("You do not have this access");
+        }
+         
+     } catch (error) {
+         res.status(500).send(error)
+         
+     }
+    
      
 
  });
@@ -91,6 +102,7 @@ router.get("/logout", (req, res)=>{
 router.put("/changepassword", jwt.validateLogin,roleMiddleware, (req, res)=>{
 
 try {
+    validate(req.body);
     let oldPassword = req.body.oldPassword;
     let newPassword = req.body.newPassword;
 
@@ -114,7 +126,7 @@ try {
     }
     
 } catch (error) {
-    res.status(500).send("Did not change password");
+    res.status(500).send(error);
 }
 
  });
@@ -133,19 +145,7 @@ try {
 router.put("/changerole", jwt.validateLogin, roleMiddleware,(req, res)=>{
     try {
         if(req.permission){
-            //check valid roles
-            let allRoles = roles.getAllRoles();
-            let foundRole = false;
-            allRoles.forEach((role)=>{
-                if(role === req.body.role){
-                    foundRole = true;
-                }
-            })
-
-            if(!foundRole){
-                res.status(500).send("Invalid role option given");
-                return;
-            }
+            validate(req.body);
             // here code for role change of user whoose role has to be changed , not the logged user
 
                 userConn.updateOne({user : req.body.user}, {$set :{role : req.body.role}}, (err, raw)=>{
@@ -172,7 +172,7 @@ router.put("/changerole", jwt.validateLogin, roleMiddleware,(req, res)=>{
         
     } catch (error) {
         
-        res.status(500).send("Could not change role")
+        res.status(500).send(error)
         
     }
 
@@ -224,6 +224,7 @@ router.put("/changeuseractivity", jwt.validateLogin, roleMiddleware, (req, res)=
     try {
        
         if(req.permission){
+            validate(req.body);
             // userConn.findOneAndUpdate({user : req.body.user}, {activeUser : req.body.activeUser}, (err, doc, res)=>{
             userConn.updateOne({user : req.body.user},{$set : {activeUser : req.body.activeUser}},(err, raw)=>{
                 
@@ -246,7 +247,7 @@ router.put("/changeuseractivity", jwt.validateLogin, roleMiddleware, (req, res)=
         }
         
     } catch (error) {
-        res.status(500).send("could not complete action due to err")
+        res.status(500).send(error);
         
     }
 })
