@@ -20,21 +20,27 @@ Client i.e react runs inside client folder in dev mode.
 8. /client :- This is clinet conatining react app.
 
 
-[## Client (reactjs) folder structure](/client/FOLDER.md)
+<!-- [## Client (reactjs) folder structure](/client/FOLDER.md) -->
 
 ## Scripts
-```.json
+```json
   "scripts": {
     "client-install": "cd client && npm install",
     "start": "node server.js",
     "server": "nodemon server.js",
     "client": "npm start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\""
-  },
-```
-    1. npm install :- to install all server node modules
+  }
+  
+  1. npm install :- to install all server node modules
     2. npm run client-install :- installs all react node modules inside client folder.
     3. npm start :- starts express only
     4. npm run server :- expres with nodemon
     5. npm run dev :- start express on with nodemon as well react with concurrently.
     6. To build react :-  cd into client and type npm run build
+```
+
+## Production
+Run npm run build inside client folder
+then set `process.env.NODE_ENV === production`
+    
