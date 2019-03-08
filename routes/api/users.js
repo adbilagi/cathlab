@@ -17,8 +17,6 @@ module.exports =router;
 // @route POST
 // descrpiton This return jwt token with cookie on success login
 router.post("/login", (req, res)=>{
-    
- 
     try {
         
         let user = req.body.user;

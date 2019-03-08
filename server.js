@@ -7,15 +7,23 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const app = express();
 const mongoose = require("mongoose");
-
+const path = require("path");
 
 const config = require("./config/config");
 // const connString = config.mongoCon.local//for local database
 const connString = config.mongoCon.remote// for remote connecton
 
+// for running production
+if(process.env.NODE_ENV === "production"){
+    app.use(express.static(path.join(__dirname, "client/build")));
+    app.get("*", (req, res)=>{
+        res.sendFile(path.join(__dirname, "client/build/index.html"));
+    });
+}
 
 
 
+// mongoose connect
 mongoose.connect(connString,  {useCreateIndex: true, useNewUrlParser: true},(err)=>{
     if(err){
         console.log(err);
@@ -43,7 +51,7 @@ app.use("/api/users", users);
 
 
 app.listen(PORT, function(){
-    console.log(`Liseting at port ${PORT}....`);
+    console.log(`Listening at port ${PORT}....`);
 });
 
 
