@@ -48,6 +48,9 @@ app.use(cookieParser());
 // users  routes 
 const users = require("./routes/api/users");
 app.use("/api/users", users);
+// group creation editing and deleting
+const group = require("./routes/api/group");
+app.use ("/api/master/accounts/group", group);
 
 
 app.listen(PORT, function(){

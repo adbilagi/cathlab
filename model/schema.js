@@ -72,6 +72,10 @@ let groupSchema = new mongoose.Schema({
         type : String,
         required : true,
         unique : true
+    },
+    underGroup: {
+        type: String,
+        required : true
     }
 })
 

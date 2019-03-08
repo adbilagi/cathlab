@@ -8,7 +8,7 @@ const fileUrl = "/api/users"
 const roleMiddleware = require("../../roles/roles").roleMiddleware(fileUrl);
 const validate = require("../../validate/userValidate")
 const jwt = require("../../middleware/usermiddleware");
-const userConn = require("../../model/userConn").User// user schema
+const userConn = require("../../model/schema").User// user schema
 
 module.exports =router;
 
