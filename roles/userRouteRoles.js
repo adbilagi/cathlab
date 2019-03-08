@@ -2,7 +2,7 @@ const role = require("./roles").role
 
 
 let privilege =[];
-// create roles
+
 
 
 privilege = ["/api/users/signup", "POST"];
