@@ -43,8 +43,8 @@ export default class CurRoutes extends Component {
             <Route exact path="/setactivityuser" component={SetActivityUser}/>
 
             {/* Account info */}
-            <Route exact path="/accountinfo/group/create" component={CreateGroup}/>
-            <Route exact path="/accountinfo/group/alter" component={AlterGroup}/>
+            <Route exact path="/creategroup" component={CreateGroup}/>
+            <Route exact path="/altergroup" component={AlterGroup}/>
           </div>
 
         </BrowserRouter>

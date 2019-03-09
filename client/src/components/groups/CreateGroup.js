@@ -14,6 +14,18 @@ export default class CreateGroup extends Component {
       [e.target.name] : e.target.value
     });
   }
+  componentWillMount(){
+    $.ajax({
+      method : "GET",
+      url : "api/master/accounts/group/all",
+      success: (data)=>{
+        console.log(data.data);
+      },
+      error : (err)=>{
+        console.log(err.responseText);
+      }
+    })
+  }
 
   render() {
     return (

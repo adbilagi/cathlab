@@ -10,35 +10,35 @@ export default class AccountInfo extends Component {
             title : "Create Group",
             text : "Creates new group",
             group : "groups",
-            path : "/accountinfo/group/create"
+            path : "/creategroup"
           },          {
             title : "Alter Group",
             text : "Edit gropp",
             group : "groups",
-            path : "/accountinfo/group/alter"
+            path : "/altergroup"
           },
           {
             title : "Delete Group",
             text : "Deletes group",
             group : "groups",
-            path : "/accountinfo/group/delete"
+            path : "/deletegroup"
           },
           {
             title : "Create Ledger",
             text : "Creates new ledger",
             group : "ledger",
-            path : "/accountinfo/ledger/create"
+            path : "/createledget"
           },          {
             title : "Alter Ledger",
             text : "Edit ledger",
             group : "ledger",
-            path : "/accountinfo/ledger/alter"
+            path : "/alterledger"
           },
           {
             title : "Delete ledger",
             text : "Deletes ledger",
             group : "ledger",
-            path : "/accountinfo/ledger/delete"
+            path : "/deleteledger"
           }
         ]
       }
