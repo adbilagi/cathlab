@@ -3,6 +3,9 @@
  * */ 
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+const Fawn = require("fawn");
+Fawn.init(mongoose);
+
 
 let userSchema = new mongoose.Schema({
     user : {
@@ -65,7 +68,7 @@ let userSchema = new mongoose.Schema({
         required : true,
         default : "visitor"// visitor no access for any valid route
     }
-})
+});
 
 let groupSchema = new mongoose.Schema({
     name : {
@@ -77,7 +80,7 @@ let groupSchema = new mongoose.Schema({
         type: String,
         required : true
     }
-})
+});
 
 let ledgerSchema = new mongoose.Schema({
     name : {
@@ -95,12 +98,13 @@ let ledgerSchema = new mongoose.Schema({
         default : 0
     }
 
-})
+});
 
  const Group = mongoose.model("Group", groupSchema);
  const Ledger = mongoose.model("Ledger", ledgerSchema)
  const User = mongoose.model("User", userSchema);
-
+ 
+ module.exports.Fawn = Fawn;
  module.exports.User = User;
  module.exports.Ledger = Ledger;
  module.exports.Group = Group;
