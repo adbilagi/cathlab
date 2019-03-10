@@ -7,6 +7,7 @@ const conGroup = require("../model/schema").Group;
 const parentGroup =["Captil Account", "Assets", "Liabilities", "Profit and Loss"];
 
 
+
 module.exports =(curJson, callback)=>{
     for (const key in curJson) {
         switch (key) {

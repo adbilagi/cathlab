@@ -6,6 +6,7 @@ const validate = require("../../validate/groupValidate");
 const jwt = require("../../middleware/usermiddleware");
 const groupConn = require("../../model/schema").Group;
 const Fawn = require("../../model/schema").Fawn;
+const parentGroup =["Captil Account", "Assets", "Liabilities", "Profit and Loss"];
 
 
 module.exports = router;
@@ -16,13 +17,13 @@ router.get("/all", (req, res)=>{
         //     res.status(500).send("You do not have permission for this acction");
         //     return;
         // }
-        groupConn.find((err, data)=>{
-            if(err){
-                res.status(500).send(err);
-                return;
-            }else{
-                res.status(200).json({data : data, message : "check the recived data"});
-            }
+        
+        groupConn.find().select("name").then((data)=>{
+            
+            res.status(200).send({data : data, parentGroup : parentGroup});
+            return;
+        }).catch(err=>{
+            res.status(500).send(err);
         })
         
     } catch (error) {

@@ -7,7 +7,7 @@ export default class CreateGroup extends Component {
   state ={
     name : "",
     undergroup : "",
-    groupList : ["Captal Account", "Assets", "Liabilities"]
+    groupList : []
   }
   onChange =(e)=>{
     this.setState({
@@ -19,7 +19,18 @@ export default class CreateGroup extends Component {
       method : "GET",
       url : "api/master/accounts/group/all",
       success: (data)=>{
-        console.log(data.data);
+        let tempGroup = [];
+        data.data.forEach((element)=>{
+          tempGroup.push(element.name);
+        });
+        data.parentGroup.forEach((element)=>{
+          tempGroup.push(element);
+        })
+        
+        this.setState({
+          groupList : tempGroup,
+        
+        })
       },
       error : (err)=>{
         console.log(err.responseText);
@@ -51,6 +62,8 @@ export default class CreateGroup extends Component {
                               )
                             })
                           }
+ 
+  
                         </datalist>
                         <Button color="info">Create Group</Button>
                     </Form>
