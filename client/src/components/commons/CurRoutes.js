@@ -11,6 +11,7 @@ import SetActivityUser from "../users/SetActivityUser"
 // accountinfo imports
 import CreateGroup from "../groups/CreateGroup"
 import AlterGroup from "../groups/AlterGroup"
+import DeleteGroup from "../groups/DeleteGroup";
 
 import UsersLinks from '../sidebar/UsersLinks';
 import VoucherLinks from "../sidebar/VoucherLinks"
@@ -45,6 +46,7 @@ export default class CurRoutes extends Component {
             {/* Account info */}
             <Route exact path="/creategroup" component={CreateGroup}/>
             <Route exact path="/altergroup" component={AlterGroup}/>
+            <Route exact path="/deletegroup" component={DeleteGroup}/>
           </div>
 
         </BrowserRouter>

@@ -14,6 +14,7 @@ module.exports = router;
 
 router.get("/all", jwt.validateLogin, roleMiddleware,(req, res)=>{
     try {
+        return
         
         if(!req.permission){// check permisiion
             res.status(500).send("You do not have permission for this acction");
