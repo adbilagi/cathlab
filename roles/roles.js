@@ -7,7 +7,9 @@ module.exports.roleMiddleware =(fileUrl)=>{
         // fileUrl is for shake app.routes in
         let CurUrl = `${fileUrl}${req.route.path}`;
         let curRole = req.jwtPayload.role;
+        
         req.permission = role.getRoleRoutePrivilegeValue(curRole, CurUrl, req.method);
+
         next();
     }
 

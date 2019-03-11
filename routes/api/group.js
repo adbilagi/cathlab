@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const fileUrl = "/api/master/accounts/group";
 const roleMiddleware = require("../../roles/roles").roleMiddleware(fileUrl);
+const roles = require("../../roles/groupRouteRole");
 const validate = require("../../validate/groupValidate");
 const jwt = require("../../middleware/usermiddleware");
 const groupConn = require("../../model/schema").Group;
@@ -11,12 +12,13 @@ const parentGroup =["Captil Account", "Assets", "Liabilities", "Profit and Loss"
 
 module.exports = router;
 
-router.get("/all", (req, res)=>{
+router.get("/all", jwt.validateLogin, roleMiddleware,(req, res)=>{
     try {
-        // if(!req.permission){// check permisiion
-        //     res.status(500).send("You do not have permission for this acction");
-        //     return;
-        // }
+        
+        if(!req.permission){// check permisiion
+            res.status(500).send("You do not have permission for this acction");
+            return;
+        }
         
         groupConn.find().select("name").then((data)=>{
             
@@ -57,12 +59,17 @@ router.get("/:group", (req, res)=>{
 
 // @route POST
 // Description : creating new group name
-router.post("/", (req, res)=>{
+router.post("/", jwt.validateLogin, roleMiddleware, (req, res)=>{
     try {
+        if(!req.permission){// check permisiion
+            res.status(500).send("You do not have permission for this acction");
+            return;
+        }
         let newgroup ={
             name : req.body.name,
             underGroup : req.body.underGroup
         }
+       
         validate(newgroup, (err)=>{
             if(err){
                 res.status(500).send(err);
@@ -89,8 +96,12 @@ router.post("/", (req, res)=>{
 // @route PUT
 // Description This route is for editing group
 
-router.put("/", (req, res)=>{
+router.put("/", jwt.validateLogin, roleMiddleware,(req, res)=>{
     try {
+        if(!req.permission){// check permisiion
+            res.status(500).send("You do not have permission for this acction");
+            return;
+        }
         let editGroup={
             oldName : req.body.oldName,
             name : req.body.name,

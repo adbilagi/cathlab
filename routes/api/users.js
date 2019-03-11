@@ -62,6 +62,7 @@ router.get("/logout", (req, res)=>{
 // jwt.validateLogin this middle ware return jwtPayload {user : user, role : role}
  router.post("/signup", jwt.validateLogin, roleMiddleware, function(req, res){
      try {
+         
         if(req.permission){
             validate(req.body);
             let signData = {
