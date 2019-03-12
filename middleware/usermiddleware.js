@@ -4,11 +4,12 @@
 const role = require("user-groups-roles");
 const jwt = require("jsonwebtoken");
 const SECRETKEY = "Umesh"
-let fileUrl = (fileURL)=>{
-    return fileURL;
+let fileUrl=""
+
+
+let fileURL = (fileURL)=>{
+    fileUrl = fileURL;
 }
-
-
 let validateLogin =(req, res, next)=>{
     try {
         let token = req.cookies.JWToken;
@@ -16,7 +17,6 @@ let validateLogin =(req, res, next)=>{
         let payload =jwt.verify(token, SECRETKEY);
         req.jwtPayload = payload;
         createJWTToken(payload.user, payload.role, req, res);
-
         // for roles
         let CurUrl = `${fileUrl}${req.route.path}`;
         let curRole = req.jwtPayload.role;
@@ -44,7 +44,7 @@ role.createNewRole("visitor");
 
 module.exports.validateLogin =validateLogin
 module.exports.role = role;
-module.exports.fileUrl = fileUrl;
+module.exports.fileURL = fileURL;
 
 
 

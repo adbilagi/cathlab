@@ -1,25 +1,26 @@
 const express = require("express");
 const router = express.Router();
 const fileUrl = "/api/master/accounts/group";
-// const roleMiddleware = require("../../roles/roles").roleMiddleware(fileUrl);
-// const roles = require("../../roles/groupRouteRole");
 const validate = require("../../validate/groupValidate");
 const jwt = require("../../middleware/usermiddleware");
 const groupConn = require("../../model/schema").Group;
 const Fawn = require("../../model/schema").Fawn;
-// const parentGroup =["Captil Account", "Assets", "Liabilities", "Profit and Loss"];
+const parentGroup =["Captil Account", "Assets", "Liabilities", "Profit and Loss"];
 let privilege=[];
-jwt.fileUrl(fileUrl);
 
-
+jwt.fileURL(fileUrl);
 module.exports = router;
+
+
+
 privilege =[`${fileUrl}/all`, "GET"];
 jwt.role.createNewPrivileges(privilege, "This gets single group", true);
 jwt.role.addPrivilegeToRole("admin", privilege, true);
 router.get("/all", jwt.validateLogin, (req, res)=>{
     try {
+        
         groupConn.find().select("name").then((data)=>{
-            res.status(200).json({data : data, parentGroup : parentGroup});
+            res.status(200).send({data : data, parentGroup : parentGroup});
             return;
         }).catch(err=>{
             res.status(500).send(err);
