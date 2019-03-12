@@ -15,10 +15,10 @@ module.exports.roleMiddleware =(fileUrl)=>{
 
 }
 // create roles
-role.createNewRole("admin");
-role.createNewRole("doctor");
-role.createNewRole("accountant");
-role.createNewRole("receptionist");
-role.createNewRole("visitor");
+// role.createNewRole("admin");
+// role.createNewRole("doctor");
+// role.createNewRole("accountant");
+// role.createNewRole("receptionist");
+// role.createNewRole("visitor");
 
 module.exports.role = role;

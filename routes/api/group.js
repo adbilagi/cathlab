@@ -1,28 +1,25 @@
 const express = require("express");
 const router = express.Router();
 const fileUrl = "/api/master/accounts/group";
-const roleMiddleware = require("../../roles/roles").roleMiddleware(fileUrl);
-const roles = require("../../roles/groupRouteRole");
+// const roleMiddleware = require("../../roles/roles").roleMiddleware(fileUrl);
+// const roles = require("../../roles/groupRouteRole");
 const validate = require("../../validate/groupValidate");
 const jwt = require("../../middleware/usermiddleware");
 const groupConn = require("../../model/schema").Group;
 const Fawn = require("../../model/schema").Fawn;
-const parentGroup =["Captil Account", "Assets", "Liabilities", "Profit and Loss"];
+// const parentGroup =["Captil Account", "Assets", "Liabilities", "Profit and Loss"];
+let privilege=[];
+jwt.fileUrl(fileUrl);
 
 
 module.exports = router;
-
-router.get("/all", jwt.validateLogin, roleMiddleware,(req, res)=>{
+privilege =[`${fileUrl}/all`, "GET"];
+jwt.role.createNewPrivileges(privilege, "This gets single group", true);
+jwt.role.addPrivilegeToRole("admin", privilege, true);
+router.get("/all", jwt.validateLogin, (req, res)=>{
     try {
-        
-        if(!req.permission){// check permisiion
-            res.status(500).send("You do not have permission for this acction");
-            return;
-        }
-        
         groupConn.find().select("name").then((data)=>{
-            
-            res.status(200).send({data : data, parentGroup : parentGroup});
+            res.status(200).json({data : data, parentGroup : parentGroup});
             return;
         }).catch(err=>{
             res.status(500).send(err);
@@ -59,7 +56,7 @@ router.get("/:group", (req, res)=>{
 
 // @route POST
 // Description : creating new group name
-router.post("/", jwt.validateLogin, roleMiddleware, (req, res)=>{
+router.post("/", jwt.validateLogin,  (req, res)=>{
     try {
         if(!req.permission){// check permisiion
             res.status(500).send("You do not have permission for this acction");
@@ -96,7 +93,7 @@ router.post("/", jwt.validateLogin, roleMiddleware, (req, res)=>{
 // @route PUT
 // Description This route is for editing group
 
-router.put("/", jwt.validateLogin, roleMiddleware,(req, res)=>{
+router.put("/", jwt.validateLogin, (req, res)=>{
     try {
         if(!req.permission){// check permisiion
             res.status(500).send("You do not have permission for this acction");
