@@ -41,6 +41,53 @@ export default class DeleteGroup extends Component {
           }
         })
       }
+      onSubmit =(e)=>{
+        e.preventDefault();
+        try {
+          if(this.state.groupList.indexOf(this.state.name) < 0){
+            this.setState({
+              ajaxError : true,
+              ajaxErrorMessage : "invalid group name",
+              ajaxSuccess : false,
+              ajaxSuccessMessage : ""
+
+            })
+            return;
+
+          }
+          $.ajax({
+            method : "DELETE",
+            url : "/api/master/accounts/group",
+            data : {name : this.state.name},
+            success : (data)=>{
+              this.setState({
+                ajaxError : false,
+                ajaxErrorMessage : "",
+                ajaxSuccess : true,
+                ajaxSuccessMessage :data.message
+
+              })
+            },
+            error : (err)=>{
+              this.setState({
+                ajaxError : true,
+                ajaxErrorMessage : err.responseText,
+                ajaxSuccess : false,
+                ajaxSuccessMessage :""
+              })
+            }
+          })
+          
+        } catch (error) {
+          this.setState({
+            ajaxError : true,
+            ajaxErrorMessage : error,
+            ajaxSuccess : false,
+            ajaxSuccessMessage :""
+          })
+          
+        }
+      }
   render() {
     return (
       <div>
@@ -66,6 +113,13 @@ export default class DeleteGroup extends Component {
                         </datalist>
                         <Button color="info">Delete Group</Button>
                     </Form>
+                    <br/>
+                    <Alerts 
+                            alertSuccess = {this.state.ajaxSuccess}
+                            alertError = {this.state.ajaxError}
+                            alertSuccessMessage = {this.state.ajaxSuccessMessage}
+                            alertErrorMessage = {this.state.ajaxErrorMessage}
+                        />
                 </Col>
             </Row>
         </Container>

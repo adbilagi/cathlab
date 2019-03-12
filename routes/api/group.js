@@ -142,25 +142,18 @@ router.delete("/", jwt.validateLogin,(req, res)=>{
         let deleteGroup ={
             name : req.body.name
         }
+    
      
-        let fountUnderGroup = false;
+      
         groupConn.findOne({underGroup : deleteGroup.name})
         .then((data)=>{
             if(data.underGroup === deleteGroup.name){ 
-                fountUnderGroup =true;
+                throw "can not delete this group"
+            }else{
+                return true
             }
-        }).catch((err)=>{
-            res.status(500).send(err);
-            return;
-        });
-
-        if(fountUnderGroup){
-            res.status(500).send(`can not delete ${deleteGroup.name} as it is under use`);
-            return;
-        }
-
-        // ========================================
-        groupConn.deleteOne({name : deleteGroup.name})
+            })
+        .deleteOne({name : deleteGroup.name})
         .then((data)=>{
             if(data.deletedCount >0){
                 res.status(200).json({
@@ -169,10 +162,8 @@ router.delete("/", jwt.validateLogin,(req, res)=>{
                 });
 
             }else{
-                res.status(500).send(`Could not delete ${deleteGroup.name} group from database`)
+                throw `Could not delete ${deleteGroup.name} group from database`;
             }
-            
-            return;
         }).catch((err)=>{
             res.status(500).send(err);
             return;
