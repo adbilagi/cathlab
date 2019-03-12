@@ -3,19 +3,21 @@
 
 const express = require("express");
 const router = express.Router();
-const roles = require("../../roles//userRouteRoles");
+// const roles = require("../../roles//userRouteRoles");
 const fileUrl = "/api/users"
-const roleMiddleware = require("../../roles/roles").roleMiddleware(fileUrl);
+// const roleMiddleware = require("../../roles/roles").roleMiddleware(fileUrl);
 const validate = require("../../validate/userValidate")
 const jwt = require("../../middleware/usermiddleware");
 const userConn = require("../../model/schema").User// user schema
 
 module.exports =router;
-
+jwt.fileURL(fileUrl);
+privilege=[];
 
  
 // @route POST
 // descrpiton This return jwt token with cookie on success login
+
 router.post("/login", (req, res)=>{
     try {
         
@@ -60,10 +62,13 @@ router.get("/logout", (req, res)=>{
 // @route POST
 // descrition This is for signing in new user needs validatation by user role  permission
 // jwt.validateLogin this middle ware return jwtPayload {user : user, role : role}
- router.post("/signup", jwt.validateLogin, roleMiddleware, function(req, res){
+privilege = [`${fileUrl}/signup`, "POST"];
+jwt.role.createNewPrivileges(privilege, "To add new user", false);
+jwt.role.addPrivilegeToRole("admin", privilege,true);
+ router.post("/signup", jwt.validateLogin,  function(req, res){
      try {
          
-        if(req.permission){
+        
             validate(req.body);
             let signData = {
                 user : req.body.user,
@@ -81,10 +86,7 @@ router.get("/logout", (req, res)=>{
     
             });
         
-        }else{
-            res.status(500).send("You do not have this access");
-        }
-         
+        
          
      } catch (error) {
          res.status(500).send(error);
@@ -96,11 +98,12 @@ router.get("/logout", (req, res)=>{
 
  //  @route PUT
 // description This is changing password
-
-router.put("/changepassword", jwt.validateLogin,roleMiddleware, (req, res)=>{
+privilege = [`${fileUrl}/changepassword`, "PUT"];
+jwt.role.createNewPrivileges(privilege, "change password by user", true);
+router.put("/changepassword", jwt.validateLogin, (req, res)=>{
 
 try {
-    if(req.permission){
+    
         validate(req.body);
         let oldPassword = req.body.oldPassword;
         let newPassword = req.body.newPassword;
@@ -117,9 +120,7 @@ try {
             return;
         }
         });
-    }else{
-        res.status(500).send("You do not have this access");
-    }
+
     
 } catch (error) {
     res.status(500).send(error);
@@ -138,10 +139,12 @@ try {
 
 //  @route PUT
 // descrption This is change role of user
-router.put("/changerole", jwt.validateLogin, roleMiddleware,(req, res)=>{
+privilege = [`${fileUrl}/changerole`, "PUT"];
+jwt.role.createNewPrivileges(privilege, "change role", false);
+jwt.role.addPrivilegeToRole("admin", privilege,true);
+router.put("/changerole", jwt.validateLogin, (req, res)=>{
     
     try {
-        if(req.permission){
             validate(req.body);
             
             // here code for role change of user whoose role has to be changed , not the logged user
@@ -162,11 +165,7 @@ router.put("/changerole", jwt.validateLogin, roleMiddleware,(req, res)=>{
                 return;
             }
             });
-        }else{
-            // req.permission false
-            res.status(500).send("You do not have this access");
-            return;
-        }
+
         
     } catch (error) {
         
@@ -178,33 +177,31 @@ router.put("/changerole", jwt.validateLogin, roleMiddleware,(req, res)=>{
 
 
 //  @route GET
-// description :  this route gets all  roles and each users and his role 
-router.get("/getallusersandroles", jwt.validateLogin, roleMiddleware, (req, res)=>{
+// description :  this route gets all  roles and each users and his role
+privilege =  [`${fileUrl}/getallusersandroles`, "GET"];
+jwt.role.createNewPrivileges(privilege, "change role", false);
+jwt.role.addPrivilegeToRole("admin", privilege, true);
+router.get("/getallusersandroles", jwt.validateLogin,  (req, res)=>{
     // write code is not complete
-    try {
-        
-        if(req.permission){
-            const curRoles =roles.getAllRoles();
-            userConn.find((err, data)=>{
-                if(err){
-                    res.status(500).send("Could not get user and roles")
-                    return;
-                }else{
-                    let allRoles = roles.getAllRoles();
-                    let users = data.map((user, index)=>{
-                        return(
-                            {user:data[index].user, role:data[index].role, activeUser : user.activeUser}
-                        )
-                    })
-                    let datajson = {"roles" : allRoles, "users" : users };
-                    res.status(200).send(datajson);
-                    return;
-                }
-            })
-            return;
-        }else{
-            res.status(500).send("you do not have access to get all roles");
-        }
+    try {   
+       const curRoles =roles.getAllRoles();
+        userConn.find((err, data)=>{
+            if(err){
+                res.status(500).send("Could not get user and roles")
+                return;
+            }else{
+                let allRoles = roles.getAllRoles();
+                let users = data.map((user, index)=>{
+                    return(
+                        {user:data[index].user, role:data[index].role, activeUser : user.activeUser}
+                    )
+                })
+                let datajson = {"roles" : allRoles, "users" : users };
+                res.status(200).send(datajson);
+                return;
+            }
+        });
+
  
     } catch (error) {
         res.status(500).send("Could not get all Roles");
@@ -217,32 +214,27 @@ router.get("/getallusersandroles", jwt.validateLogin, roleMiddleware, (req, res)
 
 // @route PUT
 // Description : this route resets the user activity to active inactive state
-router.put("/changeuseractivity", jwt.validateLogin, roleMiddleware, (req, res)=>{
+privilege = [`${fileUrl}/changeuseractivity`, "PUT"];
+jwt.role.createNewPrivileges(privilege, "change user activity", false);
+jwt.role.addPrivilegeToRole("admin", privilege,true);
+router.put("/changeuseractivity", jwt.validateLogin,  (req, res)=>{
    
     try {
-       
-        if(req.permission){
-            validate(req.body);
-            userConn.updateOne({user : req.body.user},{$set : {activeUser : req.body.activeUser}},(err, raw)=>{
-                
-                if(raw.n < 1){//number selected is less than 1 or zero then 500
-                    res.status(500).send("Invalid User");
-                    return;
-                }else if(err){
-                    res.status(500).send("could not complete action due to error");
-                    return;
-                }else{
-                    // res.status(200).send({"message" : "suucessfully reset the acivity of user"});
-                    res.status(200).json({message : "suucessfully reset the acivity of user"});
-                    return;
-                }
-            });
-
-        }else{
-            res.status(500).send("You do not have permsssion to modify activity of user");
-            return;
-        }
-        
+        validate(req.body);
+        userConn.updateOne({user : req.body.user},{$set : {activeUser : req.body.activeUser}},(err, raw)=>{
+            
+            if(raw.n < 1){//number selected is less than 1 or zero then 500
+                res.status(500).send("Invalid User");
+                return;
+            }else if(err){
+                res.status(500).send("could not complete action due to error");
+                return;
+            }else{
+                // res.status(200).send({"message" : "suucessfully reset the acivity of user"});
+                res.status(200).json({message : "suucessfully reset the acivity of user"});
+                return;
+            }
+        });
     } catch (error) {
         res.status(500).send(error);
         

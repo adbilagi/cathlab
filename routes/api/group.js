@@ -6,16 +6,16 @@ const jwt = require("../../middleware/usermiddleware");
 const groupConn = require("../../model/schema").Group;
 const Fawn = require("../../model/schema").Fawn;
 const parentGroup =["Captil Account", "Assets", "Liabilities", "Profit and Loss"];
-let privilege=[];
+
 
 jwt.fileURL(fileUrl);
 module.exports = router;
 
 
-
-privilege =[`${fileUrl}/all`, "GET"];
-jwt.role.createNewPrivileges(privilege, "This gets single group", true);
-jwt.role.addPrivilegeToRole("admin", privilege, true);
+// Route GET
+// Description This return all groups
+jwt.role.createNewPrivileges([`${fileUrl}/all`, "GET"], "This gets all group", true);
+jwt.role.addPrivilegeToRole("admin", [`${fileUrl}/all`, "GET"], true);
 router.get("/all", jwt.validateLogin, (req, res)=>{
     try {
         
@@ -35,7 +35,9 @@ router.get("/all", jwt.validateLogin, (req, res)=>{
 
 // @route GET
 // Description : This route is for getting single group
-router.get("/:group", (req, res)=>{
+jwt.role.createNewPrivileges([`${fileUrl}/:group`, "GET"], "This gets single group", false);
+jwt.role.addPrivilegeToRole("admin", [`${fileUrl}/:group`, "GET"], true);
+router.get("/:group", jwt.validateLogin,(req, res)=>{
     
     try {
         let curGroup = req.params.group;
@@ -57,12 +59,10 @@ router.get("/:group", (req, res)=>{
 
 // @route POST
 // Description : creating new group name
+jwt.role.createNewPrivileges([`${fileUrl}/`, "POST"], "This creates new group", false);
+jwt.role.addPrivilegeToRole("admin", [`${fileUrl}/`, "POST"], true);
 router.post("/", jwt.validateLogin,  (req, res)=>{
     try {
-        if(!req.permission){// check permisiion
-            res.status(500).send("You do not have permission for this acction");
-            return;
-        }
         let newgroup ={
             name : req.body.name,
             underGroup : req.body.underGroup
@@ -93,13 +93,10 @@ router.post("/", jwt.validateLogin,  (req, res)=>{
 
 // @route PUT
 // Description This route is for editing group
-
+jwt.role.createNewPrivileges([`${fileUrl}/`, "PUT"], "This edits single and also itself at undergroup group", false);
+jwt.role.addPrivilegeToRole("admin", [`${fileUrl}/`, "PUT"], true);
 router.put("/", jwt.validateLogin, (req, res)=>{
     try {
-        if(!req.permission){// check permisiion
-            res.status(500).send("You do not have permission for this acction");
-            return;
-        }
         let editGroup={
             oldName : req.body.oldName,
             name : req.body.name,
@@ -138,7 +135,9 @@ router.put("/", jwt.validateLogin, (req, res)=>{
  
 // @route DELETE
 // Description Deletes the group
-router.delete("/", (req, res)=>{
+jwt.role.createNewPrivileges([`${fileUrl}/`, "DELETE"], "This deletes single group", false);
+jwt.role.addPrivilegeToRole("admin", [`${fileUrl}/`, "DELETE"], true);
+router.delete("/", jwt.validateLogin,(req, res)=>{
     try {
         let deleteGroup ={
             name : req.body.name

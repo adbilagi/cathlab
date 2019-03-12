@@ -1,12 +1,8 @@
 /**
  * This file validates the groupSchema
  */ 
-const validator = require("validator");
-const roles = require("../roles/roles");
 const conGroup = require("../model/schema").Group;
 const parentGroup =["Captil Account", "Assets", "Liabilities", "Profit and Loss"];
-
-
 
 module.exports =(curJson, callback)=>{
     for (const key in curJson) {
