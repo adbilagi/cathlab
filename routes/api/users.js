@@ -3,7 +3,7 @@
 
 const express = require("express");
 const router = express.Router();
-// const roles = require("../../roles//userRouteRoles");
+const role = require("../../middleware/usermiddleware").role;
 const fileUrl = "/api/users"
 // const roleMiddleware = require("../../roles/roles").roleMiddleware(fileUrl);
 const validate = require("../../validate/userValidate")
@@ -184,13 +184,13 @@ jwt.role.addPrivilegeToRole("admin", privilege, true);
 router.get("/getallusersandroles", jwt.validateLogin,  (req, res)=>{
     // write code is not complete
     try {   
-       const curRoles =roles.getAllRoles();
+       const curRoles =role.getAllRoles();
         userConn.find((err, data)=>{
             if(err){
                 res.status(500).send("Could not get user and roles")
                 return;
             }else{
-                let allRoles = roles.getAllRoles();
+                let allRoles = role.getAllRoles();
                 let users = data.map((user, index)=>{
                     return(
                         {user:data[index].user, role:data[index].role, activeUser : user.activeUser}
