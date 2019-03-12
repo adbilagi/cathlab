@@ -15,7 +15,9 @@ module.exports.createJWTToken = createJWTToken;
 let validateLogin =(req, res, next)=>{
     try {
         let token = req.cookies.JWToken;
+      
         let payload =jwt.verify(token, SECRETKEY);
+       
         req.jwtPayload = payload;
         createJWTToken(payload.user, payload.role, req, res);
         next();
