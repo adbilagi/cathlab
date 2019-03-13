@@ -27,7 +27,7 @@ export default class AccountInfo extends Component {
             title : "Create Ledger",
             text : "Creates new ledger",
             group : "ledger",
-            path : "/createledget"
+            path : "/createledger"
           },          {
             title : "Alter Ledger",
             text : "Edit ledger",

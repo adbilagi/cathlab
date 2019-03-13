@@ -8,10 +8,14 @@ import ChangeRole from "../users/ChangeRole"
 import ChanngePassword from "../users/ChangePassword"
 import SetActivityUser from "../users/SetActivityUser"
 
-// accountinfo imports
+// accountinfo imports groups
 import CreateGroup from "../groups/CreateGroup"
 import AlterGroup from "../groups/AlterGroup"
 import DeleteGroup from "../groups/DeleteGroup";
+// account info imports ledgers
+import CreateLedger from "../ledgers/CreateLedger"
+import AlterLedger from "../ledgers/AlterLedger"
+import DeleteLedger from "../ledgers/DeleteLedgers"
 
 import UsersLinks from '../sidebar/UsersLinks';
 import VoucherLinks from "../sidebar/VoucherLinks"
@@ -31,7 +35,7 @@ export default class CurRoutes extends Component {
             <Route exact path="/links/accountinfo" component ={AccountInfo}/>
 
             
-              {/* Users peronal */}
+              {/* Users personal */}
             <Route exact path="/" component={Home}/>
             <Route exact path="/login" component={CurLogin}/>
             <Route exact path="/logout" component={Logout}/>
@@ -43,10 +47,14 @@ export default class CurRoutes extends Component {
             <Route exact path="/changerole" component={ChangeRole}/>
             <Route exact path="/setactivityuser" component={SetActivityUser}/>
 
-            {/* Account info */}
+            {/* /* Account info groups */}
             <Route exact path="/creategroup" component={CreateGroup}/>
             <Route exact path="/altergroup" component={AlterGroup}/>
             <Route exact path="/deletegroup" component={DeleteGroup}/>
+            {/* /* Account info ledgers */}
+            <Route exact path="/createledger" component={CreateLedger}/>
+            {/* <Route exact path="/alterledger" component={AlterLedger}/>
+            <Route exact path="/deleteledger" component={DeleteLedger}/> */}
           </div>
 
         </BrowserRouter>
