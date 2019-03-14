@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Form, FormGroup, Label, Input, Container, Row, Col} from 'reactstrap';
+import { Button, Form, FormGroup, Label, Input, Container, Row, Col, Spinner} from 'reactstrap';
 import $ from "jquery";
 import Alerts from "../commons/Alerts"
 
@@ -11,7 +11,8 @@ export default class CreateGroup extends Component {
     ajaxError : false,
     ajaxErrorMessage : "",
     ajaxSuccess : false,
-    ajaxSuccessMessage :""
+    ajaxSuccessMessage :"",
+    spinner : false
   }
   onChange =(e)=>{
     this.setState({
@@ -23,6 +24,9 @@ export default class CreateGroup extends Component {
     });
   }
   componentWillMount(){
+    this.setState({
+      spinner :true
+    })
     $.ajax({
       method : "GET",
       url : "api/master/accounts/group/all",
@@ -40,6 +44,11 @@ export default class CreateGroup extends Component {
       },
       error : (err)=>{
         console.log(err.responseText);
+      },
+      complete : ()=>{
+        this.setState({
+          spinner :false
+        })
       }
     })
   }
@@ -52,11 +61,14 @@ export default class CreateGroup extends Component {
           ajaxError : true,
           ajaxErrorMessage : "Invalid underGroup",
           ajaxSuccess : false,
-          ajaxSuccessMessage :""
+          ajaxSuccessMessage :"",
         });
         return;
         
       }
+      this.setState({
+        spinner : true
+      })
       $.ajax({
         method : "POST",
         url : "/api/master/accounts/group",
@@ -76,6 +88,11 @@ export default class CreateGroup extends Component {
             ajaxSuccess : false,
             ajaxSuccessMessage :""
           });
+        },
+        complete : ()=>{
+          this.setState({
+            spinner : false
+          })
         }
       })
     } catch (error) {
@@ -110,7 +127,15 @@ export default class CreateGroup extends Component {
  
   
                         </datalist>
-                        <Button color="info">Create Group</Button>
+                        <Row>
+                          <Col>
+                          <Button color="info">Create Group</Button>
+                          </Col>
+                          <Col>
+                            {this.state.spinner ? <Spinner color="info"/> : ""}
+                          </Col>
+                        </Row>
+                        
                         
                         <Alerts 
                             alertSuccess = {this.state.ajaxSuccess}
