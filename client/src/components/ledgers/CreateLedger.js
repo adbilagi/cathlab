@@ -36,30 +36,30 @@ import Alerts from "../commons/Alerts"
                     <h3>Create Ledger</h3>
                         <Form onSubmit={this.onSubmit}>
                         <LedgerElements 
-                                 name = {this.onChange}
-                                 nameValue = {this.state.name}
+                          name = {this.onChange}
+                          nameValue = {this.state.name}
 
-                                 groupName ={this.onChange}
-                                 groupNameValue= {this.state.groupName}
+                          groupName ={this.onChange}
+                          groupNameValue= {this.state.groupName}
 
-                                 email = {this.onChange}
-                                 emailValue = {this.state.email}
+                          email = {this.onChange}
+                          emailValue = {this.state.email}
 
-                                 phone = {this.onChange}
-                                 phoneValue = {this.state.phone}
+                          phone = {this.onChange}
+                          phoneValue = {this.state.phone}
 
-                                 panNumber = {this.onChange}
-                                 panNumberValue = {this.state.panNumber}
+                          panNumber = {this.onChange}
+                          panNumberValue = {this.state.panNumber}
 
-                                 gstNumber = {this.onChange}
-                                 gstNumberValue = {this.state.gstNumber}
+                          gstNumber = {this.onChange}
+                          gstNumberValue = {this.state.gstNumber}
 
-                                 address = {this.onChange}
-                                 addressValue ={this.state.address}
+                          address = {this.onChange}
+                          addressValue ={this.state.address}
 
-                                 openingBalance ={this.onChange}
-                                 openingBalanceValue = {this.state.openingBalance}
-                        
+                          openingBalance ={this.onChange}
+                          openingBalanceValue = {this.state.openingBalance}
+                
                         />
                          <Button color="info">Create New Ledger</Button>
                         </Form>
