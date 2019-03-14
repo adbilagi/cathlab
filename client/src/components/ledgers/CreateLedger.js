@@ -21,6 +21,12 @@ import Alerts from "../commons/Alerts"
          openingBalance : ""
       }
 
+      onChange =(e)=>{
+        this.setState({
+          [e.target.name] : e.target.value
+        })
+      }
+
    render() {
      return (
        <div>
@@ -30,17 +36,32 @@ import Alerts from "../commons/Alerts"
                     <h3>Create Ledger</h3>
                         <Form onSubmit={this.onSubmit}>
                         <LedgerElements 
-                                 name = {this.state.name}
-                                 groupName ={this.state.groupName}
-                                 email = {this.state.email}
-                                 phone = {this.state.phone}
-                                 panNumber = {this.state.panNumber}
-                                 gstNumber = {this.state.gstNumber}
-                                 address = {this.state.address}
-                                 openingBalance ={this.state.openingBalance}
+                                 name = {this.onChange}
+                                 nameValue = {this.state.name}
+
+                                 groupName ={this.onChange}
+                                 groupNameValue= {this.state.groupName}
+
+                                 email = {this.onChange}
+                                 emailValue = {this.state.email}
+
+                                 phone = {this.onChange}
+                                 phoneValue = {this.state.phone}
+
+                                 panNumber = {this.onChange}
+                                 panNumberValue = {this.state.panNumber}
+
+                                 gstNumber = {this.onChange}
+                                 gstNumberValue = {this.state.gstNumber}
+
+                                 address = {this.onChange}
+                                 addressValue ={this.state.address}
+
+                                 openingBalance ={this.onChange}
+                                 openingBalanceValue = {this.state.openingBalance}
                         
                         />
-                         
+                         <Button color="info">Create New Ledger</Button>
                         </Form>
                    </Col>
                </Row>
@@ -50,4 +71,6 @@ import Alerts from "../commons/Alerts"
      )
    }
  }
- 
+	
+	
+	
