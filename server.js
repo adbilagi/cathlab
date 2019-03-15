@@ -10,8 +10,8 @@ const mongoose = require("mongoose");
 const path = require("path");
 
 const config = require("./config/config");
-const connString = config.mongoCon.local//for local database
-// const connString = config.mongoCon.remote// for remote connectone
+// const connString = config.mongoCon.local//for local database
+const connString = config.mongoCon.remote// for remote connectone
 
 // for running production
 if(process.env.NODE_ENV === "production"){

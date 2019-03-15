@@ -83,21 +83,55 @@ let groupSchema = new mongoose.Schema({
 });
 
 let ledgerSchema = new mongoose.Schema({
-    name : {
+    
+    name :{
         type : String,
         required : true,
-        unique : true,
+        unique : true
     },
-    groupName : {
-        type : [{ type: Schema.Types.ObjectId, ref: 'Group' }]
+    groupName :  {
+        type :[{ type: Schema.Types.ObjectId, ref: 'Group' }],
+        required : true
 
     },
-    openingBalence : {
+    email : {
+        type : String,
+        required : false,
+        unique : false,
+
+    },
+    phone : {
+        type : String,
+        required : false,
+        unique : false
+    },
+    panNumber : {
+        type : String,
+        required : false,
+        unique : false
+    },
+    gstNumber : {
+        type : String,
+        required : false,
+        unique : false
+    },
+    address : {
+        type : String,
+        required : false,
+        unique : false
+    },
+    openingBalance : {
         type : Number,
-        required : true,
+        required : false,
+        unique : false,
         default : 0
+    },
+    activeLedger : {
+        type : Boolean,
+        required : true,
+        default : true
     }
-
+       
 });
 
  const Group = mongoose.model("Group", groupSchema);

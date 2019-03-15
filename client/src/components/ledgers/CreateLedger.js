@@ -11,7 +11,6 @@ import Alerts from "../commons/Alerts"
  export default class CreateLedger extends Component {
      state={
          name : "",
-         groupList : [],
          groupName :"",
          email : "",
          phone : "",
@@ -19,11 +18,12 @@ import Alerts from "../commons/Alerts"
          gstNumber : "",
          address : "",
          openingBalance : "",
+         activeLedger : true,
+         groupList : [],
          ajaxError : false,
          ajaxErrorMessage : "",
          ajaxSuccess : false,
          ajaxSuccessMessage :"",
-         activeLedger : true,
          spinner : false
       }
 
