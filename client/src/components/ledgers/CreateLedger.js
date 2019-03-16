@@ -18,7 +18,7 @@ import Alerts from "../commons/Alerts"
          panNumber :"",
          gstNumber : "",
          address : "",
-         openingBalance : "",
+         openingBalance : 0,
          activeLedger : true,
          groupList : [],
          ajaxError : false,
@@ -154,6 +154,7 @@ import Alerts from "../commons/Alerts"
 
                           openingBalance ={this.onChange}
                           openingBalanceValue = {this.state.openingBalance}
+                          activeLedger = {this.state.activeLedger}
                 
                         />
                         <Row>

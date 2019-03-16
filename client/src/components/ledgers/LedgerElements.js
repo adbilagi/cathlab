@@ -49,7 +49,13 @@ export default class LedgerElements extends Component {
                 </FormGroup>
                 <FormGroup>
                     <Label for="openingBalance">Opening Balance</Label>
-                    <Input type="text" value={this.props.openingBalanceValue} name="openingBalance" id="openingBalance" autoComplete="off" placeholder ="Enter opening balance with Cr or Dr suffix" onChange={this.props.openingBalance}/>
+                    <Input type="text" value={this.props.openingBalanceValue} name="openingBalance" id="openingBalance" autoComplete="off" placeholder ="Enter opening balance with Cr or Dr suffix"  onChange={this.props.openingBalance}/>
+                </FormGroup>
+                <FormGroup check>
+                <Label check>
+                    <Input type="checkbox" name= "activeLedger" id="activeLedger"checked={this.props.activeLedger}/>{' '}
+                    Active Ledger
+                </Label>
                 </FormGroup>
             </Col>
         </Row>

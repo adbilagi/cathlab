@@ -92,7 +92,6 @@ let ledgerSchema = new mongoose.Schema({
     },
     groupKey :  {
         type :[{ type: Schema.Types.ObjectId, ref: 'Group' }],
-        // type : String,
         required : true
 
     },
