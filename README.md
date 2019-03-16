@@ -43,4 +43,12 @@ Client i.e react runs inside client folder in dev mode.
 ## Production
 Run npm run build inside client folder
 then set `process.env.NODE_ENV === production`
-    
+
+
+## To Do
+  1. prevent parent group cration in database by validation 
+  2. consider adding sessions 
+  3. add sundry credators debitors, direct income indirect income direct expense indirect expense fixed assets as parent group these to added under approprite parents groups
+  4. make patients as parent group under sundry credadtors
+  5. ledgers validation write
+
