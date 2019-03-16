@@ -3,7 +3,7 @@
  */
 
 import React, { Component } from 'react';
-import { Button, Form, FormGroup, Label, Input, Container, Row, Col, Spinner} from 'reactstrap';
+import { Button, Form, Container, Row, Col, Spinner} from 'reactstrap';
 import LedgerElements from "./LedgerElements"
 import $ from "jquery";
 import Alerts from "../commons/Alerts"
@@ -11,6 +11,7 @@ import Alerts from "../commons/Alerts"
  export default class CreateLedger extends Component {
      state={
          name : "",
+         groupkey :"",
          groupName :"",
          email : "",
          phone : "",
@@ -40,23 +41,33 @@ import Alerts from "../commons/Alerts"
       onSubmit =(e)=>{
         e.preventDefault();
         try {
+          let key ="";
+          this.state.groupList.forEach((group)=>{
+            if(group.name === this.state.groupName){
+              key = group._id
+            }
+          })
+          let data = {
+            name : this.state.name,
+            groupName :this.state.groupName,
+            groupKey :  key,
+            email : this.state.email,
+            phone : this.state.phone,
+            panNumber : this.state.panNumber,
+            gstNumber : this.state.gstNumber,
+            address : this.state.address,
+            openingBalance : this.state.openingBalance,
+            activeLedger : this.state.activeLedger
+
+          }
+          console.log(data);
           this.setState({
             spinner : true
           })
           $.ajax({
             method : "POST",
             url : "/api/master/accounts/ledger",
-            data : {
-              name : this.state.name,
-              groupName :this.state.groupName,
-              email : this.state.email,
-              phone : this.state.phone,
-              panNumber : this.state.panNumber,
-              gstNumber : this.state.gstNumber,
-              address : this.state.address,
-              openingBalance : this.state.openingBalance
-
-            },
+            data :data,
             success : (data)=>{
               this.setState({
                 ajaxError : false,
@@ -93,7 +104,20 @@ import Alerts from "../commons/Alerts"
         }
         
       }
-
+      componentWillMount(){
+        $.ajax({
+          method : "GET",
+          url : "api/master/accounts/group/all",
+          success: (data)=>{
+            this.setState({
+              groupList : data.data,
+            })
+          },
+          error : (err)=>{
+            console.log(err.responseText);
+          }
+        })
+      }
    render() {
      return (
        <div>
@@ -102,12 +126,16 @@ import Alerts from "../commons/Alerts"
                <Col sm="12">
                     <h3>Create Ledger</h3>
                         <Form onSubmit={this.onSubmit}>
-                        <LedgerElements 
+                        <LedgerElements
+                          groupList = {this.state.groupList}
+                          
                           name = {this.onChange}
                           nameValue = {this.state.name}
 
                           groupName ={this.onChange}
                           groupNameValue= {this.state.groupName}
+
+
 
                           email = {this.onChange}
                           emailValue = {this.state.email}

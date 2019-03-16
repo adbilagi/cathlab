@@ -19,7 +19,8 @@ jwt.role.addPrivilegeToRole("admin", [`${fileUrl}/all`, "GET"], true);
 router.get("/all", jwt.validateLogin, (req, res)=>{
     try {
         
-        groupConn.find().select("name").then((data)=>{
+        groupConn.find().then((data)=>{
+            
             res.status(200).send({data : data, parentGroup : parentGroup});
             return;
         }).catch(err=>{

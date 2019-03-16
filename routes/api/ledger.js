@@ -23,7 +23,8 @@ router.post("/", jwt.validateLogin, (req, res)=>{
     try {
        let data={
         name :req.body.name,
-        groupName :  req.body.groupName,
+        // groupName :  req.body.groupName,
+        groupKey : req.body.groupKey,
         email : req.body.email,
         phone : req.body.phone,
         panNumber : req.body.panNumber,
@@ -32,6 +33,7 @@ router.post("/", jwt.validateLogin, (req, res)=>{
         openingBalance : req.body.openingBalance,
         activeLedger : req.body.openingBalance
        }
+       
        ledgerConn.create(data).then((result)=>{
            res.status(200).json({
                data : result,

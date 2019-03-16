@@ -1,32 +1,7 @@
 import React, { Component } from 'react';
-import { Button, Form, FormGroup, Label, Input, Container, Row, Col} from 'reactstrap';
-import $ from "jquery";
+import {  FormGroup, Label, Input,  Row, Col} from 'reactstrap';
 
 export default class LedgerElements extends Component {
-    state={
-        groupList : []
-    }
-    componentWillMount(){
-       $.ajax({
-         method : "GET",
-         url : "api/master/accounts/group/all",
-         success: (data)=>{
-           let tempGroup = [];
-           data.data.forEach((element)=>{
-             tempGroup.push(element.name);
-           });
-           data.parentGroup.forEach((element)=>{
-             tempGroup.push(element);
-           })
-           this.setState({
-             groupList : tempGroup,
-           })
-         },
-         error : (err)=>{
-           console.log(err.responseText);
-         }
-       })
-     }
   render() {
     return (
       
@@ -38,12 +13,12 @@ export default class LedgerElements extends Component {
                 </FormGroup>
                 <FormGroup>
                     <Label for="groupName">Group Name</Label>
-                    <Input type="text" value={this.props.groupNameValue} name="groupName" id="groupName" autoComplete="off" placeholder="Enter Group name" list= "groupList" onChange={this.props.groupName}/>                   
+                    <Input type="text" value={this.props.groupNameValue} name="groupName" id="groupName" autoComplete="off" placeholder="Enter Group name" list= "groupList" onChange={this.props.groupName} onBlur={this.props.onBlur} />                   
                 </FormGroup>
                 <datalist id="groupList" name="groupList">
                     {
-                        this.state.groupList.map((group, index)=>{
-                            return (<option key={index} value={group}/>)
+                        this.props.groupList.map((group, index)=>{
+                            return (<option key={group._id} value={group.name}/>)
                         })
                     }
                 </datalist>

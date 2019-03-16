@@ -79,7 +79,8 @@ let groupSchema = new mongoose.Schema({
     underGroup: {
         type: String,
         required : true
-    }
+    },
+ 
 });
 
 let ledgerSchema = new mongoose.Schema({
@@ -89,8 +90,9 @@ let ledgerSchema = new mongoose.Schema({
         required : true,
         unique : true
     },
-    groupName :  {
-        type :[{ type: Schema.Types.ObjectId, ref: 'Group' }],
+    groupKey :  {
+        // type :[{ type: Schema.Types.ObjectId, ref: 'Group' }],
+        type : String,
         required : true
 
     },
