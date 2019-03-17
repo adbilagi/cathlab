@@ -1,4 +1,5 @@
 const isEmail = require("validator").isEmail
+const crDrValidate = require("./index").crDrValidaate
 
 
 let email = (email)=>{
@@ -11,37 +12,20 @@ let email = (email)=>{
     })
 
 }
-let openingBalance = (ob)=>{
-    let rejectString="Amount has be suffixed with cr or dr for example 500cr or 300dr";
+let openingBalance = (amt)=>{
     return new Promise((resolve, reject)=>{
-        if(typeof ob =="number"){
-            resolve(ob);
-        }else if(typeof ob == "string"){
-            ob= ob.toLowerCase();
-        }else{
-            reject(rejectString);
-            return;
-        }
-        // ====================================
-
-        if( isNaN(Number(ob.substr(0, ob.length-2)))){
-            reject(rejectString);
-        }
-        else if(ob.substr(ob.length-2) ==="cr"){
+        try {
+           let retAmt =  crDrValidate(amt);
+           resolve(retAmt)
             
-        resolve(Math.abs(parseFloat(ob)) * -1)
+        } catch (error) {
+            reject(error);
             
-        }
-        else if(ob.substr(ob.length-2) ==="dr"){
-            resolve(Math.abs(parseFloat(ob)))
-            
-        }
-        else{
-            reject(rejectString);
         }
     })
 }
 
+let a = crDrValidate()
 
 
-openingBalance("234.56cr").then(res=>console.log(res)).catch(err=>console.log(err));
+openingBalance("234.5d6cr").then(res=>console.log(res)).catch(err=>console.log(err));
