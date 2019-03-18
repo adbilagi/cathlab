@@ -2,22 +2,27 @@ const isEmail = require("validator").isEmail
 const crDrValidate = require("./index").crDrValidaate
 
 
-let email = (email)=>{
-    return new Promise((resolve, reject)=>{
-        if(isEmail(email)==false){
-            reject("invalid email");
+let email = (email="")=>{
+    return new Promise((resolve , reject)=>{
+        if(isEmail(email)=== true  || email === ""){
+            resolve(email);
         }else{
-            resolve(true)
+            reject("invalid email")
         }
-    })
+    });
 
 }
-let openingBalance = (amt)=>{
+
+
+
+let openigBalance= (amt="")=>{
     return new Promise((resolve, reject)=>{
         try {
-           let retAmt =  crDrValidate(amt);
-           resolve(retAmt)
-            
+            if(amt==""){
+                resolve(0);
+            }
+            let curAmt = crDrValidate(amt);
+            resolve(curAmt);
         } catch (error) {
             reject(error);
             
@@ -25,7 +30,17 @@ let openingBalance = (amt)=>{
     })
 }
 
-let a = crDrValidate()
 
+module.exports = (req, res, next)=>{
+    let curEmail = req.body.email;
+    let curOpeningBalance = req.body.openigBalance;
 
-openingBalance("234.5d6cr").then(res=>console.log(res)).catch(err=>console.log(err));
+    Promise.all([email(curEmail), openigBalance(curOpeningBalance)])
+    .then((data)=>{
+        req.validateData=data;
+        next();
+    })
+    .catch((err)=>{
+        res.status(500).send(err);
+    })
+}

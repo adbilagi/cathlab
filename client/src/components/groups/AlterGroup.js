@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Form, FormGroup, Label, Input, Container, Row, Col} from 'reactstrap';
+import { Button, Form, FormGroup, Label, Input, Container, Row, Col, Spinner} from 'reactstrap';
 import $ from "jquery";
 import Alerts from "../commons/Alerts"
 
@@ -13,7 +13,8 @@ export default class AlterGroup extends Component {
         ajaxError : false,
         ajaxErrorMessage : "",
         ajaxSuccess : false,
-        ajaxSuccessMessage :""
+        ajaxSuccessMessage :"",
+        spinner : false
       }
       onChange =(e)=>{
         this.setState({
@@ -28,6 +29,7 @@ export default class AlterGroup extends Component {
         $.ajax({
           method : "GET",
           url : "api/master/accounts/group/all",
+          beforeSend : this.setState({spinner : true}),
           success: (data)=>{
             let tempGroup = [];
             data.data.forEach((element)=>{
@@ -42,6 +44,9 @@ export default class AlterGroup extends Component {
           },
           error : (err)=>{
             console.log(err.responseText);
+          },
+          complete : ()=>{
+            this.setState({spinner : false});
           }
         })
       }
@@ -71,6 +76,7 @@ export default class AlterGroup extends Component {
           $.ajax({
             method : "PUT",
             url : "/api/master/accounts/group",
+            beforeSend : this.setState({spinner : true}),
             data : {oldName : this.state.oldName, name : this.state.name, underGroup : this.state.underGroup},
             success : (data)=>{
               this.setState({
@@ -87,6 +93,9 @@ export default class AlterGroup extends Component {
                 ajaxSuccess : false,
                 ajaxSuccessMessage :""
               });
+            },
+            complete : ()=>{
+              this.setState({spinner : false})
             }
           })
           
@@ -125,7 +134,15 @@ export default class AlterGroup extends Component {
                             <Label for="underGroup">Under Group</Label>
                             <Input type="text" name="underGroup" id="underGroup" autoComplete="off" list="groupList" placeholder="Enter group name" onChange={this.onChange}/>
                         </FormGroup>
-                          <Button color="info">Alter Group</Button>
+                          <Row>
+                            <Col>
+                            <Button color="info">Alter Group</Button>
+                            </Col>
+                            <Col>
+                              {this.state.spinner ? <Spinner color="info"/> : ""}
+                            </Col>
+                          </Row>
+                          
 
                     </Form>
                     <Alerts 

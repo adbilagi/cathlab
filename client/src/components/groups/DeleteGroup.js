@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Button, Form, FormGroup, Label, Input, Container, Row, Col} from 'reactstrap';
+import { Button, Form, FormGroup, Label, Input, Container, Row, Col, Spinner} from 'reactstrap';
 import $ from "jquery";
 import Alerts from "../commons/Alerts"
 
@@ -11,7 +11,8 @@ export default class DeleteGroup extends Component {
         ajaxError : false,
         ajaxErrorMessage : "",
         ajaxSuccess : false,
-        ajaxSuccessMessage :""
+        ajaxSuccessMessage :"",
+        spinner : false
       }
       onChange =(e)=>{
           this.setState({
@@ -25,6 +26,7 @@ export default class DeleteGroup extends Component {
       componentWillMount(){
         $.ajax({
           method : "GET",
+          beforeSend : this.setState({spinner : true}),
           url : "api/master/accounts/group/all",
           success: (data)=>{
             let tempGroup = [];
@@ -38,6 +40,9 @@ export default class DeleteGroup extends Component {
           },
           error : (err)=>{
             console.log(err.responseText);
+          },
+          complete : ()=>{
+            this.setState({spinner : false})
           }
         })
       }
@@ -59,6 +64,7 @@ export default class DeleteGroup extends Component {
             method : "DELETE",
             url : "/api/master/accounts/group",
             data : {name : this.state.name},
+            beforeSend : this.setState({spinner : true}),
             success : (data)=>{
               this.setState({
                 ajaxError : false,
@@ -73,8 +79,12 @@ export default class DeleteGroup extends Component {
                 ajaxError : true,
                 ajaxErrorMessage : err.responseText,
                 ajaxSuccess : false,
-                ajaxSuccessMessage :""
+                ajaxSuccessMessage :"",
+              
               })
+            },
+            complete : ()=>{
+              this.setState({spinner : false})
             }
           })
           
@@ -83,7 +93,8 @@ export default class DeleteGroup extends Component {
             ajaxError : true,
             ajaxErrorMessage : error,
             ajaxSuccess : false,
-            ajaxSuccessMessage :""
+            ajaxSuccessMessage :"",
+            spinner : false
           })
           
         }
@@ -111,7 +122,15 @@ export default class DeleteGroup extends Component {
  
   
                         </datalist>
-                        <Button color="info">Delete Group</Button>
+                        <Row>
+                          <Col>
+                            <Button color="info">Delete Group</Button>
+                          </Col>
+                            {this.state.spinner ? <Spinner color="info" /> : ""}
+                          <Col>
+                          </Col>
+                        </Row>
+                        
                     </Form>
                     <br/>
                     <Alerts 
