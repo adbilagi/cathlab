@@ -3,24 +3,45 @@ const crDrValidate = require("./index").crDrValidaate
 const assert = require("assert")
 
 
-let email = (email)=>{
-    return new Promise((resolve, reject)=>{
-        if(isEmail(email)==false){
-            reject("invalid email");
+let email = (email="")=>{
+    return new Promise((resolve , reject)=>{
+        if(isEmail(email)=== true  || email === ""){
+            resolve(email);
         }else{
-            resolve(true)
+            reject("invalid email")
+        }
+    });
+
+}
+
+
+
+let openigBalance= (amt="")=>{
+    return new Promise((resolve, reject)=>{
+        try {
+            if(amt==""){
+                resolve(0);
+            }
+            let curAmt = crDrValidate(amt);
+            resolve(curAmt);
+        } catch (error) {
+            reject(error);
+            
         }
     })
-
-}
-let openingBalance = (amt)=>{
-   assert.ifError(crDrValidate(amt))
-
 }
 
 
+module.exports = (req, res, next)=>{
+    let curEmail = req.body.email;
+    let curOpeningBalance = req.body.openigBalance;
 
-openingBalance("234cr");
-
-
-
+    Promise.all([email(curEmail), openigBalance(curOpeningBalance)])
+    .then((data)=>{
+        req.validateData=data;
+        next();
+    })
+    .catch((err)=>{
+        res.status(500).send(err);
+    })
+}

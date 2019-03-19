@@ -150,6 +150,10 @@ router.delete("/", jwt.validateLogin,(req, res)=>{
                 res.status(500).send(`can not delete ${deleteGroup.name} group, as it is under use`);
                 return;
             }else{
+
+                // write code for validatting ledger schema for using group before deleting
+
+
                 groupConn.deleteOne({name : deleteGroup.name},(err, data)=>{
                     if(err){
                         res.status(500).send(err);

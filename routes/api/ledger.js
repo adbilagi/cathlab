@@ -8,7 +8,8 @@ const fileUrl = "/api/master/accounts/ledger";
 const jwt = require("../../middleware/usermiddleware");
 const ledgerConn = require("../../model/schema").Ledger;
 const Fawn = require("../../model/schema").Fawn;
-const isEmail = require("validator").isEmail;
+const reqValidate = require("../../validate/ledgerValidate")
+
 
 
 jwt.fileURL(fileUrl);
@@ -20,8 +21,9 @@ module.exports = router;
 privilege = [`${fileUrl}/`, "POST"]
 jwt.role.createNewPrivileges(privilege,"This creates new ledger", false)
 jwt.role.addPrivilegeToRole("admin",privilege, true);
-router.post("/", jwt.validateLogin, (req, res)=>{
+router.post("/", jwt.validateLogin, reqValidate, (req, res)=>{
     try {
+    
         
        let data={
         name :req.body.name,
