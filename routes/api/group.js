@@ -4,6 +4,7 @@ const fileUrl = "/api/master/accounts/group";
 const validate = require("../../validate/groupValidate");
 const jwt = require("../../middleware/usermiddleware");
 const groupConn = require("../../model/schema").Group;
+const lederConn = require("../../model/schema").Ledger;
 const Fawn = require("../../model/schema").Fawn;
 const parentGroup =["Captil Account", "Assets", "Liabilities", "Profit and Loss"];
 
@@ -143,29 +144,60 @@ router.delete("/", jwt.validateLogin,(req, res)=>{
         let deleteGroup ={
             name : req.body.name
         }
+        errString = `can not delete ${deleteGroup.name} group, as it is under use`
         groupConn.findOne({underGroup : deleteGroup.name}, (ferr, fData)=>{
             if(ferr){
-                throw ferr;
+                res.status(500).send(errString);
+                return;
             }else if(fData !== null){
-                res.status(500).send(`can not delete ${deleteGroup.name} group, as it is under use`);
+                res.status(500).send(errString);
                 return;
             }else{
 
                 // write code for validatting ledger schema for using group before deleting
+                groupConn.findOne({name : deleteGroup.name}, (ferr, fData)=>{
+                    if(ferr){
+                        res.status(500).send(errString);
+                        return;
+                    }else if(fData === null){
+                        res.status(500).send(errString);
+                        return;
+                    }else{
+                        // get id f of group to check inside ledger collection
+                        let curId = fData._id
+                        lederConn.findOne({groupKey: {curId}}, (ferr, fData)=>{
+                            if(ferr){
+                                res.status(500).send(errString);
+                                return;
+                            }else if( fData === null){
+                                // if ledger collection does not have same id then delete the group
+                                    groupConn.deleteOne({name : deleteGroup.name},(err, data)=>{
+                                        if(err){
+                                            res.status(500).send(err);
+                                            return;
+                                        }else if(data.deleteCount < 1){
+                                            res.status(500).send(errString);
+                                            return;
+                                        }else {
+                                            res.status(200).json({data : data, message :`deleted ${deleteGroup.name}  group successfully`})
+                                        }
+                                        
+                                    })
+                                    return;
+
+                            }else{
+                                // if ledger collection has id used then can not delete group
+                                res.status(500).send(`can not delete ${deleteGroup.name} group, as it is under use by a ledger`);
+                                return;
+                            }
+                        })
 
 
-                groupConn.deleteOne({name : deleteGroup.name},(err, data)=>{
-                    if(err){
-                        res.status(500).send(err);
-                        return;
-                    }else if(data.deleteCount < 1){
-                        res.status(500).send(`could not delete ${deleteGroup.name} as it is under use`);
-                        return;
-                    }else {
-                        res.status(200).json({data : data, message :`deleted ${deleteGroup.name}  group successfully`})
                     }
-                    
                 })
+
+
+
             }
         });
     } catch (error) {
