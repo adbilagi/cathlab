@@ -1,5 +1,6 @@
 const isEmail = require("validator").isEmail
 const crDrValidate = require("./index").crDrValidaate
+const assert = require("assert")
 
 
 let email = (email)=>{
@@ -13,19 +14,13 @@ let email = (email)=>{
 
 }
 let openingBalance = (amt)=>{
-    return new Promise((resolve, reject)=>{
-        try {
-           let retAmt =  crDrValidate(amt);
-           resolve(retAmt)
-            
-        } catch (error) {
-            reject(error);
-            
-        }
-    })
+   assert.ifError(crDrValidate(amt))
+
 }
 
-let a = crDrValidate()
 
 
-openingBalance("234.5d6cr").then(res=>console.log(res)).catch(err=>console.log(err));
+openingBalance("234cr");
+
+
+
