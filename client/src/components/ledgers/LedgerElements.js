@@ -40,7 +40,6 @@ export default class LedgerElements extends Component {
 
                 <FormGroup>
                     <Label for="gstNumber">GST Number</Label>
-                    <Label for="gstNumber">GST Number</Label>
                     <Input type="text" value={this.props.gstNumberValue} name="gstNumber" id="gstNumber" autoComplete="off" placeholder="Enter GST Number" onChange={this.props.gstNumber}/>
                 </FormGroup>
                 <FormGroup>

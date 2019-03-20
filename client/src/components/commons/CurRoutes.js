@@ -53,8 +53,8 @@ export default class CurRoutes extends Component {
             <Route exact path="/deletegroup" component={DeleteGroup}/>
             {/* /* Account info ledgers */}
             <Route exact path="/createledger" component={CreateLedger}/>
-            {/* <Route exact path="/alterledger" component={AlterLedger}/>
-            <Route exact path="/deleteledger" component={DeleteLedger}/> */}
+            <Route exact path="/alterledger" component={AlterLedger}/>
+            {/* <Route exact path="/deleteledger" component={DeleteLedger}/> */}
           </div>
 
         </BrowserRouter>

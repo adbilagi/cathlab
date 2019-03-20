@@ -144,18 +144,20 @@ router.delete("/", jwt.validateLogin,(req, res)=>{
         let deleteGroup ={
             name : req.body.name
         }
+       
         errString = `can not delete ${deleteGroup.name} group, as it is under use`
         groupConn.findOne({underGroup : deleteGroup.name}, (ferr, fData)=>{
             if(ferr){
                 res.status(500).send(errString);
                 return;
             }else if(fData !== null){
+                
                 res.status(500).send(errString);
                 return;
-            }else{
-
-                // write code for validatting ledger schema for using group before deleting
+            }else{             
+                
                 groupConn.findOne({name : deleteGroup.name}, (ferr, fData)=>{
+                    
                     if(ferr){
                         res.status(500).send(errString);
                         return;
@@ -163,12 +165,19 @@ router.delete("/", jwt.validateLogin,(req, res)=>{
                         res.status(500).send(errString);
                         return;
                     }else{
+                        
+                        
                         // get id f of group to check inside ledger collection
                         let curId = fData._id
+<<<<<<< HEAD
                         lederConn.find({groupKey: [curId]}, (ferr, fData)=>{
                             res.status(200).send(fData);
                             console.log(fData);
                             return;
+=======
+                       
+                        lederConn.findOne({groupKey: [curId]}, (ferr, fData)=>{
+>>>>>>> 50782025e640370e837e4c9c7377198ae2a14d8d
                             if(ferr){
                                 res.status(500).send(errString);
                                 return;
