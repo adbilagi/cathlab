@@ -60,10 +60,7 @@ privilege = [`${fileUrl}/:ledger`, "GET"]
 jwt.role.createNewPrivileges(privilege,"This gets single ledger details", false)
 jwt.role.addPrivilegeToRole("admin",privilege, true);
 router.get("/:ledger", jwt.validateLogin, reqValidate, (req, res)=>{
-   
-    let curLedger = req.params.ledger;
-
-    
+    let curLedger = req.params.ledger;    
     ledgerConn.findOne({name : curLedger})
     .then((data)=> {
         console.log(data);
