@@ -165,7 +165,10 @@ router.delete("/", jwt.validateLogin,(req, res)=>{
                     }else{
                         // get id f of group to check inside ledger collection
                         let curId = fData._id
-                        lederConn.findOne({groupKey: {curId}}, (ferr, fData)=>{
+                        lederConn.find({groupKey: [curId]}, (ferr, fData)=>{
+                            res.status(200).send(fData);
+                            console.log(fData);
+                            return;
                             if(ferr){
                                 res.status(500).send(errString);
                                 return;

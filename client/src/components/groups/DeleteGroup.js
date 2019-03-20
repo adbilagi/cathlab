@@ -133,12 +133,12 @@ export default class DeleteGroup extends Component {
                         
                     </Form>
                     <br/>
-                    <Alerts 
+                    {/* <Alerts 
                             alertSuccess = {this.state.ajaxSuccess}
                             alertError = {this.state.ajaxError}
                             alertSuccessMessage = {this.state.ajaxSuccessMessage}
                             alertErrorMessage = {this.state.ajaxErrorMessage}
-                        />
+                        /> */}
                 </Col>
             </Row>
         </Container>
