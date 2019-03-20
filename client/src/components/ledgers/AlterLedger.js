@@ -21,8 +21,9 @@ import Alerts from "../commons/Alerts"
          gstNumber : "",
          address : "",
          openingBalance : 0,
-         activeLedger : true,
+         activeLedger : false,
          groupList : [],
+         ledgerList : [],
          ajaxError : false,
          ajaxErrorMessage : "",
          ajaxSuccess : false,
@@ -45,6 +46,12 @@ import Alerts from "../commons/Alerts"
         })
       }
 
+      onChangeActiveLedger =(e)=>{
+        this.setState({
+          activeLedger : !this.state.activeLedger
+        })
+      }
+
       getLedger =(e)=>{
         $.ajax({
             method : "GET",
@@ -59,6 +66,7 @@ import Alerts from "../commons/Alerts"
                 })
             },
             success : (data)=>{
+             
                 this.setState({
                     _id : data.data._id,
                     name : data.data.name,
@@ -74,7 +82,7 @@ import Alerts from "../commons/Alerts"
                     ajaxGetLedgerError : false,
                     ajaxGetLedgerErrorMessage : "",
                     ajaxGetLedgerSuccess : true,
-                    ajaxGetLedgerSuccessMessage : data.data.message,
+                    ajaxGetLedgerSuccessMessage : data.message,
                    
                 })
                 
@@ -124,7 +132,7 @@ import Alerts from "../commons/Alerts"
             activeLedger : this.state.activeLedger
 
           }
-          console.log(data);
+
           this.setState({
             spinner : true
           })
@@ -172,6 +180,11 @@ import Alerts from "../commons/Alerts"
         $.ajax({
           method : "GET",
           url : "api/master/accounts/group/all",
+          beforeSend : ()=>{
+            this.setState({
+              spinner : true
+            })
+          },
           success: (data)=>{
             this.setState({
               groupList : data.data,
@@ -179,9 +192,41 @@ import Alerts from "../commons/Alerts"
           },
           error : (err)=>{
             console.log(err.responseText);
+          },
+          complete : ()=>{
+            this.setState({
+              spinner : false
+            })
+          }
+        })
+
+        // get ledgers
+
+        $.ajax({
+          method:"GET",
+          url : "/api/master/accounts/ledger/",
+          beforeSend : ()=>{
+            this.setState({
+              spinner : true
+            })
+          },
+          success : (data)=>{
+            this.setState({
+              ledgerList : data
+            })
+          },
+          error : (er)=>{
+            console.log(er.responseText)
+          },
+          complete : ()=>{
+            this.setState({
+              spinner : false
+            })
           }
         })
       }
+
+
    render() {
      return (
        <div>
@@ -193,19 +238,29 @@ import Alerts from "../commons/Alerts"
                         <Col sm="12">
                         <FormGroup>
                             <Label for="getLedger">Get Ledger</Label>
-                            <Input type="text" name="getLedger" id="getLedger" value={this.state.getLedger} onChange={this.onChange} placeholder="Enter Ledger Name"/>
-
+                            <Input type="text" name="getLedger" id="getLedger" list="ledgerList" autoComplete="off" value={this.state.getLedger} onChange={this.onChange} placeholder="Enter Ledger Name"/>
+                              <datalist name="ledgerList" id="ledgerList">
+                              {
+                                this.state.ledgerList.map((ledger, index)=>{
+                                  return(<option key ={`ledger${index}`} value={ledger.name}></option>)
+                                })
+                              }
+                              </datalist>
                             <br/>
                             <Button color="success" onClick={this.getLedger}>Get Ledger</Button>
                             {this.state.spinnerLedger ? <Spinner clor="info"/> : ""}
-                            <Alerts
+
+                            
+                        </FormGroup>
+
+
+                                                      
+                        <Alerts
                                 alertSuccess = {this.state.ajaxGetLedgerSuccess}
                                 alertError = {this.state.ajaxGetLedgerError}
                                 alertSuccessMessage = {this.state.ajaxGetLedgerSuccessMessage}
                                 alertErrorMessage = {this.state.ajaxGetLedgerErrorMessage}
                             />
-                            
-                        </FormGroup>
                         </Col>
 
  
@@ -244,7 +299,10 @@ import Alerts from "../commons/Alerts"
 
                           openingBalance ={this.onChange}
                           openingBalanceValue = {this.state.openingBalance}
+
+
                           activeLedger = {this.state.activeLedger}
+                          activeLedgerValue = {this.onChangeActiveLedger}
                 
                         />
                         <Row>

@@ -63,7 +63,6 @@ router.get("/:ledger", jwt.validateLogin, reqValidate, (req, res)=>{
     let curLedger = req.params.ledger;    
     ledgerConn.findOne({name : curLedger})
     .then((data)=> {
-        console.log(data);
         if(data == null){
             res.status(500).send(`ledger ${curLedger} not found`)
         }else{
@@ -74,3 +73,19 @@ router.get("/:ledger", jwt.validateLogin, reqValidate, (req, res)=>{
         res.status(500).send(err);
     })
 })
+
+
+privilege = [`${fileUrl}/`, "GET"]
+jwt.role.createNewPrivileges(privilege,"This gets all ledger", false)
+jwt.role.addPrivilegeToRole("admin",privilege, true);
+router.get("/", jwt.validateLogin, reqValidate, (req, res)=>{
+    ledgerConn.find().select("name")
+    .then((data)=> {
+        res.status(200).json({data: data, message : `recived details of ${curLedger} successfully`})
+    })
+    .catch((err)=>{
+        res.status(500).send(err);
+    })
+})
+
+
