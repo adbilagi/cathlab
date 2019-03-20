@@ -39,7 +39,7 @@ router.post("/", jwt.validateLogin, reqValidate, (req, res)=>{
        }
 
        ledgerConn.create(data).then((result)=>{
-           console.log(result);
+
            res.status(200).json({
                data : result,
                message : `successfully created new ledger ${data.name} under group ${data.groupName}`
