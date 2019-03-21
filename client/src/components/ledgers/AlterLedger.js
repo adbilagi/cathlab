@@ -193,16 +193,10 @@ import Alerts from "../commons/Alerts"
           },
           error : (err)=>{
             console.log(err.responseText);
-          },
-          complete : ()=>{
-            this.setState({
-              spinner : false
-            })
           }
         })
 
         // get ledgers
-
         $.ajax({
           method:"GET",
           url : "/api/master/accounts/ledger/",
@@ -211,20 +205,21 @@ import Alerts from "../commons/Alerts"
               spinner : true
             })
           },
-          success : (data)=>{
-            this.setState({
-              ledgerList : data
-            })
+          success:(data)=>{
+           this.setState({
+             ledgerList : data.data
+           })
           },
-          error : (er)=>{
-            console.log(er.responseText)
-          },
-          complete : ()=>{
+          error:(er)=>{
+            alert(`er.responseText ${er.responseText}` )
+          },complete : ()=>{
             this.setState({
               spinner : false
             })
           }
+          
         })
+
       }
 
 
