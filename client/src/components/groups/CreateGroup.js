@@ -24,15 +24,13 @@ export default class CreateGroup extends Component {
     });
   }
   componentWillMount(){
-    this.setState({
-      spinner :true
-    })
     $.ajax({
       method : "GET",
       url : "api/master/accounts/group/all",
       success: (data)=>{
         let tempGroup = [];
         data.data.forEach((element)=>{
+         
           tempGroup.push(element.name);
         });
         data.parentGroup.forEach((element)=>{
@@ -44,12 +42,8 @@ export default class CreateGroup extends Component {
       },
       error : (err)=>{
         console.log(err.responseText);
-      },
-      complete : ()=>{
-        this.setState({
-          spinner :false
-        })
       }
+
     })
   }
 
@@ -127,6 +121,7 @@ export default class CreateGroup extends Component {
  
   
                         </datalist>
+                        <FormGroup>
                         <Row>
                           <Col>
                           <Button color="info">Create Group</Button>
@@ -135,6 +130,7 @@ export default class CreateGroup extends Component {
                             {this.state.spinner ? <Spinner color="info"/> : ""}
                           </Col>
                         </Row>
+                        </FormGroup>
                         
                         
                         <Alerts 

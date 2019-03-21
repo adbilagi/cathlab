@@ -211,7 +211,6 @@ import Alerts from "../commons/Alerts"
            })
           },
           error:(er)=>{
-            alert(`er.responseText ${er.responseText}` )
           },complete : ()=>{
             this.setState({
               spinner : false

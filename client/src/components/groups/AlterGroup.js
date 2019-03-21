@@ -134,6 +134,7 @@ export default class AlterGroup extends Component {
                             <Label for="underGroup">Under Group</Label>
                             <Input type="text" name="underGroup" id="underGroup" autoComplete="off" list="groupList" placeholder="Enter group name" onChange={this.onChange}/>
                         </FormGroup>
+                        <FormGroup>
                           <Row>
                             <Col>
                             <Button color="info">Alter Group</Button>
@@ -142,7 +143,7 @@ export default class AlterGroup extends Component {
                               {this.state.spinner ? <Spinner color="info"/> : ""}
                             </Col>
                           </Row>
-                          
+                          </FormGroup>
 
                     </Form>
                     <Alerts 

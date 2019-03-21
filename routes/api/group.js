@@ -1,13 +1,14 @@
 const express = require("express");
 const router = express.Router();
 const fileUrl = "/api/master/accounts/group";
-const reqValidate = require("../../validate/groupValidate")
 const jwt = require("../../middleware/usermiddleware");
 const groupConn = require("../../model/schema").Group;
 const lederConn = require("../../model/schema").Ledger;
 const Fawn = require("../../model/schema").Fawn;
-// const parentGroup =["Captil Account", "Assets", "Liabilities", "Profit and Loss", "Cash in Hand"];
+
 const parentGroup = require("../../validate/groupValidate").parentGroup;
+const reqValidate = require("../../validate/groupValidate").reqValidate;
+
 
 
 
@@ -21,9 +22,7 @@ jwt.role.createNewPrivileges([`${fileUrl}/all`, "GET"], "This gets all group", t
 jwt.role.addPrivilegeToRole("admin", [`${fileUrl}/all`, "GET"], true);
 router.get("/all", jwt.validateLogin, (req, res)=>{
     try {
-        
         groupConn.find().then((data)=>{
-            
             res.status(200).send({data : data, parentGroup : parentGroup});
             return;
         }).catch(err=>{

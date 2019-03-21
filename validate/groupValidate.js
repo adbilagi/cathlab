@@ -4,40 +4,7 @@
 const conGroup = require("../model/schema").Group;
 const parentGroup =["Captil Account", "Assets", "Liabilities", "Profit and Loss", "Cash in Hand"];
 
-module.exports =(curJson, callback)=>{
-    for (const key in curJson) {
-        switch (key) {
-            case "underGroup":
-            if(parentGroup.indexOf(curJson.underGroup >= 0)){
-                callback();
-            }else{
-                conGroup.findOne({name : curJson.underGroup},
-                    (err, data)=>{
-                        if(err){
-                            callback(err);
-                        }else{
-                            if(data == null){
-                                callback("invalid Under group");
-                            }else{
-                                callback();
-                            }
-                        }
-                    })
-
-            }
-             
-                break;
-        
-            default:
-                break;
-        }
-    }
-   
-}
-
-module.exports.parentGroup = parentGroup;
-
-
+// validadation for name field in Groups collction
 let name = (name)=>{
     return new Promise((reslove, reject)=>{
         if(parentGroup.indexOf(name) >=0){
@@ -48,10 +15,12 @@ let name = (name)=>{
 
     })
 }
-
+// validadtion for underGroup field collection
 let underGroup = (underGroup)=>{
     return new Promise((reslove, reject)=>{
-        if(parentGroup.indexOf(underGroup) >= 0){
+        if(underGroup === "Cash in Hand"){
+            reject(`Cash in Hand is reserved group and can not be used it as under group`)
+        }else if(parentGroup.indexOf(underGroup) >= 0){
             reslove(true)
         }else{
 
@@ -73,15 +42,19 @@ let underGroup = (underGroup)=>{
     })
 }
 
-
-module.exports = (req, res, next)=>{
+// middle ware for validadtion
+reqValidate = (req, res, next)=>{
     let curName = req.body.name;
     let curUnderGroup = req.body.underGroup
 
     Promise.all([name(curName), underGroup(curUnderGroup)])
-    .then(()=>{
+    .then((data)=>{
         next();
     }).catch((err)=>{
         res.status(500).send(err);
     })
+}
+
+module.exports ={
+    reqValidate, parentGroup
 }

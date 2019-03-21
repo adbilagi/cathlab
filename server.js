@@ -7,11 +7,14 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const app = express();
 const mongoose = require("mongoose");
+const groupConn = require("./model/schema").Group;
 const path = require("path");
 
+
+
 const config = require("./config/config");
-// const connString = config.mongoCon.local//for local database
-const connString = config.mongoCon.remote// for remote connectone
+const connString = config.mongoCon.local//for local database
+// const connString = config.mongoCon.remote// for remote connectone
 
 // for running production
 if(process.env.NODE_ENV === "production"){
@@ -31,6 +34,20 @@ mongoose.connect(connString,  {useCreateIndex: true, useNewUrlParser: true},(err
         console.log("mongodb  connected")
     }
 });
+
+groupConn.findOne({name : "Cash in hand"}, (err, data)=>{
+    if(err){
+        console.log(err)
+    }else if(data === null){
+        groupConn.create({name : "Cash in Hand", underGroup : "Assets"}, (err, data)=>{
+            if(err){
+                console.log(err)
+            }else(
+                console.log(`Created Cash in Hand group under Assets group`)
+            )
+        })
+    }
+})
 
 
 const PORT = process.env.PORT || 3001;//set to env varibale
