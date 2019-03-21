@@ -168,6 +168,7 @@ import Alerts from "../commons/Alerts"
         }
         
       }
+
       componentWillMount(){
         $.ajax({
           method : "GET",
@@ -182,6 +183,7 @@ import Alerts from "../commons/Alerts"
           }
         })
       }
+      
    render() {
      return (
        <div>
