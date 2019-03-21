@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const fileUrl = "/api/master/accounts/group";
-const validate = require("../../validate/groupValidate");
+const reqValidate = require("../../validate/groupValidate")
 const jwt = require("../../middleware/usermiddleware");
 const groupConn = require("../../model/schema").Group;
 const lederConn = require("../../model/schema").Ledger;
@@ -65,29 +65,23 @@ router.get("/:group", jwt.validateLogin,(req, res)=>{
 // Description : creating new group name
 jwt.role.createNewPrivileges([`${fileUrl}/`, "POST"], "This creates new group", false);
 jwt.role.addPrivilegeToRole("admin", [`${fileUrl}/`, "POST"], true);
-router.post("/", jwt.validateLogin,  (req, res)=>{
+router.post("/", jwt.validateLogin,reqValidate,  (req, res)=>{
     try {
         let newgroup ={
             name : req.body.name,
             underGroup : req.body.underGroup
         }
-       
-        validate(newgroup, (err)=>{
-            if(err){
-                res.status(500).send(err);
-            }else{
-                groupConn.create(newgroup).then(data=>{
-                    res.status(200).json({
-                        data : data,
-                        message : `succefully created new group ${newgroup.name} under ${newgroup.underGroup}`
-                    });
-                    return;
-                }).catch((err)=>{
-                    res.status(500).send(`Could not create new group`);
-                    return;
-                })
-            }
+        groupConn.create(newgroup).then(data=>{
+            res.status(200).json({
+                data : data,
+                message : `succefully created new group ${newgroup.name} under ${newgroup.underGroup}`
+            });
+            return;
+        }).catch((err)=>{
+            res.status(500).send(`Could not create new group`);
+            return;
         })
+
         
     } catch (error) {
         res.status(500).send(error);
@@ -99,39 +93,35 @@ router.post("/", jwt.validateLogin,  (req, res)=>{
 // Description This route is for editing group
 jwt.role.createNewPrivileges([`${fileUrl}/`, "PUT"], "This edits single and also itself at undergroup group", false);
 jwt.role.addPrivilegeToRole("admin", [`${fileUrl}/`, "PUT"], true);
-router.put("/", jwt.validateLogin, (req, res)=>{
+router.put("/", jwt.validateLogin,reqValidate, (req, res)=>{
     try {
         let editGroup={
             oldName : req.body.oldName,
             name : req.body.name,
             underGroup : req.body.underGroup
         }
-        
-        validate(editGroup, (err)=>{
-            if(err){
-                res.status(500).send(err);
-                return;
-            }else{
-                
-                Fawn.Task().update("groups", {name : editGroup.oldName}, {$set : {
-                    name : editGroup.name,
-                    underGroup : editGroup.underGroup
-                }})
-                .update("groups", {underGroup : editGroup.oldName}, {$set : {
-                    underGroup : editGroup.name
-                }}).options({multi : true})
-                .run()
-                .then((data)=>{
-                    res.status(200).json({data :data, message : "upadated request"});
-                    return;
-                })
-                .catch((error)=>{
-                    res.status(500).send(error);
-                    return;
-                })
-      
-            }
+        if(parentGroup.indexOf(editGroup.oldName >= 0)){
+            res.status(500).send(`not allowed to modify this reserved ${editGroup.oldName} group`);
+            return;
+        }
+        // use trasaction instead of Fawn this code has to written 
+        Fawn.Task().update("groups", {name : editGroup.oldName}, {$set : {
+            name : editGroup.name,
+            underGroup : editGroup.underGroup
+        }})
+        .update("groups", {underGroup : editGroup.oldName}, {$set : {
+            underGroup : editGroup.name
+        }}).options({multi : true})
+        .run()
+        .then((data)=>{
+            res.status(200).json({data :data, message : "upadated request"});
+            return;
         })
+        .catch((error)=>{
+            res.status(500).send(error);
+            return;
+        })
+
     } catch (error) {
         
     }
@@ -145,6 +135,11 @@ router.delete("/", jwt.validateLogin,(req, res)=>{
     try {
         let deleteGroup ={
             name : req.body.name
+        }
+
+        if(parentGroup.indexOf(deleteGroup.name >= 0)){
+            res.status(500).send(`not allowed to delete this reserved ${deleteGroup.name} group`);
+            return;
         }
        
         errString = `can not delete ${deleteGroup.name} group, as it is under use`
