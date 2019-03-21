@@ -6,7 +6,9 @@ const jwt = require("../../middleware/usermiddleware");
 const groupConn = require("../../model/schema").Group;
 const lederConn = require("../../model/schema").Ledger;
 const Fawn = require("../../model/schema").Fawn;
-const parentGroup =["Captil Account", "Assets", "Liabilities", "Profit and Loss"];
+// const parentGroup =["Captil Account", "Assets", "Liabilities", "Profit and Loss", "Cash in Hand"];
+const parentGroup = require("../../validate/groupValidate").parentGroup;
+
 
 
 jwt.fileURL(fileUrl);
