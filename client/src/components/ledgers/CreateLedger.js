@@ -60,7 +60,6 @@ import Alerts from "../commons/Alerts"
             activeLedger : this.state.activeLedger
 
           }
-          console.log(data);
           this.setState({
             spinner : true
           })

@@ -52,7 +52,7 @@ export default class LedgerElements extends Component {
                 </FormGroup>
                 <FormGroup check>
                 <Label check>
-                    <Input type="checkbox" name= "activeLedger" id="activeLedger"checked={this.props.activeLedger}/>{' '}
+                    <Input type="checkbox" name= "activeLedger" id="activeLedger" onChange={this.props.activeLedgerValue} checked={this.props.activeLedger}/>{' '}
                     Active Ledger
                 </Label>
                 </FormGroup>

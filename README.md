@@ -51,5 +51,5 @@ then set `process.env.NODE_ENV === production`
   3. add sundry credators debitors, direct income indirect income direct expense indirect expense fixed assets as parent group these to added under approprite parents groups
   4. make patients as parent group under sundry credadtors
   5. ledgers validation write
-  6. Wrtie code for check ledger use of groups before deleting them
+
 
