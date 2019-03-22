@@ -13,8 +13,8 @@ const path = require("path");
 
 
 const config = require("./config/config");
-const connString = config.mongoCon.local//for local database
-// const connString = config.mongoCon.remote// for remote connectone
+// const connString = config.mongoCon.local//for local database
+const connString = config.mongoCon.remote// for remote connectone
 
 // for running production
 if(process.env.NODE_ENV === "production"){
@@ -35,19 +35,7 @@ mongoose.connect(connString,  {useCreateIndex: true, useNewUrlParser: true},(err
     }
 });
 
-groupConn.findOne({name : "Cash in hand"}, (err, data)=>{
-    if(err){
-        console.log(err)
-    }else if(data === null){
-        groupConn.create({name : "Cash in Hand", underGroup : "Assets"}, (err, data)=>{
-            if(err){
-                console.log(err)
-            }else(
-                console.log(`Created Cash in Hand group under Assets group`)
-            )
-        })
-    }
-})
+
 
 
 const PORT = process.env.PORT || 3001;//set to env varibale
@@ -61,6 +49,35 @@ app.use(cors({
     credentials : true
 }));
 app.use(cookieParser());
+
+
+
+
+
+
+let getSetReservedGroups=(group, underGroup)=>{
+    groupConn.findOne({name : group}, (err, data)=>{
+        if(err){
+            console.log(err)
+        }else if(data === null){
+            groupConn.create({name : group, underGroup : underGroup}, (err, data)=>{
+                if(err){
+                    console.log(err)
+                }else(
+                    console.log(`Created ${group} group under ${underGroup} group`)
+                )
+            })
+        }
+    })
+
+}
+
+
+getSetReservedGroups("Cash in Hand", "Assets");
+getSetReservedGroups("Patients", "Assets");
+
+
+
 
 // users  routes 
 const users = require("./routes/api/users");

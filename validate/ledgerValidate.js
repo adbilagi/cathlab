@@ -20,11 +20,12 @@ let email = (email="")=>{
 
 let groupKey = (key)=>{
     return new Promise((resolve, reject)=>{
-        groupConn.findOne({name : "Cash in Hand"}, (err, data)=>{
+        let preventedGroups=[{name : "Cash in Hand"}, {name : "Patinets"}];
+        groupConn.findOne({$or : preventedGroups}, (err, data)=>{
             if(err){
                 reject(err)
             }else if(key === data._id){
-                reject("cash in hand is reserved group not allowd create ledgers under this group")
+                reject("Cash in Hand and Patients are reserved group not allowd create ledgers under this group")
             }else{
                 resolve(true)
             }

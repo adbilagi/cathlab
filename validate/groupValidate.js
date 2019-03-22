@@ -2,7 +2,7 @@
  * This file validates the groupSchema
  */ 
 const conGroup = require("../model/schema").Group;
-const parentGroup =["Captil Account", "Assets", "Liabilities", "Profit and Loss", "Cash in Hand"];
+const parentGroup =["Captil Account", "Assets", "Liabilities", "Profit and Loss", "Cash in Hand", "Patients"];
 
 // validadation for name field in Groups collction
 let name = (name)=>{
