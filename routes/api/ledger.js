@@ -88,4 +88,27 @@ router.get("/", jwt.validateLogin, reqValidate, (req, res)=>{
     })
 })
 
+privilege = [`${fileUrl}/`, "PUT"]
+jwt.role.createNewPrivileges(privilege, "This edits ths ledgers", false);
+jwt.role.addPrivilegeToRole("admin", privilege, true);
+router.put("/", jwt.validateLogin, reqValidate, (req, res)=>{
+    let getLedger = req.body.getLedger;
+    let data={
+        name :req.body.name,
+        groupKey : req.body.groupKey,
+        email : req.body.email,
+        phone : req.body.phone,
+        panNumber : req.body.panNumber,
+        gstNumber : req.body.gstNumber,
+        address : req.body.address,
+        openingBalance : req.body.openingBalance,
+        activeLedger : req.body.openingBalance
+       }
+       ledgerConn.updateOne({name : getLedger}, {$set : data}).then((data)=>{
+           res.status(200).json({data : data, mesaage : "successfully updated ledger"});
+       }).catch((er)=>{
+           res.status(500).send(er);
+       })
+})
+
 

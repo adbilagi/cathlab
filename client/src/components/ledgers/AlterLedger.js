@@ -120,6 +120,7 @@ import Alerts from "../commons/Alerts"
             }
           })
           let data = {
+            getLedger : this.state.getLedger,
             name : this.state.name,
             groupName :this.state.groupName,
             groupKey :  key,
@@ -137,7 +138,7 @@ import Alerts from "../commons/Alerts"
             spinner : true
           })
           $.ajax({
-            method : "POST",
+            method : "PUT",
             url : "/api/master/accounts/ledger",
             data :data,
             success : (data)=>{
