@@ -13,7 +13,7 @@ import Alerts from "../commons/Alerts"
          getLedger : "",
          _id : "",
          name : "",
-         groupkey :"",
+         groupKey :"",
          groupName :"",
          email : "",
          phone : "",
@@ -51,9 +51,18 @@ import Alerts from "../commons/Alerts"
           activeLedger : !this.state.activeLedger
         })
       }
+      
+
 
       getLedger =(e)=>{
-        $.ajax({
+        try {
+          let curLedger = this.state.getLedger.trim();
+          if(curLedger == ""){
+            throw "invalid get ledger"
+          }
+          
+
+          $.ajax({
             method : "GET",
             url : `/api/master/accounts/ledger/${this.state.getLedger}`,
             beforeSend : ()=>{
@@ -66,11 +75,12 @@ import Alerts from "../commons/Alerts"
                 })
             },
             success : (data)=>{
+              
              
                 this.setState({
                     _id : data.data._id,
                     name : data.data.name,
-                    groupkey :data.data.groupKey,
+                    groupKey :data.data.groupKey,
                     email : data.data.email,
                     phone : data.data.phone,
                     panNumber :data.data.panNumber,
@@ -85,9 +95,10 @@ import Alerts from "../commons/Alerts"
                     ajaxGetLedgerSuccessMessage : data.message,
                    
                 })
-                
+               
                 this.state.groupList.forEach((group)=>{
-                    if(group._id === this.state.groupkey){
+ 
+                    if(group._id == this.state.groupKey){
                         this.setState({groupName : group.name})
                     }
                 })
@@ -108,6 +119,19 @@ import Alerts from "../commons/Alerts"
                 })
             }
         })
+          
+        } catch (error) {
+          this.setState({
+            ajaxGetLedgerError : true,
+            ajaxGetLedgerErrorMessage : error,
+            ajaxGetLedgerSuccess : false,
+            ajaxGetLedgerSuccessMessage :""
+            
+        });
+
+          
+        }
+        
       }
 
       onSubmit =(e)=>{
@@ -244,8 +268,16 @@ import Alerts from "../commons/Alerts"
                               }
                               </datalist>
                             <br/>
-                            <Button color="success" onClick={this.getLedger}>Get Ledger</Button>
-                            {this.state.spinnerLedger ? <Spinner clor="info"/> : ""}
+                            <Row>
+                              <Col>
+                                <Button color="success" onClick={this.getLedger}>Get Ledger</Button>
+                              </Col>
+                              <Col>
+                                {this.state.spinnerLedger ? <Spinner color="info"/> : ""}
+                              </Col>
+                            </Row>
+                            
+                            
 
                             
                         </FormGroup>

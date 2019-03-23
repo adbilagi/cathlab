@@ -64,7 +64,6 @@ router.get("/:ledger", jwt.validateLogin, reqValidate, (req, res)=>{
     
     ledgerConn.findOne({name : curLedger})
     .then((data)=> {
-        console.log(data);
         if(data == null){
             res.status(500).send(`ledger ${curLedger} not found`)
         }else{
@@ -98,7 +97,7 @@ router.put("/", jwt.validateLogin, reqValidate, (req, res)=>{
     let data={
         name :req.body.name.trim(),
         groupKey : req.body.groupKey.trim(),
-        email : req.body.email.trim,
+        email : req.body.email.trim(),
         phone : req.body.phone.trim(),
         panNumber : req.body.panNumber.trim(),
         gstNumber : req.body.gstNumber.trim(),
@@ -107,7 +106,7 @@ router.put("/", jwt.validateLogin, reqValidate, (req, res)=>{
         activeLedger : req.body.activeLedger
        }
        ledgerConn.updateOne({name : getLedger}, {$set : data}).then((data)=>{
-           res.status(200).json({data : data, mesaage : "successfully updated ledger"});
+           res.status(200).json({data : data, message : "successfully updated ledger"});
        }).catch((er)=>{
            res.status(500).send(er);
        })
