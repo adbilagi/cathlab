@@ -26,14 +26,14 @@ router.post("/", jwt.validateLogin, reqValidate, (req, res)=>{
     
         
        let data={
-        name :req.body.name,
+        name :req.body.name.trim(),
         // groupName :  req.body.groupName,
-        groupKey : req.body.groupKey,
-        email : req.body.email,
-        phone : req.body.phone,
-        panNumber : req.body.panNumber,
-        gstNumber : req.body.gstNumber,
-        address : req.body.address,
+        groupKey : req.body.groupKey.trim(),
+        email : req.body.email.trim(),
+        phone : req.body.phone.trim(),
+        panNumber : req.body.panNumber.trim(),
+        gstNumber : req.body.gstNumber.trim(),
+        address : req.body.address.trim(),
         openingBalance : req.body.openingBalance,
         activeLedger : req.body.openingBalance
        }
@@ -60,9 +60,11 @@ privilege = [`${fileUrl}/:ledger`, "GET"]
 jwt.role.createNewPrivileges(privilege,"This gets single ledger details", false)
 jwt.role.addPrivilegeToRole("admin",privilege, true);
 router.get("/:ledger", jwt.validateLogin, reqValidate, (req, res)=>{
-    let curLedger = req.params.ledger;    
+    let curLedger = req.params.ledger.trim();
+    
     ledgerConn.findOne({name : curLedger})
     .then((data)=> {
+        console.log(data);
         if(data == null){
             res.status(500).send(`ledger ${curLedger} not found`)
         }else{
@@ -94,15 +96,15 @@ jwt.role.addPrivilegeToRole("admin", privilege, true);
 router.put("/", jwt.validateLogin, reqValidate, (req, res)=>{
     let getLedger = req.body.getLedger;
     let data={
-        name :req.body.name,
-        groupKey : req.body.groupKey,
-        email : req.body.email,
-        phone : req.body.phone,
-        panNumber : req.body.panNumber,
-        gstNumber : req.body.gstNumber,
-        address : req.body.address,
+        name :req.body.name.trim(),
+        groupKey : req.body.groupKey.trim(),
+        email : req.body.email.trim,
+        phone : req.body.phone.trim(),
+        panNumber : req.body.panNumber.trim(),
+        gstNumber : req.body.gstNumber.trim(),
+        address : req.body.address.trim(),
         openingBalance : req.body.openingBalance,
-        activeLedger : req.body.openingBalance
+        activeLedger : req.body.activeLedger
        }
        ledgerConn.updateOne({name : getLedger}, {$set : data}).then((data)=>{
            res.status(200).json({data : data, mesaage : "successfully updated ledger"});

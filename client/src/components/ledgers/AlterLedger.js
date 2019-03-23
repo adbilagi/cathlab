@@ -119,6 +119,7 @@ import Alerts from "../commons/Alerts"
               key = group._id
             }
           })
+         
           let data = {
             getLedger : this.state.getLedger,
             name : this.state.name,
@@ -133,7 +134,7 @@ import Alerts from "../commons/Alerts"
             activeLedger : this.state.activeLedger
 
           }
-
+          alert(data);
           this.setState({
             spinner : true
           })
