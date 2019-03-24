@@ -44,6 +44,7 @@ router.get("/:group", jwt.validateLogin,(req, res)=>{
     
     try {
         let curGroup = req.params.group;
+        curGroup = curGroup.trim();
         groupConn.findOne({name : curGroup}).then((data)=>{
             res.status(200).json({
                 data : data,
@@ -67,8 +68,8 @@ jwt.role.addPrivilegeToRole("admin", [`${fileUrl}/`, "POST"], true);
 router.post("/", jwt.validateLogin,reqValidate,  (req, res)=>{
     try {
         let newgroup ={
-            name : req.body.name,
-            underGroup : req.body.underGroup
+            name : req.body.name.trim(),
+            underGroup : req.body.underGroup.trim()
         }
         groupConn.create(newgroup).then(data=>{
             res.status(200).json({
@@ -95,11 +96,11 @@ jwt.role.addPrivilegeToRole("admin", [`${fileUrl}/`, "PUT"], true);
 router.put("/", jwt.validateLogin,reqValidate, (req, res)=>{
     try {
         let editGroup={
-            oldName : req.body.oldName,
-            name : req.body.name,
-            underGroup : req.body.underGroup
+            oldName : req.body.oldName.trim(),
+            name : req.body.name.trim(),
+            underGroup : req.body.underGroup.trim()
         }
-        if(parentGroup.indexOf(editGroup.oldName >= 0)){
+        if(parentGroup.indexOf(editGroup.oldName) >= 0){
             res.status(500).send(`not allowed to modify this reserved ${editGroup.oldName} group`);
             return;
         }
@@ -133,10 +134,10 @@ jwt.role.addPrivilegeToRole("admin", [`${fileUrl}/`, "DELETE"], true);
 router.delete("/", jwt.validateLogin,(req, res)=>{
     try {
         let deleteGroup ={
-            name : req.body.name
+            name : req.body.name.trim()
         }
 
-        if(parentGroup.indexOf(deleteGroup.name >= 0)){
+        if(parentGroup.indexOf(deleteGroup.name) >= 0){
             res.status(500).send(`not allowed to delete this reserved ${deleteGroup.name} group`);
             return;
         }

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Button, Form, FormGroup, Label, Input, Container, Row, Col, Spinner} from 'reactstrap';
 import $ from "jquery";
 import Alerts from "../commons/Alerts"
+import { isUndefined } from 'util';
 
 
 export default class AlterGroup extends Component {
@@ -10,10 +11,15 @@ export default class AlterGroup extends Component {
         name : "",
         underGroup : "",
         groupList : [],
+        oldGroupList : [],
         ajaxError : false,
         ajaxErrorMessage : "",
         ajaxSuccess : false,
         ajaxSuccessMessage :"",
+        ajaxGetUnderGroupError : false,
+        ajaxGetUnderGroupErrorMessage : "",
+        ajaxGetUnderGroupSuccess : false,
+        ajaxGetUnderGroupSuccessMessage :"",
         spinner : false
       }
       onChange =(e)=>{
@@ -22,8 +28,40 @@ export default class AlterGroup extends Component {
           ajaxError : false,
           ajaxErrorMessage : "",
           ajaxSuccess : false,
-          ajaxSuccessMessage :""
+          ajaxSuccessMessage :"",
+          ajaxGetUnderGroupError : false,
+          ajaxGetUnderGroupErrorMessage : "",
+          ajaxGetUnderGroupSuccess : false,
+          ajaxGetUnderGroupSuccessMessage :"",
         });
+      }
+
+
+      onBlur = (e)=>{
+        
+       let underGroup= this.state.oldGroupList.find((group)=>{
+         return group.name == e.target.value
+       })
+       if(isUndefined(underGroup)){
+         this.setState({
+          ajaxGetUnderGroupError : true,
+          ajaxGetUnderGroupErrorMessage : "invalid group name",
+          ajaxGetUnderGroupSuccess : false,
+          ajaxGetUnderGroupSuccessMessage :"",
+         })
+          
+       }else{
+         this.setState({
+           underGroup : underGroup.underGroup,
+           ajaxGetUnderGroupError : false,
+           ajaxGetUnderGroupErrorMessage : "",
+           ajaxGetUnderGroupSuccess : true,
+           ajaxGetUnderGroupSuccessMessage :underGroup.underGroup,
+         })
+
+       }
+
+       
       }
       componentWillMount(){
         $.ajax({
@@ -32,15 +70,22 @@ export default class AlterGroup extends Component {
           beforeSend : this.setState({spinner : true}),
           success: (data)=>{
             let tempGroup = [];
+            let oldTempGroup =[];
             data.data.forEach((element)=>{
               tempGroup.push(element.name);
+              oldTempGroup.push({name : element.name, underGroup : element.underGroup});
             });
+
+            
             data.parentGroup.forEach((element)=>{
               tempGroup.push(element);
             })
             this.setState({
               groupList : tempGroup,
+              oldGroupList : oldTempGroup//created for oldgroup along with under group
             })
+
+           
           },
           error : (err)=>{
             console.log(err.responseText);
@@ -49,6 +94,8 @@ export default class AlterGroup extends Component {
             this.setState({spinner : false});
           }
         })
+        
+        
       }
 
       onSubmit =(e)=>{
@@ -121,18 +168,35 @@ export default class AlterGroup extends Component {
                             })
                           }
                         </datalist>
+
+                        <datalist name="oldGroupList" id="oldGroupList">
+                          {
+                            this.state.oldGroupList.map((group, index)=>{
+                              return(
+                                  <option key={`oldGroupList${index}`} value={group.name}/>
+                              )
+                            })
+                          }
+                        </datalist>
                         <FormGroup>
                             <Label for="oldName">Old Name</Label>
-                            <Input type="text" name="oldName" id="oldName" list="groupList" autoComplete="off" placeholder="Enter group name" onChange={this.onChange}/>
+                            <Input type="text" name="oldName" id="oldName" list="oldGroupList" autoComplete="off" placeholder="Enter group name" value={this.state.oldName} onChange={this.onChange} onBlur={this.onBlur}/>
                         </FormGroup>
+
+                        <Alerts 
+                            alertSuccess = {this.state.ajaxGetUnderGroupSuccess}
+                            alertError = {this.state.ajaxGetUnderGroupError}
+                            alertSuccessMessage = {this.state.ajaxGetUnderGroupSuccessMessage}
+                            alertErrorMessage = {this.state.ajaxGetUnderGroupErrorMessage}
+                        />
                         <FormGroup>
                             <Label for="name">New Name</Label>
-                            <Input type="text" name="name" id="name" autoComplete="off" placeholder="Enter group name" onChange={this.onChange}/>
+                            <Input type="text" name="name" id="name" autoComplete="off" value={this.state.name} placeholder="Enter group name" onChange={this.onChange}/>
                         </FormGroup>
 
                         <FormGroup>
                             <Label for="underGroup">Under Group</Label>
-                            <Input type="text" name="underGroup" id="underGroup" autoComplete="off" list="groupList" placeholder="Enter group name" onChange={this.onChange}/>
+                            <Input type="text" name="underGroup" id="underGroup" value={this.state.underGroup} autoComplete="off" list="groupList" placeholder="Enter group name" onChange={this.onChange}/>
                         </FormGroup>
                         <FormGroup>
                           <Row>

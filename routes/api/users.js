@@ -21,8 +21,8 @@ privilege=[];
 router.post("/login", (req, res)=>{
     try {
         
-        let user = req.body.user;
-        let password = req.body.password;
+        let user = req.body.user.trim();
+        let password = req.body.password.trim();
         userConn.find({user : user, password : password, activeUser : true}, (err, data)=>{
             
             if(err){
@@ -71,10 +71,10 @@ jwt.role.addPrivilegeToRole("admin", privilege,true);
         
             validate(req.body);
             let signData = {
-                user : req.body.user,
-                email : req.body.user,
-                password : req.body.password,
-                phone: req.body.phone
+                user : req.body.user.trim(),
+                email : req.body.user.trim(),
+                password : req.body.password.trim(),
+                phone: req.body.phone.trim()
             }
            
             userConn.create(signData, (err, data)=>{
@@ -105,9 +105,9 @@ router.put("/changepassword", jwt.validateLogin, (req, res)=>{
 try {
     
         validate(req.body);
-        let oldPassword = req.body.oldPassword;
-        let newPassword = req.body.newPassword;
-        let curUser = req.jwtPayload.user;
+        let oldPassword = req.body.oldPassword.trim();
+        let newPassword = req.body.newPassword.trim();
+        let curUser = req.jwtPayload.user.trim();
         userConn.updateOne({user : curUser, password : oldPassword}, {$set : {password : newPassword}}, (err, raw)=>{
         if(raw.n < 1){
             res.status(500).send("Did not change password");
@@ -146,9 +146,11 @@ router.put("/changerole", jwt.validateLogin, (req, res)=>{
     
     try {
             validate(req.body);
+            let curUser = req.body.user.trim();
+            let curRole = req.body.role.trim();
             
             // here code for role change of user whoose role has to be changed , not the logged user
-            userConn.updateOne({user : req.body.user}, {$set :{role : req.body.role}}, (err, raw)=>{
+            userConn.updateOne({user : curUser}, {$set :{role : curRole}}, (err, raw)=>{
             // check valid user name
            
             if(raw.n < 1){
@@ -221,7 +223,10 @@ router.put("/changeuseractivity", jwt.validateLogin,  (req, res)=>{
    
     try {
         validate(req.body);
-        userConn.updateOne({user : req.body.user},{$set : {activeUser : req.body.activeUser}},(err, raw)=>{
+        let changeUser = req.body.user.trim();
+        let changeActiveUser = req.body.activeUser.trim();
+        
+        userConn.updateOne({user : changeUser},{$set : {activeUser : changeActiveUser}},(err, raw)=>{
             
             if(raw.n < 1){//number selected is less than 1 or zero then 500
                 res.status(500).send("Invalid User");
