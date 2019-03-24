@@ -40,7 +40,7 @@ export default class AlterGroup extends Component {
       onBlur = (e)=>{
         
        let underGroup= this.state.oldGroupList.find((group)=>{
-         return group.name == e.target.value
+         return group.name === e.target.value
        })
        if(isUndefined(underGroup)){
          this.setState({

@@ -57,7 +57,7 @@ import Alerts from "../commons/Alerts"
       getLedger =(e)=>{
         try {
           let curLedger = this.state.getLedger.trim();
-          if(curLedger == ""){
+          if(curLedger === ""){
             throw "invalid get ledger"
           }
           
@@ -98,7 +98,7 @@ import Alerts from "../commons/Alerts"
                
                 this.state.groupList.forEach((group)=>{
  
-                    if(group._id == this.state.groupKey){
+                    if(group._id === this.state.groupKey){
                         this.setState({groupName : group.name})
                     }
                 })
