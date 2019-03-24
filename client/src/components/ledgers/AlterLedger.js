@@ -7,6 +7,7 @@ import { Button, Form, Container, Row, Col, Spinner, FormGroup, Label, Input} fr
 import LedgerElements from "./LedgerElements"
 import $ from "jquery";
 import Alerts from "../commons/Alerts"
+import { isUndefined } from 'util';
  
  export default class CreateLedger extends Component {
      state={
@@ -96,12 +97,12 @@ import Alerts from "../commons/Alerts"
                    
                 })
                
-                this.state.groupList.forEach((group)=>{
- 
-                    if(group._id === this.state.groupKey){
-                        this.setState({groupName : group.name})
-                    }
-                })
+                let curGroupName = this.state.groupList.find(group => group._id == this.state.groupKey);
+                if(!isUndefined(curGroupName)){
+                  this.setState({
+                    groupName : curGroupName.underGroup
+                  })
+                }
             },
             error : (err)=>{
                 this.setState({
@@ -216,6 +217,7 @@ import Alerts from "../commons/Alerts"
             this.setState({
               groupList : data.data,
             })
+           
           },
           error : (err)=>{
             console.log(err.responseText);
