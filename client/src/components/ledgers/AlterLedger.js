@@ -8,7 +8,9 @@ import LedgerElements from "./LedgerElements"
 import $ from "jquery";
 import Alerts from "../commons/Alerts"
 import { isUndefined } from 'util';
- 
+import {numberToCrDr} from "../../validate/index"
+
+
  export default class CreateLedger extends Component {
      state={
          getLedger : "",
@@ -87,7 +89,7 @@ import { isUndefined } from 'util';
                     panNumber :data.data.panNumber,
                     gstNumber : data.data.gstNumber,
                     address : data.data.address,
-                    openingBalance : data.data.openingBalance,
+                    openingBalance : numberToCrDr(data.data.openingBalance),
                     activeLedger : data.data.activeLedger,
 
                     ajaxGetLedgerError : false,

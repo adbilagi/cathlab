@@ -9,7 +9,7 @@ const jwt = require("../../middleware/usermiddleware");
 const ledgerConn = require("../../model/schema").Ledger;
 const Fawn = require("../../model/schema").Fawn;
 const reqValidate = require("../../validate/ledgerValidate")
-const crDrValidate = require("../../validate/index").crDrValidaate
+const indexValidate = require("../../validate/index");
 
 
 
@@ -34,7 +34,7 @@ router.post("/", jwt.validateLogin, reqValidate, (req, res)=>{
         panNumber : req.body.panNumber.trim(),
         gstNumber : req.body.gstNumber.trim(),
         address : req.body.address.trim(),
-        openingBalance : crDrValidate(req.body.openingBalance),
+        openingBalance : indexValidate.crDrValidaate(req.body.openingBalance),
         activeLedger : req.body.activeLedger
        }
 
@@ -95,7 +95,8 @@ privilege = [`${fileUrl}/`, "PUT"]
 jwt.role.createNewPrivileges(privilege, "This edits ths ledgers", false);
 jwt.role.addPrivilegeToRole("admin", privilege, true);
 router.put("/", jwt.validateLogin, reqValidate, (req, res)=>{
-    let getLedger = req.body.getLedger;
+    try {
+        let getLedger = req.body.getLedger;
     let data={
         name :req.body.name.trim(),
         groupKey : req.body.groupKey.trim(),
@@ -104,7 +105,7 @@ router.put("/", jwt.validateLogin, reqValidate, (req, res)=>{
         panNumber : req.body.panNumber.trim(),
         gstNumber : req.body.gstNumber.trim(),
         address : req.body.address.trim(),
-        openingBalance : req.body.openingBalance,
+        openingBalance : indexValidate.crDrValidaate(req.body.openingBalance),
         activeLedger : req.body.activeLedger
        }
        ledgerConn.updateOne({name : getLedger}, {$set : data}).then((data)=>{
@@ -112,6 +113,10 @@ router.put("/", jwt.validateLogin, reqValidate, (req, res)=>{
        }).catch((er)=>{
            res.status(500).send(er);
        })
+    } catch (error) {
+        res.status(500).send(error)
+    }
+    
 })
 
 
