@@ -54,8 +54,10 @@ let openingBalance= (amt="")=>{
                 resolve(0);
             }
             let curAmt = crDrValidate(amt);
+            
             resolve(curAmt);
         } catch (error) {
+           
             reject(error);
             
         }
@@ -64,9 +66,9 @@ let openingBalance= (amt="")=>{
 
 
 module.exports = (req, res, next)=>{
-    let curEmail = req.body.email.trim();
+    let curEmail = req.body.email;
     let curOpeningBalance = req.body.openigBalance;
-    let curGroupName = req.body.groupName.trim();
+    let curGroupName = req.body.groupName;
     let curGroupKey = req.body.groupKey;
 
     Promise.all([email(curEmail), groupKey(curGroupKey), groupName(curGroupName) ,openingBalance(curOpeningBalance)])

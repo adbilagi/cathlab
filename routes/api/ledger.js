@@ -35,17 +35,13 @@ router.post("/", jwt.validateLogin, reqValidate, (req, res)=>{
         openingBalance : indexValidate.crDrValidaate(req.body.openingBalance),
         activeLedger : req.body.activeLedger
        }
-       console.log(data);
        ledgerConn.create(data).then((result)=>{
 
            res.status(200).json({
                data : result,
-               message : `successfully created new ledger ${data.name} under group ${data.groupName}`
+               message : `successfully created new ledger ${data.name} under group ${req.body.groupName}`
            })
        }).catch(err => res.status(500).send(err));
-
-
-        
     } catch (error) {
         res.status(500).send(error)
     }
@@ -81,7 +77,6 @@ router.get("/", jwt.validateLogin, reqValidate, (req, res)=>{
     // {$ne : {underGroup : "Patients"}}
     ledgerConn.find().select("name")
     .then((data)=> {
-        console.log(data);
         res.status(200).json({data : data});
     })
     .catch((err)=>{
