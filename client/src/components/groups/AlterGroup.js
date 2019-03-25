@@ -69,6 +69,7 @@ export default class AlterGroup extends Component {
           url : "api/master/accounts/group/all",
           beforeSend : this.setState({spinner : true}),
           success: (data)=>{
+            
             let tempGroup = [];
             let oldTempGroup =[];
             data.data.forEach((element)=>{

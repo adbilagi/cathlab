@@ -2,12 +2,13 @@
  * This file validates the groupSchema
  */ 
 const conGroup = require("../model/schema").Group;
-const parentGroup = require("../config/config").ParentGroup
+const parentGroup = require("../config/config").ParentGroups
+const reservedGroup = require("../config/config").ReservedGroups
 
 // validadation for name field in Groups collction
 let name = (name)=>{
     return new Promise((reslove, reject)=>{
-        if(parentGroup.indexOf(name) >=0){
+        if(parentGroup.indexOf(name) >=0 || reservedGroup.indexOf(name) >= 0 ){
             reject(`${name} is reserved group you can not use`)
         }else{
             reslove(true);
@@ -18,8 +19,8 @@ let name = (name)=>{
 // validadtion for underGroup field collection
 let underGroup = (underGroup)=>{
     return new Promise((reslove, reject)=>{
-        if(underGroup === "Cash in Hand"){
-            reject(`Cash in Hand is reserved group and can not be used it as under group`)
+        if(reservedGroup.indexOf(underGroup)>=0){
+            reject(`${underGroup} is reserved group and can not be used`)
         }else if(parentGroup.indexOf(underGroup) >= 0){
             reslove(true)
         }else{

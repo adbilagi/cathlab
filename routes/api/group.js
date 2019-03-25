@@ -6,10 +6,9 @@ const groupConn = require("../../model/schema").Group;
 const lederConn = require("../../model/schema").Ledger;
 const Fawn = require("../../model/schema").Fawn;
 
-const parentGroup = require("../../validate/groupValidate").parentGroup;
+const parentGroup = require("../../config/config").ParentGroups;
+const reservedGroup = require("../../config/config").ReservedGroups
 const reqValidate = require("../../validate/groupValidate").reqValidate;
-
-
 
 
 jwt.fileURL(fileUrl);
@@ -101,8 +100,14 @@ router.put("/", jwt.validateLogin,reqValidate, (req, res)=>{
             name : req.body.name.trim(),
             underGroup : req.body.underGroup.trim()
         }
+
+        if(reservedGroup.indexOf(editGroup.oldName) >= 0){
+            res.status(500).send(`not allowed to modify this reserved group ${editGroup.oldName} group`);
+            return;
+        }
+
         if(parentGroup.indexOf(editGroup.oldName) >= 0){
-            res.status(500).send(`not allowed to modify this reserved ${editGroup.oldName} group`);
+            res.status(500).send(`not allowed to modify this parent group ${editGroup.oldName} group`);
             return;
         }
         // use trasaction instead of Fawn this code has to written 
