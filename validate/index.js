@@ -37,10 +37,6 @@
     
 }
 
-
- 
-
-
 module.exports ={
     crDrValidaate
 }

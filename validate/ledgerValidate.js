@@ -1,7 +1,8 @@
 const isEmail = require("validator").isEmail
 const crDrValidate = require("./index").crDrValidaate
 const groupConn = require("../model/schema").Group;
-const parentGroup = require("./groupValidate").parentGroup
+const parentGroup = require("../config/config").ParentGroups;
+const reservedGroup = require("../config/config").ReservedGroups;
 
 
 
@@ -20,8 +21,8 @@ let email = (email="")=>{
 
 let groupName = (groupName)=>{
     return new Promise ((resolve, reject)=>{
-        if(parentGroup.indexOf(groupName) >= 0){
-            reject(`${groupName} is reserved group can not be used`)
+        if(parentGroup.indexOf(groupName) >= 0 || reservedGroup.indexOf(groupName) >= 0){
+            reject(`${groupName} is reserved so this group so can not be used`)
         }else{
             resolve(true)
         }
@@ -31,12 +32,14 @@ let groupName = (groupName)=>{
 
 let groupKey = (key)=>{
     return new Promise((resolve, reject)=>{
-        let preventedGroups=[{name : "Cash in Hand"}, {name : "Patients"}];
+        let preventedGroups=reservedGroup.map((group)=>{
+            return {name : group}
+        })
         groupConn.findOne({$or : preventedGroups}, (err, data)=>{
             if(err){
                 reject(err)
             }else if(key === data._id){
-                reject("Cash in Hand and Patients are reserved group not allowd create ledgers under this group")
+                reject(`${data.name} is reserved group not allowd create ledgers under this group`)
             }else{
                 resolve(true)
             }

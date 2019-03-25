@@ -9,7 +9,7 @@ const reservedGroup = require("../config/config").ReservedGroups
 let name = (name)=>{
     return new Promise((reslove, reject)=>{
         if(parentGroup.indexOf(name) >=0 || reservedGroup.indexOf(name) >= 0 ){
-            reject(`${name} is reserved group you can not use`)
+            reject(`${name} is reserved or Parent group so you can not use`)
         }else{
             reslove(true);
         }
@@ -22,9 +22,8 @@ let underGroup = (underGroup)=>{
         if(reservedGroup.indexOf(underGroup)>=0){
             reject(`${underGroup} is reserved group and can not be used`)
         }else if(parentGroup.indexOf(underGroup) >= 0){
-            reslove(true)
+            reslove(true)// can create group under parent group
         }else{
-
             conGroup.findOne({name : underGroup},
                 (err, data)=>{
                     if(err){
@@ -59,5 +58,5 @@ reqValidate = (req, res, next)=>{
 }
 
 module.exports ={
-    reqValidate, parentGroup
+    reqValidate
 }

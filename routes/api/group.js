@@ -149,10 +149,16 @@ async function deleteGroup(req, res){
     let deleteGroupName =req.body.name.trim();
     // prvent parent group deletaton
     if(parentGroup.indexOf(deleteGroupName) >= 0){
+        res.status(500).send(`not allowed to delete this parent ${deleteGroupName} group`);
+        return;
+    }
+    // prvent reserved group deletaton
+    if(reservedGroup.indexOf(deleteGroupName) >= 0){
         res.status(500).send(`not allowed to delete this reserved ${deleteGroupName} group`);
         return;
     }
 
+    
     // check for valid group name
     const curGroupForID = await groupConn.findOne({name : deleteGroupName}).then(data =>data);
     if(curGroupForID === null){
