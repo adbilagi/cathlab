@@ -1,6 +1,7 @@
 const isEmail = require("validator").isEmail
 const crDrValidate = require("./index").crDrValidaate
 const groupConn = require("../model/schema").Group;
+const parentGroup = require("./groupValidate").parentGroup
 
 
 
@@ -17,10 +18,20 @@ let email = (email="")=>{
 
 }
 
+let groupName = (groupName)=>{
+    return new Promise ((resolve, reject)=>{
+        if(parentGroup.indexOf(groupName) >= 0){
+            reject(`${groupName} is reserved group can not be used`)
+        }else{
+            resolve(true)
+        }
+    })
+}
+
 
 let groupKey = (key)=>{
     return new Promise((resolve, reject)=>{
-        let preventedGroups=[{name : "Cash in Hand"}, {name : "Patinets"}];
+        let preventedGroups=[{name : "Cash in Hand"}, {name : "Patients"}];
         groupConn.findOne({$or : preventedGroups}, (err, data)=>{
             if(err){
                 reject(err)
@@ -36,7 +47,7 @@ let groupKey = (key)=>{
 }
 
 
-let openigBalance= (amt="")=>{
+let openingBalance= (amt="")=>{
     return new Promise((resolve, reject)=>{
         try {
             if(amt==""){
@@ -53,11 +64,12 @@ let openigBalance= (amt="")=>{
 
 
 module.exports = (req, res, next)=>{
-    let curEmail = req.body.email;
+    let curEmail = req.body.email.trim();
     let curOpeningBalance = req.body.openigBalance;
+    let curGroupName = req.body.groupName.trim();
     let curGroupKey = req.body.groupKey;
 
-    Promise.all([email(curEmail), groupKey(curGroupKey) ,openigBalance(curOpeningBalance)])
+    Promise.all([email(curEmail), groupKey(curGroupKey), groupName(curGroupName) ,openingBalance(curOpeningBalance)])
     .then((data)=>{
         req.validateData=data;
         next();

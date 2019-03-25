@@ -10,10 +10,12 @@
  crDrValidaate = (Amount)=>{
      
     let throwString="Amount has be suffixed with cr or dr for example 500cr or 300dr";
-    if(typeof Amount =="number"){
+    if(Amount == ""){
+        return 0;
+    }else if(typeof Amount =="number"){
         return(Amount);
     }else if(typeof Amount == "string"){
-        Amount= Amount.toLowerCase();
+        Amount= Amount.toLowerCase().trim();
     }else{
         throw throwString ;
         return;
@@ -37,6 +39,19 @@
     }
 }
 
+numberToCrDR = (Amount = 0)=>{
+    if(typeof Amount != "number"){
+        throw "invalid number to Cr or Dr";
+    }else if(Amount < 0){
+        return `${Math.abs(Amount)}Cr`
+    }else if(Amount >= 0){
+        return `${Amount}Dr`;
+    }
+
+}
+ 
 
 
-module.exports.crDrValidaate = crDrValidaate;
+module.exports ={
+    crDrValidaate, numberToCrDR
+}

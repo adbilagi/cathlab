@@ -9,6 +9,7 @@ const jwt = require("../../middleware/usermiddleware");
 const ledgerConn = require("../../model/schema").Ledger;
 const Fawn = require("../../model/schema").Fawn;
 const reqValidate = require("../../validate/ledgerValidate")
+const crDrValidate = require("../../validate/index").crDrValidaate
 
 
 
@@ -27,15 +28,14 @@ router.post("/", jwt.validateLogin, reqValidate, (req, res)=>{
         
        let data={
         name :req.body.name.trim(),
-        // groupName :  req.body.groupName,
         groupKey : req.body.groupKey.trim(),
         email : req.body.email.trim(),
         phone : req.body.phone.trim(),
         panNumber : req.body.panNumber.trim(),
         gstNumber : req.body.gstNumber.trim(),
         address : req.body.address.trim(),
-        openingBalance : req.body.openingBalance,
-        activeLedger : req.body.openingBalance
+        openingBalance : crDrValidate(req.body.openingBalance),
+        activeLedger : req.body.activeLedger
        }
 
        ledgerConn.create(data).then((result)=>{
@@ -77,11 +77,13 @@ router.get("/:ledger", jwt.validateLogin, reqValidate, (req, res)=>{
 
 
 privilege = [`${fileUrl}/`, "GET"]
-jwt.role.createNewPrivileges(privilege,"This gets all ledger", false)
+jwt.role.createNewPrivileges(privilege,"This gets all ledgers except patients under Group", false)
 jwt.role.addPrivilegeToRole("admin",privilege, true);
 router.get("/", jwt.validateLogin, reqValidate, (req, res)=>{
+    // {$ne : {underGroup : "Patients"}}
     ledgerConn.find().select("name")
     .then((data)=> {
+        console.log(data);
         res.status(200).json({data : data});
     })
     .catch((err)=>{
