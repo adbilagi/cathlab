@@ -23,9 +23,7 @@ privilege = [`${fileUrl}/`, "POST"]
 jwt.role.createNewPrivileges(privilege,"This creates new ledger", false)
 jwt.role.addPrivilegeToRole("admin",privilege, true);
 router.post("/", jwt.validateLogin, reqValidate, (req, res)=>{
-    try {
-    
-        
+    try {    
        let data={
         name :req.body.name.trim(),
         groupKey : req.body.groupKey.trim(),
@@ -37,7 +35,7 @@ router.post("/", jwt.validateLogin, reqValidate, (req, res)=>{
         openingBalance : indexValidate.crDrValidaate(req.body.openingBalance),
         activeLedger : req.body.activeLedger
        }
-
+       console.log(data);
        ledgerConn.create(data).then((result)=>{
 
            res.status(200).json({
