@@ -7,10 +7,10 @@ const router = express.Router();
 const fileUrl = "/api/master/accounts/ledger";
 const jwt = require("../../middleware/usermiddleware");
 const ledgerConn = require("../../model/schema").Ledger;
+const groupConn = require("../../model/schema").groupConn;
 const Fawn = require("../../model/schema").Fawn;
 const reqValidate = require("../../validate/ledgerValidate")
 const indexValidate = require("../../validate/index");
-
 
 
 jwt.fileURL(fileUrl);
@@ -47,8 +47,6 @@ router.post("/", jwt.validateLogin, reqValidate, (req, res)=>{
     }
     
 })
-
-
 
 privilege = [`${fileUrl}/:ledger`, "GET"]
 jwt.role.createNewPrivileges(privilege,"This gets single ledger details", false)
@@ -111,5 +109,32 @@ router.put("/", jwt.validateLogin, reqValidate, (req, res)=>{
     }
     
 })
+
+privilege= [`${fileUrl}/`, "DELETE"];
+jwt.role.createNewPrivileges(privilege, "This deletes the ledgers", false);
+jwt.role.addPrivilegeToRole("admin", privilege, true);
+
+router.delete("/", jwt.validateLogin, (req, res)=>{
+    try {
+        
+    } catch (error) {
+        
+    }
+})
+
+async function deleteLedger(req, res){
+    // get group  name
+    let deleteLedger = req.body.name;
+    const groupKey = await ledgerConn.findOne({name : deleteLedger}).then(data => data.groupKey);
+    // get groupName 
+    let groupName = await groupConn.findOne({_id : groupKey}).then(data => data.name);
+    // check group name belongs to Patient or Cash in hand 
+    if(groupName == "Patients" || groupName == "Cash in Hand"){
+        res.status(500).send(`${groupName} is reserved group, ledger under this groups can not be deleted`);
+        return;
+    }
+    
+
+}
 
 
