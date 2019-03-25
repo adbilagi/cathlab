@@ -11,6 +11,9 @@ state={
     confirmPassword : "",
     phone : "",
     address : "",
+    panNumber : "",
+    gstNumber : "",
+
     ajaxSuccess : false,
     ajaxError : false,
     errUnequalPassword : false
@@ -79,7 +82,10 @@ submitForm =(e)=>{
       email : this.state.email,
       password : this.state.password,
       confirmPassword : this.state.confirmPassword,
-      phone : this.state.phone
+      phone : this.state.phone,
+      address : this.state.address,
+      panNumber : this.state.panNumber,
+      gstNumber : this.state.gstNumber
     };
   
 // check for valid password and confirm password
@@ -126,19 +132,19 @@ submitForm =(e)=>{
                     <Form onSubmit={this.submitForm}>
                         <FormGroup>
                           <Label for="user">User Name</Label>
-                          <Input type="text" name="user" id="user" placeholder="User Name" onChange={this.setUser}/>
+                          <Input type="text" name="user" id="user" autoComplete="off" placeholder="User Name" onChange={this.setUser}/>
                         </FormGroup>
                         <FormGroup>
                           <Label for="email">Email</Label>
-                          <Input type="text" name="email" id="email" placeholder="email" onChange={this.setEmail}/>
+                          <Input type="text" name="email" id="email" autoComplete="off" placeholder="email" onChange={this.setEmail}/>
                         </FormGroup>
                         <FormGroup>
                           <Label for="password">Password</Label>
-                          <Input type="password" name="password" id="password" placeholder="Password" onChange={this.setPassword}/>
+                          <Input type="password" name="password" id="password" autoComplete="off" placeholder="Password" onChange={this.setPassword}/>
                         </FormGroup>
                         <FormGroup>
                           <Label for="confirmPassword">ConfirmPassword</Label>
-                          <Input type="password" name="confirmPassword" id="confirmPassword" placeholder="Confirm Password" onChange={this.setConfirmPassword}/>
+                          <Input type="password" name="confirmPassword" autoComplete="off" id="confirmPassword" placeholder="Confirm Password" onChange={this.setConfirmPassword}/>
                         </FormGroup>
 
                         <Alerts 
@@ -147,7 +153,7 @@ submitForm =(e)=>{
                         />
                         <FormGroup>
                           <Label for="phone">Phone</Label>
-                          <Input type="text" name="phone" id="phone" placeholder="phone" onChange={this.setPhone}/>
+                          <Input type="text" name="phone" id="phone" placeholder="phone" autoComplete="off" onChange={this.setPhone}/>
                         </FormGroup>
                         <Button color="info">Sign Up</Button>
                     </Form>

@@ -9,6 +9,8 @@ const fileUrl = "/api/users"
 const validate = require("../../validate/userValidate")
 const jwt = require("../../middleware/usermiddleware");
 const userConn = require("../../model/schema").User// user schema
+const ledgerConn = require("../../model/schema").Ledger;
+const groupConn = require("../../model/schema").Group;
 
 module.exports =router;
 jwt.fileURL(fileUrl);
@@ -66,35 +68,45 @@ privilege = [`${fileUrl}/signup`, "POST"];
 jwt.role.createNewPrivileges(privilege, "To add new user", false);
 jwt.role.addPrivilegeToRole("admin", privilege,true);
  router.post("/signup", jwt.validateLogin,  function(req, res){
+    signUpUser(req, res);    
+ });
+
+ async function signUpUser(req, res){
+    const session = await userConn.db.startSession();
+    session.startTransaction();
      try {
-         
-        
             validate(req.body);
             let signData = {
                 user : req.body.user.trim(),
                 email : req.body.user.trim(),
                 password : req.body.password.trim(),
-                phone: req.body.phone.trim()
+                phone: req.body.phone.trim(),
             }
-           
-            userConn.create(signData, (err, data)=>{
-                if(err){
-                    res.status(500).send("Could not create new user");
-                }else{
-                    res.status(200).send("Successfully created new user");
-                }
-    
-            });
-        
-        
-         
+
+            const cashInHandGroupKey = await groupConn.findOne({name :"Cash in Hand"}).then(data=> data._id);
+            await userConn.create(signData).then((data)=> data);
+            const userCashLedger = {
+                name : `${signData.user} cash`,
+                email : req.body.email,
+                phone : req.body.phone,
+                openingBalance : 0,
+                groupKey : cashInHandGroupKey,
+                panNumber : req.body.panNumber,
+                gstNumber : req.body.gstNumber,
+                address : req.body.address
+            }
+            await ledgerConn.create(userCashLedger).then(data => data);
+            session.commitTransaction();
+            session.endSession();
+            res.status(200).send("Successfully created new user");
      } catch (error) {
+            await session.abortTransaction();
+            session.endSession();
          res.status(500).send(error);
          
      }
 
-
- });
+ }
 
  //  @route PUT
 // description This is changing password
