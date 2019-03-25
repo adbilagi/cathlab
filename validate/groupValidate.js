@@ -24,7 +24,7 @@ let underGroup = (underGroup)=>{
             reslove(true)
         }else{
 
-            conGroup.findOne({name : curJson.underGroup},
+            conGroup.findOne({name : underGroup},
                 (err, data)=>{
                     if(err){
                         reject(`invalid under group ${underGroup}`)
@@ -45,10 +45,12 @@ let underGroup = (underGroup)=>{
 // middle ware for validadtion
 reqValidate = (req, res, next)=>{
     let curName = req.body.name;
-    let curUnderGroup = req.body.underGroup
+    let curUnderGroup = req.body.underGroup;
+    
 
     Promise.all([name(curName), underGroup(curUnderGroup)])
     .then((data)=>{
+       
         next();
     }).catch((err)=>{
         res.status(500).send(err);

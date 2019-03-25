@@ -71,6 +71,7 @@ router.post("/", jwt.validateLogin,reqValidate,  (req, res)=>{
             name : req.body.name.trim(),
             underGroup : req.body.underGroup.trim()
         }
+        
         groupConn.create(newgroup).then(data=>{
             res.status(200).json({
                 data : data,
@@ -151,7 +152,7 @@ async function deleteGroup(req, res){
     const curGroupForID = await groupConn.findOne({name : deleteGroupName}).then(data =>data);
     if(curGroupForID === null){
         res.status(500).send(`invalid group name ${deleteGroupName}`);
-        retun
+        return
     }
 
     // check ledgers for use of deleteGroupName if so prevent deletation
