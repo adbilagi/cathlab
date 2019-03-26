@@ -95,7 +95,7 @@ jwt.role.addPrivilegeToRole("admin", privilege,true);
                 address : req.body.address
             }
             await ledgerConn.create(userCashLedger).then(data => data);
-            session.commitTransaction();
+            await session.commitTransaction();
             session.endSession();
             res.status(200).send("Successfully created new user");
      } catch (error) {

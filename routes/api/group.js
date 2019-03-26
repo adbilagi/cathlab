@@ -123,19 +123,19 @@ async function updateGroup(req, res, editGroup){
     session.startTransaction();
     try {
         // update name group
-        await groupConn.update({name : editGroup.oldName}, {$set : {
+        await groupConn.updateOne({name : editGroup.oldName}, {$set : {
             name : editGroup.name,
             underGroup : editGroup.underGroup
         }}).then(data =>data);
 
         // update all under groups with oldName
-        await groupConn.update({underGroup : editGroup.oldName}, {$set : {
+        await groupConn.updateMany({underGroup : editGroup.oldName}, {$set : {
             underGroup : editGroup.name
         }}).then(data => data)
 
         await session.commitTransaction();
         session.endSession()
-        res.status(200).json({data :data, message : "upadated request"});
+        res.status(200).json({message : "upadated request"});
         
     } catch (error) {
         await session.abortTransaction();
