@@ -3,8 +3,6 @@
  * */ 
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-const Fawn = require("fawn");
-Fawn.init(mongoose);
 
 
 let userSchema = new mongoose.Schema({
@@ -139,7 +137,6 @@ let ledgerSchema = new mongoose.Schema({
  const Ledger = mongoose.model("Ledger", ledgerSchema)
  const User = mongoose.model("User", userSchema);
  
- module.exports.Fawn = Fawn;
  module.exports.User = User;
  module.exports.Ledger = Ledger;
  module.exports.Group = Group;
