@@ -5,7 +5,6 @@ const express = require("express");
 const router = express.Router();
 const role = require("../../middleware/usermiddleware").role;
 const fileUrl = "/api/users"
-// const roleMiddleware = require("../../roles/roles").roleMiddleware(fileUrl);
 const validate = require("../../validate/userValidate")
 const jwt = require("../../middleware/usermiddleware");
 const userConn = require("../../model/schema").User// user schema

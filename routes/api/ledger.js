@@ -8,7 +8,6 @@ const fileUrl = "/api/master/accounts/ledger";
 const jwt = require("../../middleware/usermiddleware");
 const ledgerConn = require("../../model/schema").Ledger;
 const groupConn = require("../../model/schema").groupConn;
-const Fawn = require("../../model/schema").Fawn;
 const reqValidate = require("../../validate/ledgerValidate")
 const indexValidate = require("../../validate/index");
 

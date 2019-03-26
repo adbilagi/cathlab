@@ -4,7 +4,7 @@ const fileUrl = "/api/master/accounts/group";
 const jwt = require("../../middleware/usermiddleware");
 const groupConn = require("../../model/schema").Group;
 const lederConn = require("../../model/schema").Ledger;
-const Fawn = require("../../model/schema").Fawn;
+
 
 const parentGroup = require("../../config/config").ParentGroups;
 const reservedGroup = require("../../config/config").ReservedGroups
@@ -110,28 +110,41 @@ router.put("/", jwt.validateLogin,reqValidate, (req, res)=>{
             res.status(500).send(`not allowed to modify this parent group ${editGroup.oldName} group`);
             return;
         }
-        // use trasaction instead of Fawn this code has to written 
-        Fawn.Task().update("groups", {name : editGroup.oldName}, {$set : {
-            name : editGroup.name,
-            underGroup : editGroup.underGroup
-        }})
-        .update("groups", {underGroup : editGroup.oldName}, {$set : {
-            underGroup : editGroup.name
-        }}).options({multi : true})
-        .run()
-        .then((data)=>{
-            res.status(200).json({data :data, message : "upadated request"});
-            return;
-        })
-        .catch((error)=>{
-            res.status(500).send(error);
-            return;
-        })
+        updateGroup(req, res, editGroup);
+
 
     } catch (error) {
         
     }
 })
+
+async function updateGroup(req, res, editGroup){
+    const session = await groupConn.db.startSession();
+    session.startTransaction();
+    try {
+        // update name group
+        await groupConn.update({name : editGroup.oldName}, {$set : {
+            name : editGroup.name,
+            underGroup : editGroup.underGroup
+        }}).then(data =>data);
+
+        // update all under groups with oldName
+        await groupConn.update({underGroup : editGroup.oldName}, {$set : {
+            underGroup : editGroup.name
+        }}).then(data => data)
+
+        await session.commitTransaction();
+        session.endSession()
+        res.status(200).json({data :data, message : "upadated request"});
+        
+    } catch (error) {
+        await session.abortTransaction();
+        session.endSession();
+        res.status(500).send(error);
+
+    }
+
+}
  
 // @route DELETE
 // Description Deletes the group
