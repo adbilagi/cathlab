@@ -136,7 +136,7 @@ async function updateGroup(req, res, editGroup){
         await session.commitTransaction();
         session.endSession()
         res.status(200).json({message : "upadated request"});
-        
+        ``
     } catch (error) {
         await session.abortTransaction();
         session.endSession();
